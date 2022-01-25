@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
-export default function App() {
+export default function WecomeScreen() {
   return (
     <View style={styles.container}>
       <Image
