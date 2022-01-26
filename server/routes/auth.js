@@ -8,7 +8,6 @@ const authObj = require("../auth.json");
 
 const rounds = 10;
 const tokenSecret = authObj.tokenSecret;
-console.log(authObj);
 
 router.get("/login", (req, res) => {
   User.findOne({ email: req.body.email })
