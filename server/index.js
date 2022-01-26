@@ -1,17 +1,20 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const auth = require("./auth.json");
+const authRoute = require("./routes/auth");
+const authObj = require("./auth.json");
 
-const dbURI = auth.mongodb.uri;
+const dbURI = authObj.mongodb.uri;
 const dbOptions = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  dbName: auth.mongodb.db,
-  user: auth.mongodb.user,
-  pass: auth.mongodb.pass,
+  dbName: authObj.mongodb.db,
+  user: authObj.mongodb.user,
+  pass: authObj.mongodb.pass,
 };
+
 app.use(express.json());
+app.use("/api/auth", authRoute);
 
 mongoose.connect(dbURI, dbOptions);
 const db = mongoose.connection;
