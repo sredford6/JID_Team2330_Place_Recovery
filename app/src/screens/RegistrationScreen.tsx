@@ -1,19 +1,12 @@
 import React from 'react';
-import { StyleSheet, Button, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Alert, Linking } from 'react-native';
+import { StyleSheet, Button, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import ButtonDesign from '../components/Button';
-import { Link, NavigationContainer, StackRouter, useLinkProps } from '@react-navigation/native';
-//import {StackNavigator,} from 'react-navigation';
-import Navigation from '../navigation';
-import HomeScreen from './HomeScreen';
-import linking from '../navigation/LinkingConfiguration';
-//import { useNavigation } from '@react-navigation/native';
+import { useLinkProps } from '@react-navigation/native';
 
 
 export default function RegistrationScreen() {
-    //const navigation = useNavigation();
-
     const [email, setEmail] = React.useState("");
     const [firstName, setFirstName] = React.useState("");
     const [lastName, setLastName] = React.useState("");
@@ -37,7 +30,7 @@ export default function RegistrationScreen() {
     />
     <TextInput style = {styles.input}
        placeholder = 'Email'
-       maxLength = {40}
+       maxLength = {30}
        onChangeText={inp => setEmail(inp)}
     />
     <TextInput style = {styles.input}
@@ -53,7 +46,7 @@ export default function RegistrationScreen() {
        onChangeText={inp => setConfirmPassword(inp)}
        secureTextEntry ={true}
     />
-    <ButtonDesign name='Register' onPress={() => Alert.alert('Successfully registered') }/>
+    <ButtonDesign name='Register' onPress={() => Alert.alert('registered')}/>
     <Text style = {styles.label}>By registering, you automatically accept the Terms & Policies of Neighborhood app.</Text> 
     
   
