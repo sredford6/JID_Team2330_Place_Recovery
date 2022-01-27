@@ -27,28 +27,28 @@ router.get("/login", (req, res) => {
     });
 });
 
-router.post("/signup", (req, res) => {
-  bcrypt.hash(req.body.password, rounds, (error, hash) => {
-    if (error) res.status(500).json(error);
-    else {
-      const newUser = User({
-        email: req.body.email,
-        password: hash,
-        phoneNumber: req.body.phoneNumber,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-      });
-      newUser
-        .save()
-        .then((user) => {
-          res.status(200).json({ token: generateToken(user) });
-        })
-        .catch((error) => {
-          console.log("error");
-          res.status(500).json(error);
-        });
+router.post("/signup", async (req, res) => {
+  try {
+    const existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser) {
+      throw {
+        message: `user with email ${req.body.email} already exists!`,
+        error: new Error(`user with email ${req.body.email} already exists!`),
+      };
     }
-  });
+    const hash = await bcrypt.hash(req.body.password, rounds);
+    const newUser = User({
+      email: req.body.email,
+      password: hash,
+      phoneNumber: req.body.phoneNumber,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+    });
+    const user = await newUser.save();
+    res.status(200).json({ token: generateToken(user) });
+  } catch (error) {
+    res.status(500).json(error);
+  }
 });
 
 router.get("/jwt-test", middleware.verify, (req, res) => {
