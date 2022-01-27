@@ -10,11 +10,22 @@ import RegistrationScreen from './screens/RegistrationScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from './screens/HomeScreen';
 
+enableScreens();
+
+const Stack = createNativeStackNavigator();
+
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
+  return(
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="HomeScreen" component={HomeScreen}  />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 
   if (!isLoadingComplete) {
     return null;
