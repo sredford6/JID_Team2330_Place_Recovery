@@ -5,6 +5,7 @@ import { Text, View } from '../components/Themed';
 import ButtonDesign from '../components/Button';
 import { useLinkProps } from '@react-navigation/native';
 import HomeScreen from '../screens/HomeScreen';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export default function RegistrationScreen({navigation}) {
@@ -15,44 +16,57 @@ export default function RegistrationScreen({navigation}) {
     const [confirmPassword, setConfirmPassword] = React.useState("");
    
   return (
-  
-    <KeyboardAvoidingView style={styles.container} behavior = "padding">
- 
-      <Text style = {styles.title}>Register</Text>
-      
-    <TextInput style = {styles.input}
-       placeholder = 'First Name'
-       maxLength = {15}
-       onChangeText={inp => setFirstName(inp)}
-    />
-    <TextInput style = {styles.input}
-       placeholder = 'Last Name'
-       maxLength = {20}
-       onChangeText={inp => setLastName(inp)}
-    />
-    <TextInput style = {styles.input}
-       placeholder = 'Email'
-       maxLength = {30}
-       onChangeText={inp => setEmail(inp)}
-    />
-    <TextInput style = {styles.input}
-       placeholder = 'Password'
-       maxLength = {20}
-       onChangeText={inp => setPassword(inp)}
-       secureTextEntry ={true}
-    />
-     
-    <TextInput style = {styles.input}
-       placeholder = 'Confirm Password'
-       maxLength = {20}
-       onChangeText={inp => setConfirmPassword(inp)}
-       secureTextEntry ={true}
-    />
-    <ButtonDesign name='Register' onPress={() => navigation.navigate('Home')}/>
-    <Text style = {styles.label}>By registering, you automatically accept the Terms & Policies of Neighborhood app.</Text> 
+  <SafeAreaView style={{flex:1, justifyContent:'center'}}>
+      <ScrollView>
+        <KeyboardAvoidingView style={styles.container} behavior = "padding">
     
-  
-    </KeyboardAvoidingView>
+        <Text style = {styles.title}>Register</Text>
+          
+        <TextInput style = {styles.input}
+          placeholder = 'First Name'
+          maxLength = {15}
+          onChangeText={inp => setFirstName(inp)}
+        />
+        <TextInput style = {styles.input}
+          placeholder = 'Last Name'
+          maxLength = {20}
+          onChangeText={inp => setLastName(inp)}
+        />
+        <TextInput style = {styles.input}
+          placeholder = 'Email'
+          maxLength = {30}
+          onChangeText={inp => setEmail(inp)}
+        />
+        <TextInput style = {styles.input}
+          placeholder = 'Password'
+          maxLength = {20}
+          onChangeText={inp => setPassword(inp)}
+          secureTextEntry ={true}
+        />
+        
+        <TextInput style = {styles.input}
+          placeholder = 'Confirm Password'
+          maxLength = {20}
+          onChangeText={inp => setConfirmPassword(inp)}
+          secureTextEntry ={true}
+        />
+
+        {/* Input Validation */}
+
+
+
+
+
+        {/*End Input Validation */}
+        
+
+
+        <ButtonDesign name='Register' onPress={() => navigation.navigate('Home')}/>
+        <Text style = {styles.label}>By registering, you automatically accept the Terms & Policies of Neighborhood app.</Text> 
+        
+        </KeyboardAvoidingView>
+      </ScrollView>
+  </SafeAreaView>
    
   );
 }
