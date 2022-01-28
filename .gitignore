@@ -7,6 +7,9 @@ auth.json
 .AppleDouble
 .LSOverride
 
+# expo
+.expo
+
 # Icon must end with two \r
 Icon
 
