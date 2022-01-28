@@ -1,10 +1,12 @@
 import React from 'react';
+import { ReactDOM } from 'react';
 import { StyleSheet, Button, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import ButtonDesign from '../components/Button';
 import { useLinkProps } from '@react-navigation/native';
 import HomeScreen from '../screens/HomeScreen';
+import OpeningScreen from './OpeningScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
@@ -25,7 +27,7 @@ export default function RegistrationScreen({navigation}) {
         <TextInput style = {styles.input}
           placeholder = 'First Name'
           maxLength = {15}
-          onChangeText={inp => setFirstName(inp)}
+          onChangeText={firstName => setFirstName(firstName)}
         />
         <TextInput style = {styles.input}
           placeholder = 'Last Name'
@@ -37,6 +39,7 @@ export default function RegistrationScreen({navigation}) {
           maxLength = {30}
           onChangeText={inp => setEmail(inp)}
         />
+
         <TextInput style = {styles.input}
           placeholder = 'Password'
           maxLength = {20}
@@ -51,24 +54,13 @@ export default function RegistrationScreen({navigation}) {
           secureTextEntry ={true}
         />
 
-        {/* Input Validation */}
-
-
-
-
-
-        {/*End Input Validation */}
-        
-
-
         <ButtonDesign name='Register' onPress={() => navigation.navigate('Home')}/>
         <Text style = {styles.label}>By registering, you automatically accept the Terms & Policies of Neighborhood app.</Text> 
         
         </KeyboardAvoidingView>
       </ScrollView>
   </SafeAreaView>
-   
-  );
+  )
 }
 
 
@@ -105,3 +97,39 @@ const styles = StyleSheet.create({
  
   
 });
+
+//Potential solutions for form submissions and validations
+
+/* export class UserValidation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      requiredFieldErrorMessage: "",
+      passwordErrorMessage: "",
+      confirmPasswordErrorMessage: "",
+      loading: false,
+
+    }
+  }
+
+  // Authenticate User: https://infinitbility.com/how-to-check-password-and-confirm-password-in-react-native
+
+  formValidation = async () => {
+    this.setState({loading: true})
+    let errorFlag = false
+
+    // Input Validation
+    if (this.state.firstName.length == 0) {
+      errorFlag: true
+      this.setState({})
+    }
+
+  }
+} */
+
+// Form Validation Tutorial: https://www.youtube.com/watch?v=uxawinQ2tTk
