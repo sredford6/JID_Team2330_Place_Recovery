@@ -58,7 +58,7 @@ export default function RegistrationScreen({navigation}) {
           secureTextEntry ={true}
         />
 
-        <ButtonDesign name='Register' onPress={() => navigation.navigate('Home')}/>
+        <ButtonDesign name='Register' onPress={() => navigation.navigate('MainScreen')}/>
         <Text style = {styles.label}>By registering, you automatically accept the Terms & Policies of Neighborhood app.</Text> 
         
         </KeyboardAvoidingView>

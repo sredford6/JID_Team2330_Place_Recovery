@@ -2,8 +2,13 @@ import { StyleSheet, Button } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import LocationScreen from './LocationScreen';
+
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+  
   return (
     <View style={styles.container}>
       <Button title="Start Questionnaire" />
