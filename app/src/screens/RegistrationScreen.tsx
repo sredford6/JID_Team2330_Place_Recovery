@@ -4,14 +4,16 @@ import { StyleSheet, Button, TextInput, TouchableOpacity, ScrollView, KeyboardAv
 import { Text, View } from '../components/Themed';
 import ButtonDesign from '../components/Button';
 import { useLinkProps } from '@react-navigation/native';
+import HomeScreen from '../screens/HomeScreen';
 
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({navigation}) {
     const [email, setEmail] = React.useState("");
     const [firstName, setFirstName] = React.useState("");
     const [lastName, setLastName] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
+   
   return (
   
     <KeyboardAvoidingView style={styles.container} behavior = "padding">
@@ -46,7 +48,7 @@ export default function RegistrationScreen() {
        onChangeText={inp => setConfirmPassword(inp)}
        secureTextEntry ={true}
     />
-    <ButtonDesign name='Register' onPress={() => Alert.alert('registered')}/>
+    <ButtonDesign name='Register' onPress={() => navigation.navigate('Home')}/>
     <Text style = {styles.label}>By registering, you automatically accept the Terms & Policies of Neighborhood app.</Text> 
     
   
@@ -54,6 +56,7 @@ export default function RegistrationScreen() {
    
   );
 }
+
 
 const styles = StyleSheet.create({
 
@@ -88,4 +91,3 @@ const styles = StyleSheet.create({
  
   
 });
-
