@@ -11,11 +11,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function OpeningScreen({navigation}) {
     return (
-      <SafeAreaView style={{flex:1, justifyContent:'center'}}>
-          <Text style = {styles.title} >This is the screen that be open by default when the app is launched. </Text>
-          <Text>Add buttons to login and register.</Text>
-          <ButtonDesign name='Register' onPress={() => navigation.navigate('Registration')}/>
-      </SafeAreaView>
+        <SafeAreaView style={{flex:1, justifyContent:'center'}}>
+            <KeyboardAvoidingView style={styles.container} behavior = "padding">
+                <Text style = {styles.title} >This is the screen that will open by default when the app is launched. </Text>
+                <Text>Add buttons to login and register.</Text>
+                <ButtonDesign name='Register' onPress={() => navigation.navigate('Registration')}/>
+            </KeyboardAvoidingView>
+        </SafeAreaView>
     );
   }
 

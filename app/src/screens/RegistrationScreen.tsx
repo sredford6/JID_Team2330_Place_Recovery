@@ -8,9 +8,12 @@ import { useLinkProps } from '@react-navigation/native';
 import HomeScreen from '../screens/HomeScreen';
 import OpeningScreen from './OpeningScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 
 export default function RegistrationScreen({navigation}) {
+
+
     const [email, setEmail] = React.useState("");
     const [firstName, setFirstName] = React.useState("");
     const [lastName, setLastName] = React.useState("");
@@ -18,6 +21,7 @@ export default function RegistrationScreen({navigation}) {
     const [confirmPassword, setConfirmPassword] = React.useState("");
    
   return (
+    
   <SafeAreaView style={{flex:1, justifyContent:'center'}}>
       <ScrollView>
         <KeyboardAvoidingView style={styles.container} behavior = "padding">
