@@ -1,40 +1,50 @@
-import * as React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { TextInput, TouchableOpacity } from "react-native-gesture-handler"; //Xingpeng: I think we should add dependency of this import into json file.
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableHighlight,
+  TextInput,
+  KeyboardAvoidingView,
+} from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-export default class LoginScreen extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={{ fontSize: 25, marginTop: 20 }}>Welcome Back! </Text>
-        <Text style={{ fontSize: 16, color: "gray", marginTop: 20 }}>
-          Sign in to continue
-        </Text>
-        <TextInput
-          style={{
-            marginTop: 40,
-            borderBottomColor: "#ddd",
-            borderBottomWidth: 2,
-            paddingBottom: 20,
-          }}
-          placeholder="                   Username                      "
-          // onChangeText={(text) => {
-          //   this.setState({ errMsg: "" }), this.setState({ username: text });
-          // }} // this one pop the error.
-        />
-        <TextInput
-          style={{
-            marginTop: 40,
-            borderBottomColor: "#ddd",
-            borderBottomWidth: 2,
-            paddingBottom: 20,
-          }}
-          placeholder="                   Password                      "
-          secureTextEntry={true}
-          // onChangeText={(text) => {
-          //   this.setState({ errMsg: "" }), this.setState({ password: text });
-          // }} 
-        />
+// import { TextInput, TouchableOpacity } from "react-native-gesture-handler"; //Xingpeng: I think we should add dependency of this import into json file; npm i -s react-native-gesture-handler
+import { NavigationContainer } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+
+export default function LoginScreen() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = () => {};
+  const handleForget = () => {};
+  const handleSignUp = () => {};
+
+  return (
+    <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+      <View style={[styles.frameContainer, styles.shadowProp]}>
+        <Text style={styles.TitleText}>Welcome</Text>
+
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Email"
+            placeholderTextColor="gray"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Password"
+            placeholderTextColor="gray"
+            secureTextEntry
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+          />
+        </View>
         <View
           style={{
             alignItems: "center",
@@ -43,37 +53,92 @@ export default class LoginScreen extends React.Component {
           }}
         >
           <TouchableOpacity
-            // onPress={() => this.onLogin()}
-            style={{
-              width: 200,
-              backgroundColor: "#0d47a1",
-              padding: 10,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 40,
-              marginTop: 30,
-            }}
+            style={styles.button}
+            onPress={handleLogin}
+            activeOpacity={0.85}
           >
-            <Text style={{ textAlign: "center", color: "#FFF", fontSize: 16 }}>
-              Login Now
-            </Text>
+            <Text style={styles.buttonTextWhite}>Login</Text>
           </TouchableOpacity>
         </View>
-        <Text style={{ marginTop: 20 }}>Forgot Password ?</Text>
+        <Text style={{ marginTop: 20 }} onPress={handleForget}>
+          Forgot Password ?
+        </Text>
 
         <View style={{ flexDirection: "row", marginTop: 40 }}>
-          <Text style={{ color: "gray" }}>Don't have an account?</Text>
-          <Text style={{ fontWeight: "bold" }}> Sign Up</Text>
+          <Text style={{ color: "gray" }}>Don't have an account? </Text>
+          <Text style={{ fontWeight: "bold" }} onPress={handleSignUp}>
+            Sign Up
+          </Text>
         </View>
       </View>
-    );
-  }
+    </KeyboardAwareScrollView>
+  );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  frameContainer: {
+    width: "80%",
+    height: "50%",
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 16,
+  },
+  shadowProp: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+  },
+  TitleText: {
+    textAlign: "center",
+    color: "#072B4F",
+    fontSize: 25,
+    fontWeight: "bold",
+    paddingBottom: 30,
+    paddingTop: 30,
+  },
+  inputContainer: {
+    width: "80%",
+    borderBottomColor: "grey",
+    borderBottomWidth: 1.5,
+  },
+  textInput: {
+    width: "70%",
+    color: "#072B4F",
+    fontSize: 17,
+    marginTop: 5,
+    paddingVertical: 10,
+    borderRadius: 10,
+    borderBottomColor: "white",
+  },
+  button: {
+    width: 250,
+    height: 45,
+    backgroundColor: "#072B4F",
+    padding: 10,
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: 8,
+    marginTop: 5,
+  },
+  buttonTextWhite: {
+    textAlign: "center",
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  buttonTextDark: {
+    textAlign: "center",
+    color: "#072B4F",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });

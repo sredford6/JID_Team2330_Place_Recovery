@@ -7,7 +7,7 @@ Mental Health App Project
  ### Environment Setup
 
 - **react-navigation install**: change directory to ```./app/src```, and run ```npm install @react-navigation/native```, ```expo install react-native-screens react-native-safe-area-context```.
-- 
+- **react-native-keyboard-aware-scroll-view**: run ```npm i react-native-keyboard-aware-scroll-view --save```
 
 
 ### Features
