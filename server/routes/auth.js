@@ -1,13 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const nodemailerLoader = require("../loaders/nodemailer");
+
+const User = require("../models/user");
 const middleware = require("../middleware");
 const authObj = require("../auth.json");
 
 const rounds = 10;
 const tokenSecret = authObj.tokenSecret;
+
+nodemailerLoader();
 
 router.get("/login", (req, res) => {
   User.findOne({ email: req.body.email })
@@ -50,6 +54,8 @@ router.post("/signup", async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+router.get("/forgot-password", (req, res) => {});
 
 router.get("/jwt-test", middleware.verify, (req, res) => {
   res.status(200).json(req.user);
