@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import mongoose from "mongoose";
 const app = express();
 import authRoute from "routes/auth";
@@ -14,6 +15,11 @@ const dbOptions = {
   pass: authObj.mongodb.pass,
 };
 
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use(express.json());
 app.use("/api/auth", authRoute);
 
