@@ -5,6 +5,7 @@ const router = express.Router();
 
 import User, { IUser } from "models/user.model";
 import { verify } from "middleware";
+import { validateEmail } from "helpers/validators";
 import authObj from "config/auth.json";
 
 const rounds = 10;
@@ -12,7 +13,7 @@ const tokenSecret: string = authObj.tokenSecret;
 
 router.post("/login", async (req: Request, res: Response) => {
   try {
-    const { email } = req.body;
+    const { email, password } = req.body;
     const user: IUser = await User.findOne({ email });
     if (!user) {
       throw {
@@ -21,10 +22,7 @@ router.post("/login", async (req: Request, res: Response) => {
         error: new Error(`user with email ${email} not found.`),
       };
     }
-    const isMatch: boolean = await bcrypt.compare(
-      req.body.password,
-      user.password
-    );
+    const isMatch: boolean = await bcrypt.compare(password, user.password);
     if (isMatch) {
       res.status(200).json({ token: generateToken(user) });
     } else {
@@ -42,11 +40,18 @@ router.post("/login", async (req: Request, res: Response) => {
 router.post("/signup", async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
+    if (!validateEmail(email)) {
+      throw {
+        code: 400,
+        message: `email string "${email}" is not a valid email`,
+        error: `email string "${email}" is not a valid email`,
+      };
+    }
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw {
-        message: `user with email ${email} already exists!`,
-        error: new Error(`user with email ${email} already exists!`),
+        message: `user with email "${email}" already exists!`,
+        error: new Error(`user with email "${email}" already exists!`),
       };
     }
     if (password.length < 6) {
