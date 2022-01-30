@@ -9,6 +9,9 @@ import HomeScreen from '../screens/HomeScreen';
 import OpeningScreen from './OpeningScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import axios from 'axios';
+
+
 
 
 export default function RegistrationScreen({navigation}) {
@@ -19,7 +22,23 @@ export default function RegistrationScreen({navigation}) {
     const [lastName, setLastName] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
-   
+    
+    const handleRegistration = (signUpInput) => {
+      
+      axios.post('/signup', signUpInput).then((response) => {
+        const res = response.data;
+        const {message, status, data} = res;
+        if (status == 'SUCCESS') {
+          navigation.navigate('MainScreen');
+        } else {
+          console.log(message);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+    
   return (
     
   <SafeAreaView style={{flex:1, justifyContent:'center'}}>
@@ -31,23 +50,27 @@ export default function RegistrationScreen({navigation}) {
         <TextInput style = {styles.input}
           placeholder = 'First Name'
           maxLength = {15}
-          onChangeText={firstName => setFirstName(firstName)}
+          onChangeText={inp => setFirstName(inp)}
+          value = {firstName}
         />
         <TextInput style = {styles.input}
           placeholder = 'Last Name'
           maxLength = {20}
           onChangeText={inp => setLastName(inp)}
+          value = {lastName}
         />
         <TextInput style = {styles.input}
           placeholder = 'Email'
           maxLength = {30}
           onChangeText={inp => setEmail(inp)}
+          value = {email}
         />
 
         <TextInput style = {styles.input}
           placeholder = 'Password'
           maxLength = {20}
           onChangeText={inp => setPassword(inp)}
+          value = {password}
           secureTextEntry ={true}
         />
         
@@ -55,10 +78,11 @@ export default function RegistrationScreen({navigation}) {
           placeholder = 'Confirm Password'
           maxLength = {20}
           onChangeText={inp => setConfirmPassword(inp)}
+          value = {confirmPassword}
           secureTextEntry ={true}
         />
 
-        <ButtonDesign name='Register' onPress={() => navigation.navigate('MainScreen')}/>
+        <ButtonDesign name='Register' onPress={() => handleRegistration({firstName: firstName, lastName: lastName, email: email, password: password})}/>
         <Text style = {styles.label}>By registering, you automatically accept the Terms & Policies of Neighborhood app.</Text> 
         
         </KeyboardAvoidingView>
