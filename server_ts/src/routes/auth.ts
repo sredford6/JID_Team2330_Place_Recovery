@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 const router = express.Router();
 
 import User, { IUser } from "models/user.model";
-const middleware = require("middleware");
+import { verify } from "middleware";
 import authObj from "config/auth.json";
 
 const rounds = 10;
@@ -13,7 +13,7 @@ const tokenSecret: string = authObj.tokenSecret;
 router.get("/login", async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
-    const user: IUser = await User.findOne({ email: email });
+    const user: IUser = await User.findOne({ email });
     if (!user) {
       throw {
         code: 404,
@@ -42,7 +42,7 @@ router.get("/login", async (req: Request, res: Response) => {
 router.post("/signup", async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
-    const existingUser = await User.findOne({ email: email });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw {
         message: `user with email ${email} already exists!`,
@@ -51,7 +51,7 @@ router.post("/signup", async (req: Request, res: Response) => {
     }
     const hash = await bcrypt.hash(req.body.password, rounds);
     const newUser = new User({
-      email: email,
+      email,
       password: hash,
       phoneNumber: req.body.phoneNumber,
       firstName: req.body.firstName,
@@ -64,7 +64,7 @@ router.post("/signup", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/jwt-test", middleware.verify, (req, res: Response) => {
+router.get("/jwt-test", verify, (req, res: Response) => {
   res.status(200).json(req.currentUser);
 });
 

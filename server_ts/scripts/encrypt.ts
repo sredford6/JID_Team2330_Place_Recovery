@@ -13,6 +13,6 @@ const output = createWriteStream(encryptedfile);
 
 input.pipe(cipher).pipe(output);
 
-output.on("finish", function () {
+output.on("finish", () => {
   console.log("Encrypted file written to disk!");
 });

@@ -11,7 +11,7 @@ export async function verify(req: Request, res: Response, next: NextFunction) {
   else {
     try {
       const decoded = jwt.verify(token, tokenSecret);
-      req.currentUser = (<JwtPayload>decoded).data;
+      req.currentUser = (decoded as JwtPayload).data;
       next();
     } catch (error) {
       res.status(500).json({ error: "failed to authenticate token" });
