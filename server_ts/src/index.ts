@@ -1,9 +1,10 @@
-const express = require("express");
-const mongoose = require("mongoose");
+import express from "express";
+import mongoose from "mongoose";
 const app = express();
-const authRoute = require("./routes/auth");
-const authObj = require("./auth.json");
+import authRoute from "routes/auth";
+import authObj from "config/auth.json";
 
+const port = 2400;
 const dbURI = authObj.mongodb.uri;
 const dbOptions = {
   useNewUrlParser: true,
@@ -27,6 +28,10 @@ db.once("open", () => {
   console.log(`DB name: ${db.name}`);
 });
 
-app.listen(2400, () => {
-  console.log("Server started: 2400");
-});
+async function startServer() {
+  app.listen(port, () => {
+    console.log(`Server started: ${port}`);
+  });
+}
+
+startServer();
