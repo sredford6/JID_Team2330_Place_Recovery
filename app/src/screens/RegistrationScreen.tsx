@@ -21,11 +21,13 @@ export default function RegistrationScreen({navigation}) {
     const [firstName, setFirstName] = React.useState("");
     const [lastName, setLastName] = React.useState("");
     const [password, setPassword] = React.useState("");
+    const [phoneNumber, setPhoneNumber] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
     
     const handleRegistration = (signUpInput) => {
       
-      axios.post('/signup', signUpInput).then((response) => {
+      axios.post('http://localhost:2400/api/auth/signup', signUpInput).then((response) => {
+        console.log(response.data);
         const res = response.data;
         const {message, status, data} = res;
         if (status == 'SUCCESS') {
@@ -36,6 +38,7 @@ export default function RegistrationScreen({navigation}) {
       })
       .catch((error) => {
         console.log(error);
+        console.log(error.response.data);
       });
     }
     
@@ -67,6 +70,12 @@ export default function RegistrationScreen({navigation}) {
         />
 
         <TextInput style = {styles.input}
+          placeholder = 'Phone Number'
+          maxLength = {30}
+          onChangeText={inp => setPhoneNumber(inp)}
+          value = {phoneNumber}
+        />
+        <TextInput style = {styles.input}
           placeholder = 'Password'
           maxLength = {20}
           onChangeText={inp => setPassword(inp)}
@@ -82,7 +91,7 @@ export default function RegistrationScreen({navigation}) {
           secureTextEntry ={true}
         />
 
-        <ButtonDesign name='Register' onPress={() => handleRegistration({firstName: firstName, lastName: lastName, email: email, password: password})}/>
+        <ButtonDesign name='Register' onPress={() => handleRegistration({firstName: firstName, lastName: lastName, email: email, password: password, phoneNumber: phoneNumber})}/>
         <Text style = {styles.label}>By registering, you automatically accept the Terms & Policies of Neighborhood app.</Text> 
         
         </KeyboardAvoidingView>
