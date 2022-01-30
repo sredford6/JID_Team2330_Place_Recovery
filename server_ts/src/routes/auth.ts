@@ -41,12 +41,18 @@ router.get("/login", async (req: Request, res: Response) => {
 
 router.post("/signup", async (req: Request, res: Response) => {
   try {
-    const { email } = req.body;
+    const { email, password } = req.body;
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw {
         message: `user with email ${email} already exists!`,
         error: new Error(`user with email ${email} already exists!`),
+      };
+    }
+    if (password.length < 6) {
+      throw {
+        message: `password does not match constraints`,
+        error: new Error(`password does not match constraints`),
       };
     }
     const hash = await bcrypt.hash(req.body.password, rounds);
