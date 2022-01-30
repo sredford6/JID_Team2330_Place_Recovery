@@ -17,16 +17,16 @@ import HomeScreen from '../screens/HomeScreen';
 import LocationScreen from '../screens/LocationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import OpeningScreen from '../screens/OpeningScreen';
+import RegistrationScreen from '../screens/RegistrationScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
-    <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    
       <RootNavigator />
-    </NavigationContainer>
+   
   );
 }
 

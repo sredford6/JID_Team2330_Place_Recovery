@@ -35,6 +35,11 @@ const linking: LinkingOptions<RootStackParamList> = {
               ProfileScreen: 'profile',
             },
           },
+/*           RegistrationScreen : {
+            screens: {
+              RegistrationScreen: 'registration',
+            },
+          } */
         },
       },
       NotFound: '*',
