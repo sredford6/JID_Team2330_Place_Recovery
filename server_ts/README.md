@@ -15,6 +15,6 @@
 
 ### Endpoints
 
-- Login [GET]: http://localhost:2400/api/auth/login
+- Login [POST]: http://localhost:2400/api/auth/login
 - Signup [POST]: http://localhost:2400/api/auth/signup
 - Token Test [GET]: http://localhost:2400/api/auth/jwt-test

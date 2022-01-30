@@ -10,7 +10,7 @@ import authObj from "config/auth.json";
 const rounds = 10;
 const tokenSecret: string = authObj.tokenSecret;
 
-router.get("/login", async (req: Request, res: Response) => {
+router.post("/login", async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
     const user: IUser = await User.findOne({ email });
