@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Alert,
   View,
   Text,
   StyleSheet,
@@ -10,23 +11,44 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-// import { TextInput, TouchableOpacity } from "react-native-gesture-handler"; //Xingpeng: I think we should add dependency of this import into json file; npm i -s react-native-gesture-handler
 import { NavigationContainer } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import axios from "axios";
 
-export default function LoginScreen({navigation}) {
+export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {};
+  const handleLogin = () => {
+    axios
+      .post("http://localhost:2400/api/auth/login", {
+        email: email,
+        password: password,
+      })
+      .then((response) => {
+        const { message } = response.data;
+        const { status, data } = response;
+        if (status == 200) {
+          console.log("logged in");
+          navigation.navigate("MainScreen");
+        } else {
+          // todo
+          console.log(message);
+        }
+        // console.log(response);
+      })
+      .catch((error) => {
+        Alert.alert("Email or password is incorrect");
+      });
+  };
   const handleForget = () => {};
   const handleSignUp = () => {
-    navigation.navigate('Registration');
+    navigation.navigate("Registration");
   };
 
   return (
     <ImageBackground
-      source={require("../assets/images/background.jpg")}
+      source={require("../assets/images/bg.jpg")}
       resizeMode="cover"
       style={styles.image}
     >
