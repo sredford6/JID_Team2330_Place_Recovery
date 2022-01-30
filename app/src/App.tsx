@@ -12,6 +12,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './screens/HomeScreen';
 import LocationScreen from './screens/LocationScreen';
 import OpeningScreen from './screens/OpeningScreen';
+import Login from './screens/LoginScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 
@@ -27,10 +28,11 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <NavigationContainer>
-        <Stack.Navigator initialRouteName='Opening' screenOptions={{headerShown:false}}>
+        <Stack.Navigator initialRouteName='LoginScreen' screenOptions={{headerShown:false}}>
           <Stack.Screen name="Registration" component={RegistrationScreen} />
           <Stack.Screen name="MainScreen" component={Navigation} />
           <Stack.Screen name="Opening" component={OpeningScreen}/>
+          <Stack.Screen name="LoginScreen" component={LoginScreen}/>
           
         </Stack.Navigator>
         

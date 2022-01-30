@@ -14,13 +14,15 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { NavigationContainer } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function LoginScreen() {
+export default function LoginScreen({navigation}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {};
   const handleForget = () => {};
-  const handleSignUp = () => {};
+  const handleSignUp = () => {
+    navigation.navigate('Registration');
+  };
 
   return (
     <ImageBackground
