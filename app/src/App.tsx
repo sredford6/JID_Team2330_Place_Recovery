@@ -14,6 +14,7 @@ import LocationScreen from './screens/LocationScreen';
 import OpeningScreen from './screens/OpeningScreen';
 import Login from './screens/LoginScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Verification from './screens/Verification';
 
 
 
@@ -33,6 +34,7 @@ export default function App() {
           <Stack.Screen name="MainScreen" component={Navigation} />
           <Stack.Screen name="Opening" component={OpeningScreen}/>
           <Stack.Screen name="LoginScreen" component={LoginScreen}/>
+          <Stack.Screen name="VerificationScreen" component={Verification}/>
           
         </Stack.Navigator>
         

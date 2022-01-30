@@ -12,8 +12,6 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import axios from 'axios';
 
 
-
-
 export default function RegistrationScreen({navigation}) {
 
 
