@@ -5,7 +5,7 @@ const router = express.Router();
 
 import User, { IUser } from "models/user.model";
 import { verify } from "middleware";
-import { validateEmail } from "helpers/validators";
+import { validateEmail, validatePassword } from "helpers/validators";
 import authObj from "config/auth.json";
 
 const rounds = 10;
@@ -47,17 +47,18 @@ router.post("/signup", async (req: Request, res: Response) => {
         error: `email string "${email}" is not a valid email`,
       };
     }
+    if (!validatePassword(password)) {
+      throw {
+        code: 400,
+        message: `password string "${email}" is not valid`,
+        error: `password string "${email}" is not valid`,
+      };
+    }
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw {
         message: `user with email "${email}" already exists!`,
         error: new Error(`user with email "${email}" already exists!`),
-      };
-    }
-    if (password.length < 6) {
-      throw {
-        message: `password does not match constraints`,
-        error: new Error(`password does not match constraints`),
       };
     }
     const hash = await bcrypt.hash(req.body.password, rounds);
