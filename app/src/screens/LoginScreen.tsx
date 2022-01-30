@@ -14,6 +14,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { NavigationContainer } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import axios from "axios";
+import { ScrollView } from "react-native";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -47,62 +48,73 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <ImageBackground
-      source={require("../assets/images/bg.jpg")}
-      resizeMode="cover"
-      style={styles.image}
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
     >
-      <KeyboardAwareScrollView contentContainerStyle={styles.container}>
-        <View style={[styles.frameContainer, styles.shadowProp]}>
-          <Text style={styles.TitleText}>Welcome</Text>
+      <ImageBackground
+        source={require("../assets/images/bg3.jpg")}
+        resizeMode="cover"
+        blurRadius={8}
+        style={styles.image}
+      >
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
+          <View style={[styles.frameContainer, styles.shadowProp]}>
+            <Text style={styles.TitleText}>Welcome</Text>
 
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Email"
-              placeholderTextColor="gray"
-              value={email}
-              onChangeText={(text) => setEmail(text)}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Password"
-              placeholderTextColor="gray"
-              secureTextEntry
-              value={password}
-              onChangeText={(text) => setPassword(text)}
-            />
-          </View>
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              marginTop: 40,
-            }}
-          >
-            <TouchableOpacity
-              style={styles.button}
-              onPress={handleLogin}
-              activeOpacity={0.85}
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.textInput}
+                placeholder="Email"
+                placeholderTextColor="#072B4F"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.textInput}
+                placeholder="Password"
+                placeholderTextColor="#072B4F"
+                secureTextEntry
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+              />
+            </View>
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 40,
+              }}
             >
-              <Text style={styles.buttonTextWhite}>Login</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={{ marginTop: 20 }} onPress={handleForget}>
-            Forgot Password ?
-          </Text>
-
-          <View style={{ flexDirection: "row", marginTop: 40 }}>
-            <Text style={{ color: "gray" }}>Don't have an account? </Text>
-            <Text style={{ fontWeight: "bold" }} onPress={handleSignUp}>
-              Sign Up
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleLogin}
+                activeOpacity={0.85}
+              >
+                <Text style={styles.buttonTextWhite}>Login</Text>
+              </TouchableOpacity>
+            </View>
+            <Text
+              style={{ color: "#072B4F", marginTop: 20 }}
+              onPress={handleForget}
+            >
+              Forgot Password ?
             </Text>
+
+            <View style={{ flexDirection: "row", marginTop: 40 }}>
+              <Text style={{ color: "#072B4F" }}>Don't have an account? </Text>
+              <Text
+                style={{ color: "#072B4F", fontWeight: "bold" }}
+                onPress={handleSignUp}
+              >
+                Sign Up
+              </Text>
+            </View>
           </View>
-        </View>
-      </KeyboardAwareScrollView>
-    </ImageBackground>
+        </KeyboardAvoidingView>
+      </ImageBackground>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
@@ -118,7 +130,7 @@ const styles = StyleSheet.create({
   frameContainer: {
     width: "80%",
     height: "50%",
-    backgroundColor: "#fff",
+    backgroundColor: "#FFFFFF99",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 15,
@@ -141,7 +153,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: "80%",
-    borderBottomColor: "grey",
+    borderBottomColor: "#072B4F",
     borderBottomWidth: 1.5,
   },
   textInput: {

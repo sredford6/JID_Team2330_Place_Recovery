@@ -12,8 +12,6 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import axios from 'axios';
 
 
-
-
 export default function RegistrationScreen({navigation}) {
 
 
@@ -23,21 +21,31 @@ export default function RegistrationScreen({navigation}) {
     const [password, setPassword] = React.useState("");
     const [phoneNumber, setPhoneNumber] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
+
+    const passwordMatchCheck = ()=> {
+      if (password == confirmPassword) {
+        handleRegistration({firstName, lastName, email, password, phoneNumber});
+      } else {
+        alert("passwords don't match");
+      }
+    }
     
     const handleRegistration = (signUpInput) => {
       
       axios.post('http://localhost:2400/api/auth/signup', signUpInput).then((response) => {
         console.log(response.data);
-        const res = response.data;
-        const {message, status, data} = res;
-        if (status == 'SUCCESS') {
+        const {message} = response.data;
+        const { status, data} = response;
+        console.log(status);
+        if (status == 200) {
           navigation.navigate('MainScreen');
-        } else {
-          console.log(message);
-        }
+        } 
       })
       .catch((error) => {
+        const {message} = error.response.data;
+        alert(message);
         console.log(error);
+
         console.log(error.response.data);
       });
     }
@@ -91,7 +99,7 @@ export default function RegistrationScreen({navigation}) {
           secureTextEntry ={true}
         />
 
-        <ButtonDesign name='Register' onPress={() => handleRegistration({firstName: firstName, lastName: lastName, email: email, password: password, phoneNumber: phoneNumber})}/>
+        <ButtonDesign name='Register' onPress={() => passwordMatchCheck()}/>
         <Text style = {styles.label}>By registering, you automatically accept the Terms & Policies of Neighborhood app.</Text> 
         
         </KeyboardAvoidingView>
