@@ -10,18 +10,38 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-// import { TextInput, TouchableOpacity } from "react-native-gesture-handler"; //Xingpeng: I think we should add dependency of this import into json file; npm i -s react-native-gesture-handler
 import { NavigationContainer } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import axios from "axios";
 
-export default function LoginScreen({navigation}) {
+export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {};
+  const handleLogin = () => {
+    axios
+      .get("http://localhost:2400/api/auth/login", {
+        params: {
+          email: email,
+          password: password,
+        },
+      })
+      .then((response) => {
+        const res = response.data;
+        const { message, status, data } = res;
+        if (status == "SUCCESS") {
+          navigation.navigate("MainScreen");
+        } else {
+          console.log(message);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   const handleForget = () => {};
   const handleSignUp = () => {
-    navigation.navigate('Registration');
+    navigation.navigate("Registration");
   };
 
   return (
