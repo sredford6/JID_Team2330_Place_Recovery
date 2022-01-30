@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Alert,
   View,
   Text,
   StyleSheet,
@@ -20,23 +21,24 @@ export default function LoginScreen({ navigation }) {
 
   const handleLogin = () => {
     axios
-      .get("http://localhost:2400/api/auth/login", {
-        params: {
-          email: email,
-          password: password,
-        },
+      .post("http://localhost:2400/api/auth/login", {
+        email: email,
+        password: password,
       })
       .then((response) => {
-        const res = response.data;
-        const { message, status, data } = res;
-        if (status == "SUCCESS") {
+        const { message } = response.data;
+        const { status, data } = response;
+        if (status == 200) {
+          console.log("logged in");
           navigation.navigate("MainScreen");
         } else {
+          // todo
           console.log(message);
         }
+        // console.log(response);
       })
       .catch((error) => {
-        console.log(error);
+        Alert.alert("Email or password is incorrect");
       });
   };
   const handleForget = () => {};
