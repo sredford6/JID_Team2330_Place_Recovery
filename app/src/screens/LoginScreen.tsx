@@ -90,7 +90,7 @@ export default function LoginScreen({ navigation }) {
               <Text style={styles.buttonTextWhite}>Login</Text>
             </TouchableOpacity>
           </View>
-          <Text style={{ marginTop: 20 }} onPress={() => navigation.navigate("VerificationScreen")}>
+          <Text style={{ marginTop: 20 }} onPress={() => navigation.navigate("EmailVerificationScreen")}>
             Forgot Password ?
           </Text>
 
