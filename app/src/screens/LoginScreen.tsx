@@ -6,6 +6,7 @@ import {
   TouchableHighlight,
   TextInput,
   KeyboardAvoidingView,
+  ImageBackground,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -22,62 +23,71 @@ export default function LoginScreen() {
   const handleSignUp = () => {};
 
   return (
-    <KeyboardAwareScrollView contentContainerStyle={styles.container}>
-      <View style={[styles.frameContainer, styles.shadowProp]}>
-        <Text style={styles.TitleText}>Welcome</Text>
+    <ImageBackground
+      source={require("../assets/images/background.jpg")}
+      resizeMode="cover"
+      style={styles.image}
+    >
+      <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+        <View style={[styles.frameContainer, styles.shadowProp]}>
+          <Text style={styles.TitleText}>Welcome</Text>
 
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Email"
-            placeholderTextColor="gray"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Password"
-            placeholderTextColor="gray"
-            secureTextEntry
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-          />
-        </View>
-        <View
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: 40,
-          }}
-        >
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleLogin}
-            activeOpacity={0.85}
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.textInput}
+              placeholder="Email"
+              placeholderTextColor="gray"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.textInput}
+              placeholder="Password"
+              placeholderTextColor="gray"
+              secureTextEntry
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+            />
+          </View>
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: 40,
+            }}
           >
-            <Text style={styles.buttonTextWhite}>Login</Text>
-          </TouchableOpacity>
-        </View>
-        <Text style={{ marginTop: 20 }} onPress={handleForget}>
-          Forgot Password ?
-        </Text>
-
-        <View style={{ flexDirection: "row", marginTop: 40 }}>
-          <Text style={{ color: "gray" }}>Don't have an account? </Text>
-          <Text style={{ fontWeight: "bold" }} onPress={handleSignUp}>
-            Sign Up
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleLogin}
+              activeOpacity={0.85}
+            >
+              <Text style={styles.buttonTextWhite}>Login</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={{ marginTop: 20 }} onPress={handleForget}>
+            Forgot Password ?
           </Text>
+
+          <View style={{ flexDirection: "row", marginTop: 40 }}>
+            <Text style={{ color: "gray" }}>Don't have an account? </Text>
+            <Text style={{ fontWeight: "bold" }} onPress={handleSignUp}>
+              Sign Up
+            </Text>
+          </View>
         </View>
-      </View>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </ImageBackground>
   );
 }
 const styles = StyleSheet.create({
+  image: {
+    flex: 1,
+    justifyContent: "center",
+  },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
   },
