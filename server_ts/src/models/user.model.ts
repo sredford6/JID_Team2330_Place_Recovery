@@ -6,6 +6,7 @@ export interface IUser {
   phoneNumber: string;
   firstName: string;
   lastName: string;
+  resetCode?: string;
 }
 
 const UserSchema = new Schema<IUser>({
@@ -14,6 +15,7 @@ const UserSchema = new Schema<IUser>({
   phoneNumber: { type: String, required: true },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
+  resetCode: { type: String, required: false },
 });
 
 export default model<IUser>("User", UserSchema);
