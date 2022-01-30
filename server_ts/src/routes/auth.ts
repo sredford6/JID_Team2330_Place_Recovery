@@ -5,6 +5,7 @@ const router = express.Router();
 
 import User, { IUser } from "models/user.model";
 import { verify } from "middleware";
+import { sendEmail } from "helpers/nodemailer";
 import { validateEmail, validatePassword } from "helpers/validators";
 import authObj from "config/auth.json";
 
@@ -50,8 +51,8 @@ router.post("/signup", async (req: Request, res: Response) => {
     if (!validatePassword(password)) {
       throw {
         code: 400,
-        message: `password string "${email}" is not valid`,
-        error: `password string "${email}" is not valid`,
+        message: `password string is not valid`,
+        error: `password string is not valid`,
       };
     }
     const existingUser = await User.findOne({ email });
@@ -71,6 +72,35 @@ router.post("/signup", async (req: Request, res: Response) => {
     });
     const user = await newUser.save();
     res.status(200).json({ token: generateToken(user) });
+  } catch (error: any) {
+    res.status(error.code || 500).json(error);
+  }
+});
+
+router.get("/get-reset", async (req: Request, res: Response) => {
+  try {
+    const { email } = req.query;
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw {
+        code: 404,
+        message: `user with email ${email} not found.`,
+        error: new Error(`user with email ${email} not found.`),
+      };
+    }
+    user.resetCode = Array.from({ length: 6 }, () =>
+      Math.floor(Math.random() * 10)
+    ).join("");
+    await user.save();
+    sendEmail({
+      subject: "[Neighborhood] Reset Password",
+      text: `Your reset code is ${user.resetCode}`,
+      to: user.email,
+      from: authObj.google.email,
+    });
+    res.status(200).json({
+      message: `Reset code sent to "${email}"`,
+    });
   } catch (error: any) {
     res.status(error.code || 500).json(error);
   }
