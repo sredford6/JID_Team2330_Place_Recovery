@@ -73,6 +73,7 @@ export default function RegistrationScreen({navigation}) {
         <TextInput style = {styles.input}
           placeholder = 'Email'
           autoCapitalize='none'
+          autoCorrect={false}
           maxLength = {30}
           onChangeText={inp => setEmail(inp)}
           value = {email}
@@ -87,6 +88,7 @@ export default function RegistrationScreen({navigation}) {
         <TextInput style = {styles.input}
           placeholder = 'Password'
           autoCapitalize='none'
+          autoCorrect={false}
           maxLength = {20}
           onChangeText={inp => setPassword(inp)}
           value = {password}
@@ -96,6 +98,7 @@ export default function RegistrationScreen({navigation}) {
         <TextInput style = {styles.input}
           placeholder = 'Confirm Password'
           autoCapitalize='none'
+          autoCorrect={false}
           maxLength = {20}
           onChangeText={inp => setConfirmPassword(inp)}
           value = {confirmPassword}
