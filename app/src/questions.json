@@ -1,0 +1,27 @@
+{
+    "questions": [
+        {
+            "question": "How are you feeling right now?",
+            "answers": [
+                "Very bad",
+                "Bad",
+                "Moderate",
+                "Good",
+                "Very good"
+            ],
+            "correctIndex": 1
+        },
+        {
+            "question": "Have you found it difficult to relate to others today?",
+            "answers": [
+                "Not at all",
+                "A little",
+                "Somewhat",
+                "A lot",
+                "All the time"
+            ],
+            "correctIndex": 1
+        }
+        
+    ]
+}
