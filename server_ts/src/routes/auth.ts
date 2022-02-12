@@ -5,7 +5,8 @@ const router = express.Router();
 
 import User, { IUser } from "models/user.model";
 import { verify } from "middleware";
-import { validateEmail } from "helpers/validators";
+import { sendEmail } from "helpers/nodemailer";
+import { validateEmail, validatePassword } from "helpers/validators";
 import authObj from "config/auth.json";
 
 const rounds = 10;
@@ -47,6 +48,13 @@ router.post("/signup", async (req: Request, res: Response) => {
         error: `email string "${email}" is not a valid email`,
       };
     }
+    if (!validatePassword(password)) {
+      throw {
+        code: 400,
+        message: `password string does not match constraints`,
+        error: `password string does not match constraints`,
+      };
+    }
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw {
@@ -54,13 +62,7 @@ router.post("/signup", async (req: Request, res: Response) => {
         error: new Error(`user with email "${email}" already exists!`),
       };
     }
-    if (password.length < 6) {
-      throw {
-        message: `password does not match constraints`,
-        error: new Error(`password does not match constraints`),
-      };
-    }
-    const hash = await bcrypt.hash(req.body.password, rounds);
+    const hash = await bcrypt.hash(password, rounds);
     const newUser = new User({
       email,
       password: hash,
@@ -70,6 +72,85 @@ router.post("/signup", async (req: Request, res: Response) => {
     });
     const user = await newUser.save();
     res.status(200).json({ token: generateToken(user) });
+  } catch (error: any) {
+    res.status(error.code || 500).json(error);
+  }
+});
+
+router.get("/get-reset", async (req: Request, res: Response) => {
+  try {
+    const { email } = req.query;
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw {
+        code: 404,
+        message: `user with email ${email} not found.`,
+        error: new Error(`user with email ${email} not found.`),
+      };
+    }
+    user.resetCode = Array.from({ length: 6 }, () =>
+      Math.floor(Math.random() * 10)
+    ).join("");
+    user.resetTries = 0;
+    await user.save();
+    sendEmail({
+      subject: "[Neighborhood] Reset Password",
+      text: `Your reset code is ${user.resetCode}`,
+      to: user.email,
+      from: authObj.google.email,
+    });
+    res.status(200).json({
+      message: `Reset code sent to "${email}"`,
+    });
+  } catch (error: any) {
+    res.status(error.code || 500).json(error);
+  }
+});
+
+router.post("/resetpassword", async (req: Request, res: Response) => {
+  try {
+    const { email, resetCode, newPassword } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw {
+        code: 404,
+        message: `user with email ${email} not found.`,
+        error: new Error(`user with email ${email} not found.`),
+      };
+    }
+    if (user.resetTries == undefined || user.resetTries >= 3) {
+      throw {
+        code: 401,
+        message: `number of reset tries exceeded. please request a new reset code.`,
+        error: new Error(
+          `number of reset tries exceeded. please request a new reset code.`
+        ),
+      };
+    }
+    if (!user.resetCode || user.resetCode != resetCode) {
+      user.resetTries++;
+      await user.save();
+      throw {
+        code: 401,
+        message: `reset code for email ${email} is incorrect`,
+        error: new Error(`reset code for email ${email} is incorrect`),
+      };
+    }
+    if (!validatePassword(newPassword)) {
+      throw {
+        code: 400,
+        message: `password string does not match constraints`,
+        error: `password string does not match constraints`,
+      };
+    }
+
+    const hash = await bcrypt.hash(newPassword, rounds);
+    user.resetCode = undefined;
+    user.password = hash;
+    await user.save();
+    res.status(200).json({
+      message: `Password for "${email}" is reset!`,
+    });
   } catch (error: any) {
     res.status(error.code || 500).json(error);
   }
