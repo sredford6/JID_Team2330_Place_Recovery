@@ -87,6 +87,10 @@ export default function LoginScreen({ navigation }) {
                 marginTop: 40,
               }}
             >
+              <TouchableOpacity
+                style = {styles.button}
+                onPress = {handleLogin}
+                activeOpacity= {0.85}>
               <Text style={styles.buttonTextWhite}>Login</Text>
             </TouchableOpacity>
           </View>
@@ -109,6 +113,7 @@ export default function LoginScreen({ navigation }) {
                 Sign Up
               </Text>
             </View>
+          </View>
           </View>
         </KeyboardAvoidingView>
       </ImageBackground>
