@@ -25,7 +25,14 @@ export default function RegistrationScreen({navigation}) {
 
     const passwordMatchCheck = ()=> {
       if (password == confirmPassword) {
-        handleRegistration({firstName, lastName, email, password, phoneNumber});
+        
+        let emailValidation = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if ( emailValidation.test(email) ) {
+          handleRegistration({firstName, lastName, email, password, phoneNumber});
+        } else {
+          alert("email isn't valid. Please enter valid email");
+
+        }
 
       } else {
 
