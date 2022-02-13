@@ -118,7 +118,7 @@ router.post("/resetpassword", async (req: Request, res: Response) => {
         error: new Error(`user with email ${email} not found.`),
       };
     }
-    if (user.resetTries == undefined || user.resetTries >= 3) {
+    if (user.resetTries === undefined || user.resetTries >= 3) {
       throw {
         code: 401,
         message: `number of reset tries exceeded. please request a new reset code.`,
@@ -127,7 +127,7 @@ router.post("/resetpassword", async (req: Request, res: Response) => {
         ),
       };
     }
-    if (!user.resetCode || user.resetCode != resetCode) {
+    if (!user.resetCode || user.resetCode !== resetCode) {
       user.resetTries++;
       await user.save();
       throw {

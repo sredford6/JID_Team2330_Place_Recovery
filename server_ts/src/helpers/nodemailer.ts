@@ -45,7 +45,7 @@ const createTransporter = async () => {
 };
 
 export async function sendEmail(emailOptions: Mail.Options) {
-  let emailTransporter = await createTransporter();
+  const emailTransporter = await createTransporter();
   await emailTransporter.sendMail(emailOptions);
 }
 
