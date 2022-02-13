@@ -17,34 +17,57 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Verification from './screens/Verification';
 import EmailVerificationScreen from './screens/EmailVerificationScreen';
 
+const AuthStack = createNativeStackNavigator();
 
-
+const AuthenticationStackNavigator = () => {
+  return (
+    <NavigationContainer>
+      <AuthStack.Navigator>
+        <AuthStack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false, title: "Log in" }}
+        />
+        <AuthStack.Screen
+          name="Registration"
+          component={RegistrationScreen}
+          options={{ title: "Sign Up" }}
+        />
+        <AuthStack.Screen
+          name="MainScreen"
+          component={Navigation}
+          options={{ headerShown: false, title: "Home" }}
+        />
+        <AuthStack.Screen name="Opening" component={OpeningScreen} />
+        <AuthStack.Screen
+          name="VerificationScreen"
+          component={Verification}
+          options={{ headerShown: true, title: "Verification" }}
+        />
+        <AuthStack.Screen
+          name="EmailVerificationScreen"
+          component={EmailVerificationScreen}
+          options={{ headerShown: true, title: "Verification" }}
+        />
+      </AuthStack.Navigator>
+    </NavigationContainer>
+  );
+};
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
-  const Stack = createNativeStackNavigator();
+  const AuthStack = createNativeStackNavigator();
 
-  if (!isLoadingComplete) {
-    return null;
-  } else {
-    return (
-      <SafeAreaProvider>
-        <NavigationContainer>
-        <Stack.Navigator initialRouteName='LoginScreen' screenOptions={{headerShown:false}}>
-          <Stack.Screen name="Registration" component={RegistrationScreen} />
-          <Stack.Screen name="MainScreen" component={Navigation} />
-          <Stack.Screen name="Opening" component={OpeningScreen}/>
-          <Stack.Screen name="LoginScreen" component={LoginScreen}/>
-          <Stack.Screen name="VerificationScreen" component={Verification}/>
-          <Stack.Screen name="EmailVerificationScreen" component={EmailVerificationScreen}/>
-          
-        </Stack.Navigator>
-        
-    </NavigationContainer>
-   
-        <StatusBar />
-      </SafeAreaProvider>
-    );
-  }
+  // if (isLoadingComplete) {
+  //   return null;
+  // } else {
+  //   return (
+  //     <SafeAreaProvider>
+  //       <AuthenticationStackNavigator />
+  //       <StatusBar />
+  //     </SafeAreaProvider>
+  //   );
+  // }
+  return <AuthenticationStackNavigator />;
 }
 
