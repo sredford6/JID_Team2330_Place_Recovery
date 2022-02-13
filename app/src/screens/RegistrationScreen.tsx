@@ -11,8 +11,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import axios from 'axios';
 
-
-
 export default function RegistrationScreen({navigation}) {
 
 
@@ -22,24 +20,38 @@ export default function RegistrationScreen({navigation}) {
     const [password, setPassword] = React.useState("");
     const [phoneNumber, setPhoneNumber] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
+    const [showErrorMessage, setShowErrorMessage] = React.useState(false);
+    const [showEmailErrorMessage, setShowEmailErrorMessage] = React.useState(false);
+    const [error, setError] = React.useState("");
 
+   
     const passwordMatchCheck = ()=> {
       if (firstName == "" || lastName == "" || email == "" || password == "" || confirmPassword == "" || phoneNumber == "") {
-        alert("all fields have to be filled to proceed.");
+        setShowErrorMessage(true);
+        setError("*Please fill in all the fields");
       } else if (password == confirmPassword) {
         let emailValidation = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if ( emailValidation.test(email) ) {
-          handleRegistration({firstName, lastName, email, password, phoneNumber});
+        if (emailValidation.test(email) ) {
+          if (password.length >= 6) {
+            handleRegistration({firstName, lastName, email, password, phoneNumber});
+          } else {
+            setShowEmailErrorMessage(true);
+            setError("*Password has to contain at least 6 characters");
+          }
         } else {
-          alert("email isn't valid. Please enter valid email");
+          setShowEmailErrorMessage(true);
+          setError("*Please enter valid email");
+        } 
+        }else {
+          setShowEmailErrorMessage(true);
+          setError("*Passwords don't match");
 
-        }
-
-      } else {
-
-        alert("passwords don't match");
-      }
+      } 
     }
+
+    
+
+  
     
     const handleRegistration = (signUpInput) => {
       
@@ -56,11 +68,10 @@ export default function RegistrationScreen({navigation}) {
         const {message} = error.response.data;
         alert(message);
         console.log(error);
-
         console.log(error.response.data);
       });
     }
-    const message = "the field cannot be empty";
+    
     
   return (
     
@@ -69,8 +80,8 @@ export default function RegistrationScreen({navigation}) {
         <KeyboardAvoidingView style={styles.container} behavior = "padding">
         
         <Text style = {styles.title}>Register</Text>
-        
-      
+        { showErrorMessage ?  <Text style = {styles.errorMessage}>{error}</Text> : null }
+
         <TextInput style = {styles.input}
           placeholder = 'First Name'
           maxLength = {15}
@@ -89,6 +100,7 @@ export default function RegistrationScreen({navigation}) {
           onChangeText={inp => setEmail(inp)}
           value = {email}
         />
+        
 
         <TextInput style = {styles.input}
           placeholder = 'Phone Number'
@@ -106,14 +118,15 @@ export default function RegistrationScreen({navigation}) {
         />
         
         
-        <TextInput style = {[styles.input, (password == confirmPassword ? styles.input : {borderColor : "red"})]}
+        <TextInput style = {[styles.input, (password == confirmPassword ? styles.input : {borderColor : "red"}  )]}
           placeholder = 'Confirm Password'
           maxLength = {20}
-          
           onChangeText={inp => setConfirmPassword(inp)}
           value = {confirmPassword}
           secureTextEntry ={true}
         />
+       
+
 
         <ButtonDesign name='Register' onPress={() => passwordMatchCheck()}/>
         <Text style = {styles.label}>By registering, you automatically accept the Terms & Policies of Neighborhood app.</Text> 
@@ -155,11 +168,14 @@ const styles = StyleSheet.create({
     marginRight: 40,
     color: '#072B4F', 
   },
-  fields: {
-    alignSelf: 'stretch',
-    
-    color: '#072B4F', 
+  errorMessage: {
+    textAlign: 'center',
+   
+    marginLeft: 40,
+    marginRight: 40,
+    color: 'red', 
   },
+  
  
   
 });
