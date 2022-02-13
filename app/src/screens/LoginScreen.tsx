@@ -88,32 +88,26 @@ export default function LoginScreen({ navigation }) {
               }}
             >
               <TouchableOpacity
-                style = {styles.button}
-                onPress = {handleLogin}
-                activeOpacity= {0.85}>
-              <Text style={styles.buttonTextWhite}>Login</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={{ marginTop: 20 }} onPress={() => navigation.navigate("EmailVerificationScreen")}>
-            Forgot Password ?
-          </Text>
-
-          <View style={{ flexDirection: "row", marginTop: 40 }}>
-            <Text style={{ color: "gray" }}>Don't have an account? </Text>
-            <Text style={{ fontWeight: "bold" }} onPress={handleSignUp}>
-              Sign Up
+                style={styles.button}
+                onPress={handleLogin}
+                activeOpacity={0.85}
+              >
+                <Text style={styles.buttonTextWhite}>Login</Text>
+              </TouchableOpacity>
+            </View>
+            <Text
+              style={{ marginTop: 20 }}
+              onPress={() => navigation.navigate("EmailVerificationScreen")}
+            >
+              Forgot Password ?
             </Text>
 
             <View style={{ flexDirection: "row", marginTop: 40 }}>
-              <Text style={{ color: "#072B4F" }}>Don't have an account? </Text>
-              <Text
-                style={{ color: "#072B4F", fontWeight: "bold" }}
-                onPress={handleSignUp}
-              >
+              <Text style={styles.contentText}>Don't have an account? </Text>
+              <Text style={styles.contentTextTouch} onPress={handleSignUp}>
                 Sign Up
               </Text>
             </View>
-          </View>
           </View>
         </KeyboardAvoidingView>
       </ImageBackground>
@@ -132,7 +126,7 @@ const styles = StyleSheet.create({
   },
   frameContainer: {
     width: "80%",
-    height: "50%",
+    flex: 0.1,
     backgroundColor: "#FFFFFF99",
     justifyContent: "center",
     alignItems: "center",
@@ -160,7 +154,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1.5,
   },
   textInput: {
-    width: "70%",
+    width: "95%",
     color: "#072B4F",
     fontSize: 17,
     marginTop: 5,
@@ -188,6 +182,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#072B4F",
     fontSize: 18,
+    fontWeight: "bold",
+  },
+  contentText: {
+    textAlign: "center",
+    color: "#072B4F",
+    fontSize: 15,
+    fontWeight: "normal",
+  },
+  contentTextTouch: {
+    textAlign: "center",
+    color: "#072B4F",
+    fontSize: 15,
     fontWeight: "bold",
   },
 });
