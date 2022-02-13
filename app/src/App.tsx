@@ -31,7 +31,7 @@ export default function App() {
       <SafeAreaProvider>
         <NavigationContainer>
         <Stack.Navigator initialRouteName='LoginScreen' screenOptions={{headerShown:false}}>
-          <Stack.Screen name="Registration" component={RegistrationScreen} />
+          <Stack.Screen name="Registration" component={RegistrationScreen}/>
           <Stack.Screen name="MainScreen" component={Navigation} />
           <Stack.Screen name="Opening" component={OpeningScreen}/>
           <Stack.Screen name="LoginScreen" component={LoginScreen}/>
