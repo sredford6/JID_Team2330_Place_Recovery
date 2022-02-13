@@ -59,4 +59,4 @@ TODO: An introduction to the app.
     ```
 
 # License
-This project is licensed under the [MIT license](LICENSE.md).
+This project is licensed under the [MIT license](LICENSE).
