@@ -24,8 +24,9 @@ export default function RegistrationScreen({navigation}) {
     const [confirmPassword, setConfirmPassword] = React.useState("");
 
     const passwordMatchCheck = ()=> {
-      if (password == confirmPassword) {
-        
+      if (firstName == "" || lastName == "" || email == "" || password == "" || confirmPassword == "" || phoneNumber == "") {
+        alert("all fields have to be filled to proceed.");
+      } else if (password == confirmPassword) {
         let emailValidation = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if ( emailValidation.test(email) ) {
           handleRegistration({firstName, lastName, email, password, phoneNumber});
@@ -59,6 +60,7 @@ export default function RegistrationScreen({navigation}) {
         console.log(error.response.data);
       });
     }
+    const message = "the field cannot be empty";
     
   return (
     
@@ -67,7 +69,8 @@ export default function RegistrationScreen({navigation}) {
         <KeyboardAvoidingView style={styles.container} behavior = "padding">
         
         <Text style = {styles.title}>Register</Text>
-          
+        
+      
         <TextInput style = {styles.input}
           placeholder = 'First Name'
           maxLength = {15}
@@ -90,6 +93,7 @@ export default function RegistrationScreen({navigation}) {
         <TextInput style = {styles.input}
           placeholder = 'Phone Number'
           maxLength = {10}
+          keyboardType="numeric"
           onChangeText={inp => setPhoneNumber(inp)}
           value = {phoneNumber}
         />
@@ -102,9 +106,10 @@ export default function RegistrationScreen({navigation}) {
         />
         
         
-        <TextInput style = {styles.input}
+        <TextInput style = {[styles.input, (password == confirmPassword ? styles.input : {borderColor : "red"})]}
           placeholder = 'Confirm Password'
           maxLength = {20}
+          
           onChangeText={inp => setConfirmPassword(inp)}
           value = {confirmPassword}
           secureTextEntry ={true}
@@ -148,6 +153,11 @@ const styles = StyleSheet.create({
     margin: 20,
     marginLeft: 40,
     marginRight: 40,
+    color: '#072B4F', 
+  },
+  fields: {
+    alignSelf: 'stretch',
+    
     color: '#072B4F', 
   },
  
