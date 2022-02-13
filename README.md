@@ -54,8 +54,8 @@ The project is a mobile application for mental health and risk stratification ba
 # How To Run
 - TODO
 - ```sh
-    $ commands to fill
-    $ 
+    $ cd ./app/src
+    $ expo start
     ```
 
 # License
