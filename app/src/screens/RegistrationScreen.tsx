@@ -12,6 +12,7 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import axios from 'axios';
 
 
+
 export default function RegistrationScreen({navigation}) {
 
 
@@ -25,7 +26,9 @@ export default function RegistrationScreen({navigation}) {
     const passwordMatchCheck = ()=> {
       if (password == confirmPassword) {
         handleRegistration({firstName, lastName, email, password, phoneNumber});
+
       } else {
+
         alert("passwords don't match");
       }
     }
@@ -55,7 +58,7 @@ export default function RegistrationScreen({navigation}) {
   <SafeAreaView style={{flex:1, justifyContent:'center'}}>
       <ScrollView contentContainerStyle = {{flexGrow: 1, justifyContent: 'center'}}>
         <KeyboardAvoidingView style={styles.container} behavior = "padding">
-    
+        
         <Text style = {styles.title}>Register</Text>
           
         <TextInput style = {styles.input}
@@ -79,7 +82,7 @@ export default function RegistrationScreen({navigation}) {
 
         <TextInput style = {styles.input}
           placeholder = 'Phone Number'
-          maxLength = {30}
+          maxLength = {10}
           onChangeText={inp => setPhoneNumber(inp)}
           value = {phoneNumber}
         />
@@ -90,6 +93,7 @@ export default function RegistrationScreen({navigation}) {
           value = {password}
           secureTextEntry ={true}
         />
+        
         
         <TextInput style = {styles.input}
           placeholder = 'Confirm Password'
