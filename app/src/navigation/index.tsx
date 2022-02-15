@@ -17,6 +17,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LocationScreen from '../screens/LocationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import QuestionnaireScreen from '../screens/QuestionnaireScreen';
 import OpeningScreen from '../screens/OpeningScreen';
 import RegistrationScreen from '../screens/RegistrationScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
