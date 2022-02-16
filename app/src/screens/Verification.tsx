@@ -6,6 +6,7 @@ import { Text, View } from '../components/Themed';
 import ButtonDesign from '../components/Button';
 import { useLinkProps } from '@react-navigation/native';
 import HomeScreen from '../screens/HomeScreen';
+
 import OpeningScreen from './OpeningScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
