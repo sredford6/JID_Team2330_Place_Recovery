@@ -16,41 +16,42 @@ import Login from './screens/LoginScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Verification from './screens/Verification';
 import EmailVerificationScreen from './screens/EmailVerificationScreen';
+import Loading from "./screens/Loading";
+import React, { useState } from "react";
+import { AuthContext } from "./navigation/context";
 
 const AuthStack = createNativeStackNavigator();
 
 const AuthenticationStackNavigator = () => {
   return (
-    <NavigationContainer>
-      <AuthStack.Navigator>
-        <AuthStack.Screen
-          name="Login"
-          component={Login}
-          options={{ headerShown: false, title: "Log in" }}
-        />
-        <AuthStack.Screen
-          name="Registration"
-          component={RegistrationScreen}
-          options={{ title: "Sign Up" }}
-        />
-        <AuthStack.Screen
-          name="MainScreen"
-          component={Navigation}
-          options={{ headerShown: false, title: "Home" }}
-        />
-        <AuthStack.Screen name="Opening" component={OpeningScreen} />
-        <AuthStack.Screen
-          name="VerificationScreen"
-          component={Verification}
-          options={{ headerShown: true, title: "Verification" }}
-        />
-        <AuthStack.Screen
-          name="EmailVerificationScreen"
-          component={EmailVerificationScreen}
-          options={{ headerShown: true, title: "Verification" }}
-        />
-      </AuthStack.Navigator>
-    </NavigationContainer>
+    <AuthStack.Navigator>
+      <AuthStack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false, title: "Log in" }}
+      />
+      <AuthStack.Screen
+        name="Registration"
+        component={RegistrationScreen}
+        options={{ title: "Sign Up" }}
+      />
+      <AuthStack.Screen
+        name="MainScreen"
+        component={Navigation}
+        options={{ headerShown: false, title: "Home" }}
+      />
+      <AuthStack.Screen name="Opening" component={OpeningScreen} />
+      <AuthStack.Screen
+        name="VerificationScreen"
+        component={Verification}
+        options={{ headerShown: true, title: "Verification" }}
+      />
+      <AuthStack.Screen
+        name="EmailVerificationScreen"
+        component={EmailVerificationScreen}
+        options={{ headerShown: true, title: "Verification" }}
+      />
+    </AuthStack.Navigator>
   );
 };
 export default function App() {
@@ -58,16 +59,41 @@ export default function App() {
   const colorScheme = useColorScheme();
   const AuthStack = createNativeStackNavigator();
 
-  // if (isLoadingComplete) {
-  //   return null;
-  // } else {
-  //   return (
-  //     <SafeAreaProvider>
-  //       <AuthenticationStackNavigator />
-  //       <StatusBar />
-  //     </SafeAreaProvider>
-  //   );
-  // }
-  return <AuthenticationStackNavigator />;
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [userToken, setUserToken] = React.useState<string | null>("user_token");
+  const authContext = React.useMemo(() => {
+    return {
+      signIn: () => {
+        setIsLoading(false);
+        setUserToken("todo");
+      },
+      signUp: () => {
+        setIsLoading(false);
+        setUserToken("todo");
+      },
+      signOut: () => {
+        setIsLoading(false);
+        setUserToken(null);
+      },
+    };
+  }, []);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+  }, []);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  return (
+    <AuthContext.Provider value={authContext}>
+      <NavigationContainer>
+        {userToken ? <Navigation /> : <AuthenticationStackNavigator />}
+      </NavigationContainer>
+    </AuthContext.Provider>
+  );
 }
 

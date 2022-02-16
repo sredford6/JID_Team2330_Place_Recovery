@@ -4,14 +4,31 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { AuthContext } from "../navigation/context";
+import React from "react";
+import IsTestMode from "../constants/TestMode";
 
 export default function ProfileScreen({
   navigation,
 }: RootTabScreenProps<"TabOne">) {
+  let testmode = IsTestMode();
+  const { signOut } = React.useContext(AuthContext);
+
+  const handleSignOut = () => {
+    if (testmode) {
+      signOut();
+      return;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text>Profile screen</Text>
-      <TouchableOpacity style={styles.button} activeOpacity={0.85}>
+      <TouchableOpacity
+        style={styles.button}
+        activeOpacity={0.85}
+        onPress={handleSignOut}
+      >
         <Text style={styles.buttonTextWhite}>Log out</Text>
       </TouchableOpacity>
     </View>
