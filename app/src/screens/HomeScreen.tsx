@@ -20,17 +20,9 @@ import { ScrollView } from "react-native";
 export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   
   return (
-<ScrollView
-      contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
-    >
+<ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
     
-            <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center",
-                marginTop: 40,
-              }}
-            >
+            <View style={[styles.frameContainer, styles.shadowProp]}>
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => navigation.navigate("QuestionnaireScreen")}
@@ -71,5 +63,30 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  image: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  frameContainer: {
+    width: "80%",
+    flex: 0.2,
+    backgroundColor: "#FFFFFF99",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 1,
+    paddingVertical: 1,
+    borderRadius: 16,
+  },
+  shadowProp: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+  }
 });
 
