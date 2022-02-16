@@ -13,7 +13,7 @@
 6. ????
 7. profit
 
-### Endpoints
+## Endpoints
 
 - Login [POST]: http://localhost:2400/api/auth/login
     - Body

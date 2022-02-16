@@ -15,12 +15,21 @@ import { NavigationContainer } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import axios from "axios";
 import { ScrollView } from "react-native";
+import { AuthContext } from "../navigation/context";
+import IsTestMode from "../constants/TestMode";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { signIn } = React.useContext(AuthContext);
+
+  let testmode = IsTestMode();
 
   const handleLogin = () => {
+    if (testmode) {
+      signIn();
+      return;
+    }
     axios
       .post("http://localhost:2400/api/auth/login", {
         email: email,
@@ -65,6 +74,8 @@ export default function LoginScreen({ navigation }) {
               <TextInput
                 style={styles.textInput}
                 placeholder="Email"
+                autoCapitalize="none"
+                autoCorrect={false}
                 placeholderTextColor="#072B4F"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
@@ -74,6 +85,8 @@ export default function LoginScreen({ navigation }) {
               <TextInput
                 style={styles.textInput}
                 placeholder="Password"
+                autoCapitalize="none"
+                autoCorrect={false}
                 placeholderTextColor="#072B4F"
                 secureTextEntry
                 value={password}
