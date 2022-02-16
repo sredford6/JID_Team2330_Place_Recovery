@@ -20,18 +20,18 @@ import { ScrollView } from "react-native";
 export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   
   return (
-<ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
-    
-            <View style={[styles.frameContainer, styles.shadowProp]}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate("QuestionnaireScreen")}
-                activeOpacity={0.85}
-              >
-                <Text style={styles.buttonTextWhite}>Start Questionnaire</Text>
-              </TouchableOpacity>
-            </View>
-            
+    <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
+        <View style={[styles.frameContainer, styles.shadowProp]}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("QuestionnaireScreen")}
+              activeOpacity={0.85}
+            >
+          <Text style={styles.buttonTextWhite}>Start Questionnaire</Text>
+          </TouchableOpacity>
+      </View>
+      </KeyboardAvoidingView>
     </ScrollView>
   );
 }
