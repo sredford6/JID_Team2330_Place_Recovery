@@ -33,7 +33,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
             >
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => navigation.navigate('QuestionnaireScreen')}
+                onPress={() => navigation.navigate("QuestionnaireScreen")}
                 activeOpacity={0.85}
               >
                 <Text style={styles.buttonTextWhite}>Start Questionnaire</Text>

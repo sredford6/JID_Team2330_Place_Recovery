@@ -5,7 +5,7 @@ import { RootTabScreenProps } from '../types';
 import { NavigationContainer } from '@react-navigation/native';
 import {survey} from '../questions.json';
 
-/* <SimpleSurvey
+{/* <SimpleSurvey
     survey={survey}
     containerStyle={styles.surveyContainer}
     selectionGroupContainerStyle={styles.selectionGroupContainer}
@@ -22,7 +22,7 @@ import {survey} from '../questions.json';
     renderInfo={this.renderInfoText}
 />
 
- */
+ */}
 
 const styles = StyleSheet.create({
     container: {

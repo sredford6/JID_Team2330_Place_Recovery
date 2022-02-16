@@ -16,6 +16,7 @@ import Login from './screens/LoginScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Verification from './screens/Verification';
 import EmailVerificationScreen from './screens/EmailVerificationScreen';
+import QuestionnaireScreen from './screens/QuestionnaireScreen';
 
 const AuthStack = createNativeStackNavigator();
 
@@ -48,6 +49,11 @@ const AuthenticationStackNavigator = () => {
           name="EmailVerificationScreen"
           component={EmailVerificationScreen}
           options={{ headerShown: true, title: "Verification" }}
+        />
+        <AuthStack.Screen 
+          name="QuestionnaireScreen"
+          component={QuestionnaireScreen}
+          options={{ headerShown: false, title: "Questionnaire"}}
         />
       </AuthStack.Navigator>
     </NavigationContainer>
