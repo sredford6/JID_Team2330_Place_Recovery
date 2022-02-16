@@ -52,12 +52,13 @@ const AuthenticationStackNavigator = () => {
         component={EmailVerificationScreen}
         options={{ headerShown: true, title: "Verification" }}
       />
-    </AuthStack.Navigator>
-    <AuthStack.Screen
-      name="QuestionnaireScreen"
-      component={QuestionnaireScreen}
-      options={{ headerShown: true, title: "Questionnaire" }}
+      <AuthStack.Screen
+        name="QuestionnaireScreen"
+        component={QuestionnaireScreen}
+        options={{ headerShown: true, title: "Questionnaire" }}
     />
+    </AuthStack.Navigator>
+
   );
 };
 export default function App() {
