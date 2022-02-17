@@ -16,13 +16,10 @@ import Login from './screens/LoginScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Verification from './screens/Verification';
 import EmailVerificationScreen from './screens/EmailVerificationScreen';
-<<<<<<< HEAD
 import QuestionnaireScreen from './screens/QuestionnaireScreen';
-=======
 import Loading from "./screens/Loading";
 import React, { useState } from "react";
 import { AuthContext } from "./navigation/context";
->>>>>>> 89eddbe92aba68dc06f541ef71d2e94ca831b490
 
 const AuthStack = createNativeStackNavigator();
 

@@ -15,9 +15,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LocationScreen from './LocationScreen';
 import axios from "axios";
 import { ScrollView } from "react-native";
+import QuestionnaireScreen from "./QuestionnaireScreen";
 
 
-export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   
   return (
 <ScrollView
@@ -33,7 +34,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
             >
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => navigation.navigate("QuestionnaireScreen")}
+                onPress={() => navigation.navigate("Questionnaire")}
                 activeOpacity={0.85}
               >
                 <Text style={styles.buttonTextWhite}>Start Questionnaire</Text>
