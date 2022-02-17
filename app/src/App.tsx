@@ -16,7 +16,6 @@ import Login from './screens/LoginScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Verification from './screens/Verification';
 import EmailVerificationScreen from './screens/EmailVerificationScreen';
-import QuestionnaireScreen from './screens/QuestionnaireScreen';
 import Loading from "./screens/Loading";
 import React, { useState } from "react";
 import { AuthContext } from "./navigation/context";
@@ -52,7 +51,9 @@ const AuthenticationStackNavigator = () => {
         component={EmailVerificationScreen}
         options={{ headerShown: true, title: "Verification" }}
       />
+
     </AuthStack.Navigator>
+
   );
 };
 export default function App() {
