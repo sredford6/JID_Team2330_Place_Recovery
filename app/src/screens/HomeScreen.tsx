@@ -16,6 +16,7 @@ import LocationScreen from './LocationScreen';
 import axios from "axios";
 import { ScrollView } from "react-native";
 import QuestionnaireScreen from "./QuestionnaireScreen";
+import QuizScreen from "./QuizScreen";
 
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
@@ -43,7 +44,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
             <Text style={styles.headTextLeft}>Daily Questionnaire 2/3</Text>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate("Questionnaire")}
+              onPress={() => navigation.navigate("QuizScreen")}
               activeOpacity={0.85}
             >
           <Text style={styles.buttonTextWhite}>Start</Text>

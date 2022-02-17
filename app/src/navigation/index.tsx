@@ -22,6 +22,7 @@ import OpeningScreen from '../screens/OpeningScreen';
 import RegistrationScreen from '../screens/RegistrationScreen';
 import { HomeStackParamList, RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import QuizScreen from '../screens/QuizScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -42,7 +43,7 @@ function RootNavigator() {
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} />
-
+      <Stack.Screen name="QuizScreen" component={QuizScreen} />
     </Stack.Navigator>
   );
 }
