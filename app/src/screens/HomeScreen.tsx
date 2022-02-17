@@ -18,6 +18,7 @@ import { ScrollView } from "react-native";
 
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+
   
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
@@ -26,6 +27,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
         <View style={[styles.frameContainer, styles.shadowProp]}>
             <Text style={styles.headTextLeft}>Daily Questionnaire 1/3</Text>
             <TouchableOpacity
+              disabled={true}
               style={styles.button}
               onPress={() => navigation.navigate("QuestionnaireScreen")}
               activeOpacity={0.85}
