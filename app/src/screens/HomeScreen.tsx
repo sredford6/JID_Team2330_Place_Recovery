@@ -22,7 +22,9 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
       <KeyboardAvoidingView style={styles.container} behavior="padding">
+        
         <View style={[styles.frameContainer, styles.shadowProp]}>
+            <Text style={styles.headTextLeft}>Daily Questionnaire 1/3</Text>
             <TouchableOpacity
               style={styles.button}
               onPress={() => navigation.navigate("QuestionnaireScreen")}
@@ -30,7 +32,37 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
             >
           <Text style={styles.buttonTextWhite}>Start Questionnaire</Text>
           </TouchableOpacity>
+          <Text style={styles.blackText}>Available until 12:00 PM</Text>
       </View>
+      
+      <Text></Text>
+      
+      <View style={[styles.frameContainer, styles.shadowProp]}>
+            <Text style={styles.headTextLeft}>Daily Questionnaire 2/3</Text>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("QuestionnaireScreen")}
+              activeOpacity={0.85}
+            >
+          <Text style={styles.buttonTextWhite}>Start Questionnaire</Text>
+          </TouchableOpacity>
+          <Text style={styles.blackText}>Available until 6:00 PM</Text>
+      </View>
+      
+      <Text></Text>
+      
+      <View style={[styles.frameContainer, styles.shadowProp]}>
+        <Text style={styles.headTextLeft}>Daily Questionnaire 3/3</Text>    
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("QuestionnaireScreen")}
+              activeOpacity={0.85}
+            >
+          <Text style={styles.buttonTextWhite}>Start Questionnaire</Text>
+          </TouchableOpacity>
+          <Text style={styles.blackText}>Available until 12:00 AM</Text>
+      </View>
+      
       </KeyboardAvoidingView>
     </ScrollView>
   );
@@ -43,9 +75,46 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  frameContainer: {
+    width: "88%",
+    flex: 0.2,
+    backgroundColor: "#FFFFFF99",
+    justifyContent: "space-between",
+    //justifyContent: "center",
+    alignItems: "center",
+    //alignContent: "space-between",
+    paddingHorizontal: 10,
+    paddingVertical: 40,
+    borderRadius: 20,
+  },
+  shadowProp: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+  },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  leftContainer: {
+    alignItems: 'flex-start',
+    alignContent: 'space-between',
+  },
+  blackText: {
+    fontSize: 14,
+    color: "#000000"
+  },
+  headTextLeft: {
+    textAlign: 'left',
+    fontSize: 18,
+    color: "#000000",
+    //paddingLeft: 8,
+  },
+  headTextRight: {
+    textAlign: 'right',
+    fontSize: 18,
+    //paddingRight: 8,
   },
   button: {
     width: 250,
@@ -67,26 +136,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  frameContainer: {
-    width: "80%",
-    flex: 0.2,
-    backgroundColor: "#FFFFFF99",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 1,
-    paddingVertical: 1,
-    borderRadius: 16,
-  },
-  shadowProp: {
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-  }
+
 });
 
