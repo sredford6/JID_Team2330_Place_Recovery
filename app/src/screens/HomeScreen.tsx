@@ -30,7 +30,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
               onPress={() => navigation.navigate("QuestionnaireScreen")}
               activeOpacity={0.85}
             >
-          <Text style={styles.buttonTextWhite}>Start Questionnaire</Text>
+          <Text style={styles.buttonTextWhite}>Start</Text>
           </TouchableOpacity>
           <Text style={styles.blackText}>Available until 12:00 PM</Text>
       </View>
@@ -44,7 +44,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
               onPress={() => navigation.navigate("QuestionnaireScreen")}
               activeOpacity={0.85}
             >
-          <Text style={styles.buttonTextWhite}>Start Questionnaire</Text>
+          <Text style={styles.buttonTextWhite}>Start</Text>
           </TouchableOpacity>
           <Text style={styles.blackText}>Available until 6:00 PM</Text>
       </View>
@@ -58,7 +58,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
               onPress={() => navigation.navigate("QuestionnaireScreen")}
               activeOpacity={0.85}
             >
-          <Text style={styles.buttonTextWhite}>Start Questionnaire</Text>
+          <Text style={styles.buttonTextWhite}>Start</Text>
           </TouchableOpacity>
           <Text style={styles.blackText}>Available until 12:00 AM</Text>
       </View>
