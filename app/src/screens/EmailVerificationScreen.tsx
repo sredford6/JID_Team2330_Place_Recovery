@@ -13,29 +13,33 @@ import axios from 'axios';
 
 
 
-
 export default function EmailVerificationScreen({navigation}) {
-    const [email, setEmail] = React.useState("");
+    const[email, setEmail] = React.useState("");
     const[message, setMessage] = React.useState("");
     const[showMessage, setShowMessage] = React.useState(false);
+    
+
 
     const handleEmailVerification = (email: string) => {
   
       axios
         .get("http://localhost:2400/api/auth/get-reset", {params: {email}})
         .then((response) => {
+          
           const { message } = response.data;
           const { status, data } = response;
           console.log(response);
           if (status == 200) {
-            
-            navigation.navigate("VerificationScreen")
+            //emailSet = email;
+            navigation.navigate("VerificationScreen", {email})
           } else {
+            
             console.log(response);
           }
            
         })
         .catch((error) => {
+        
           setShowMessage(true);
           setMessage("We did not find the email in the system");
          
@@ -68,6 +72,7 @@ export default function EmailVerificationScreen({navigation}) {
       </ScrollView>
   </SafeAreaView>
   )
+  
 }
 
 

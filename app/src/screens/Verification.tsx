@@ -11,12 +11,39 @@ import OpeningScreen from './OpeningScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import axios from 'axios';
+import emailSet from '../screens/EmailVerificationScreen';
 
 
-export default function Verification({navigation}) {
+export default function Verification({route, navigation}) {
     const [verification, setVerificationCode] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
+    const {email} = route.params;
+
+    const handleChangePassword = (email, resetCode : string, newPassword) => {
+      console.log(resetCode);
+      console.log(email);
+      console.log(newPassword);
+      axios.post('http://localhost:2400/api/auth/resetpassword', {email, resetCode, newPassword}).then((response) => {
+        console.log(response.data);
+    
+  
+        const {message} = response.data;
+        const {status, data} = response;
+        console.log(status);
+        if (status == 200) {
+          navigation.navigate('Login');
+        } 
+      })
+      .catch((error) => {
+
+        console.log("error");
+        const {message} = error.response.data;
+        alert(message);
+        console.log(error);
+        console.log(error.response.data);
+      });
+    }
 
   return (
     
@@ -29,6 +56,7 @@ export default function Verification({navigation}) {
         <TextInput style = {styles.input}
           placeholder = 'Verification Code'
           maxLength = {15}
+          value = {verification}
           onChangeText={inp => setVerificationCode(inp)}
         
         />
@@ -49,7 +77,7 @@ export default function Verification({navigation}) {
         />
         
 
-        <ButtonDesign name='Confirm' onPress={() => navigation.navigate("LoginScreen")}/>
+        <ButtonDesign name='Confirm' onPress={() => handleChangePassword(email, verification, password)}/>
        
         </KeyboardAvoidingView>
       </ScrollView>
