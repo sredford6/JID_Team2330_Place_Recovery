@@ -86,13 +86,11 @@ export default function App() {
         .then((response) => {
           console.log(response.data);
 
-          // TOFIX: actually this should be done somewhere else; probably in regiser
+          // TOFIX: probably this should be done somewhere else; maybe in signUp ?
           setItem("first_name", response.data["firstName"]);
           setItem("last_name", response.data["lastName"]);
           setItem("email", response.data["email"]);
-          // SecureStore.getItemAsync("first_name").then((result) => {
-          //   console.log(result);
-          // });
+
           setAuthValid(true);
         })
         .catch((error) => {
@@ -111,7 +109,8 @@ export default function App() {
       },
       signUp: (token: string) => {
         setIsLoading(false);
-        // TODO
+        setItem("user_token", token);
+        verifyToken();
       },
       signOut: () => {
         setIsLoading(false);
