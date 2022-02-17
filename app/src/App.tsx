@@ -52,7 +52,9 @@ const AuthenticationStackNavigator = () => {
         component={EmailVerificationScreen}
         options={{ headerShown: true, title: "Verification" }}
       />
+
     </AuthStack.Navigator>
+
   );
 };
 
