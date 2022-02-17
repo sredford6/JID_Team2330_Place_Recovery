@@ -6,19 +6,24 @@ import useColorScheme from './hooks/useColorScheme';
 
 import LoginScreen from "./screens/LoginScreen";
 import Navigation from './navigation/index';
-import RegistrationScreen from './screens/RegistrationScreen';
-import { NavigationContainer, TabActions } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './screens/HomeScreen';
-import LocationScreen from './screens/LocationScreen';
-import OpeningScreen from './screens/OpeningScreen';
-import Login from './screens/LoginScreen';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Verification from './screens/Verification';
-import EmailVerificationScreen from './screens/EmailVerificationScreen';
+// import AuthenticationStackNavigator from "./navigation/index";
+
+import RegistrationScreen from "./screens/RegistrationScreen";
+import { NavigationContainer, TabActions } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import HomeScreen from "./screens/HomeScreen";
+import LocationScreen from "./screens/LocationScreen";
+import OpeningScreen from "./screens/OpeningScreen";
+import Login from "./screens/LoginScreen";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Verification from "./screens/Verification";
+import EmailVerificationScreen from "./screens/EmailVerificationScreen";
 import Loading from "./screens/Loading";
 import React, { useState } from "react";
 import { AuthContext } from "./navigation/context";
+
+import * as SecureStore from "expo-secure-store";
+import axios from "axios";
 
 const AuthStack = createNativeStackNavigator();
 
@@ -35,11 +40,7 @@ const AuthenticationStackNavigator = () => {
         component={RegistrationScreen}
         options={{ title: "Sign Up" }}
       />
-      <AuthStack.Screen
-        name="MainScreen"
-        component={Navigation}
-        options={{ headerShown: false, title: "Home" }}
-      />
+
       <AuthStack.Screen name="Opening" component={OpeningScreen} />
       <AuthStack.Screen
         name="VerificationScreen"
@@ -56,26 +57,67 @@ const AuthenticationStackNavigator = () => {
 
   );
 };
+
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
   const AuthStack = createNativeStackNavigator();
 
   const [isLoading, setIsLoading] = React.useState(true);
-  const [userToken, setUserToken] = React.useState<string | null>("user_token");
+  const [authValid, setAuthValid] = React.useState(false);
+
+  const setItem = (name: string, data: string) => {
+    try {
+      SecureStore.setItemAsync(name, data);
+      console.log("data stored");
+    } catch (error) {
+      // Error saving data
+      console.log("AsyncStorage save error: " + error.message);
+    }
+  };
+
+  const verifyToken = () => {
+    SecureStore.getItemAsync("user_token").then((token) => {
+      // console.log(token);
+      axios
+        .get("http://localhost:2400/api/auth/jwt-test", {
+          headers: {
+            Authorization: token,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+
+          // TOFIX: probably this should be done somewhere else; maybe in signUp ?
+          setItem("first_name", response.data["firstName"]);
+          setItem("last_name", response.data["lastName"]);
+          setItem("email", response.data["email"]);
+
+          setAuthValid(true);
+        })
+        .catch((error) => {
+          console.log("Your are not logged in!"); // token error
+          setAuthValid(false);
+        });
+    });
+  };
+
   const authContext = React.useMemo(() => {
     return {
-      signIn: () => {
+      signIn: (token: string) => {
         setIsLoading(false);
-        setUserToken("todo");
+        setItem("user_token", token);
+        verifyToken();
       },
-      signUp: () => {
+      signUp: (token: string) => {
         setIsLoading(false);
-        setUserToken("todo");
+        setItem("user_token", token);
+        verifyToken();
       },
       signOut: () => {
         setIsLoading(false);
-        setUserToken(null);
+        setAuthValid(false);
+        setItem("user_token", "");
       },
     };
   }, []);
@@ -86,6 +128,10 @@ export default function App() {
     }, 1500);
   }, []);
 
+  React.useEffect(() => {
+    verifyToken();
+  }, []);
+
   if (isLoading) {
     return <Loading />;
   }
@@ -93,7 +139,7 @@ export default function App() {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {userToken ? <Navigation /> : <AuthenticationStackNavigator />}
+        {authValid ? <Navigation /> : <AuthenticationStackNavigator />}
       </NavigationContainer>
     </AuthContext.Provider>
   );
