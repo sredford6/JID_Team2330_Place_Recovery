@@ -48,30 +48,32 @@ export default function EmailVerificationScreen({navigation}) {
     
 
   return (
-    
-  <SafeAreaView style={{flex:1, justifyContent:'center'}}>
-      <ScrollView contentContainerStyle = {{flexGrow: 1, justifyContent: 'center'}}>
-        <KeyboardAvoidingView style={styles.container} behavior = "padding">
-    
-        <Text style = {styles.title}>Verification</Text>
-       
-        <Text style = {styles.label}>Please enter your email</Text>
-        <TextInput style = {styles.input}
-          placeholder = 'Email'
-          maxLength = {30}
-          onChangeText={inp => setEmail(inp)}
-        
-        />
-         
-         { showMessage ?  <Text style = {styles.message}>{message}</Text> : null }
-        
+    <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+      >
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
+          <Text style={styles.title}>Verification</Text>
 
-        <ButtonDesign name='Next' onPress={() => handleEmailVerification(email)}/>
-       
+          <Text style={styles.label}>Please enter your email</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            maxLength={30}
+            autoCapitalize="none"
+            onChangeText={(inp) => setEmail(inp)}
+          />
+
+          {showMessage ? <Text style={styles.message}>{message}</Text> : null}
+
+          <ButtonDesign
+            name="Next"
+            onPress={() => handleEmailVerification(email)}
+          />
         </KeyboardAvoidingView>
       </ScrollView>
-  </SafeAreaView>
-  )
+    </SafeAreaView>
+  );
   
 }
 
