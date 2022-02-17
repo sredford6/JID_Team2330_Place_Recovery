@@ -11,9 +11,15 @@ The project is a mobile application for mental health and risk stratification ba
 ### Features
 - In the registration screen, the color of "Confirm password" will change to red if the passwords users enter do not match.
 - If the user doesn't input anything on the registration screen and clicked "Register", it will prompt the user to fill out the textboxes.
+- Allow users to keep signed in after reloading the app.
+- Allow users to log out.
+- Display users information in profile screen.
+- Allow users to reset password via an email verification code
 
 ### Bugs
-- dimension of content container
+- Fixed dimension of content container.
+- Fixed the navigation problem between home screen and login screen.
+- Fixed email box text length unmatch problem.
 - 
 ### Known Issues
 - 
