@@ -15,10 +15,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LocationScreen from './LocationScreen';
 import axios from "axios";
 import { ScrollView } from "react-native";
+import QuestionnaireScreen from "./QuestionnaireScreen";
 
 
-export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
-
+export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
@@ -29,7 +29,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
             <TouchableOpacity
               disabled={true}
               style={styles.button}
-              onPress={() => navigation.navigate("QuestionnaireScreen")}
+              onPress={() => navigation.navigate("Questionnaire")}
               activeOpacity={0.85}
             >
           <Text style={styles.buttonTextWhite}>Start</Text>
@@ -43,7 +43,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
             <Text style={styles.headTextLeft}>Daily Questionnaire 2/3</Text>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate("QuestionnaireScreen")}
+              onPress={() => navigation.navigate("Questionnaire")}
               activeOpacity={0.85}
             >
           <Text style={styles.buttonTextWhite}>Start</Text>
@@ -57,7 +57,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
         <Text style={styles.headTextLeft}>Daily Questionnaire 3/3</Text>    
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate("QuestionnaireScreen")}
+              onPress={() => navigation.navigate("Questionnaire")}
               activeOpacity={0.85}
             >
           <Text style={styles.buttonTextWhite}>Start</Text>
