@@ -62,7 +62,6 @@ export default function App() {
   const AuthStack = createNativeStackNavigator();
 
   const [isLoading, setIsLoading] = React.useState(true);
-  const [userToken, setUserToken] = React.useState<string | null>(null);
   const [authValid, setAuthValid] = React.useState(false);
 
   const setItem = (name: string, data: string) => {
@@ -86,6 +85,14 @@ export default function App() {
         })
         .then((response) => {
           console.log(response.data);
+
+          // TOFIX: actually this should be done somewhere else; probably in regiser
+          setItem("first_name", response.data["firstName"]);
+          setItem("last_name", response.data["lastName"]);
+          setItem("email", response.data["email"]);
+          // SecureStore.getItemAsync("first_name").then((result) => {
+          //   console.log(result);
+          // });
           setAuthValid(true);
         })
         .catch((error) => {
@@ -99,20 +106,17 @@ export default function App() {
     return {
       signIn: (token: string) => {
         setIsLoading(false);
-        setUserToken(token);
         setItem("user_token", token);
         verifyToken();
       },
       signUp: (token: string) => {
         setIsLoading(false);
-        setUserToken(token);
         // TODO
       },
       signOut: () => {
         setIsLoading(false);
-        setUserToken(null);
         setAuthValid(false);
-        setItem("user_token", "")
+        setItem("user_token", "");
       },
     };
   }, []);
@@ -131,7 +135,6 @@ export default function App() {
     return <Loading />;
   }
 
-  // TODO: replace userToken with a verification function check if token is valid
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>

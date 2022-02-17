@@ -5,14 +5,20 @@ import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../navigation/context";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import IsTestMode from "../constants/TestMode";
+
+import * as SecureStore from "expo-secure-store";
 
 export default function ProfileScreen({
   navigation,
 }: RootTabScreenProps<"TabOne">) {
   let testmode = IsTestMode();
   const { signOut } = React.useContext(AuthContext);
+
+  const [firstName, setFirstName] = useState<string | null>("");
+  const [lastName, setLastName] = useState<string | null>("");
+  const [email, setEmail] = useState<string | null>("");
 
   const handleSignOut = () => {
     // if (testmode) {
@@ -23,9 +29,27 @@ export default function ProfileScreen({
     signOut();
   };
 
+  useEffect(() => {
+    async function setProfile() {
+      const firstName = await SecureStore.getItemAsync("first_name");
+      const lastName = await SecureStore.getItemAsync("last_name");
+      const email = await SecureStore.getItemAsync("email");
+      setFirstName(firstName);
+      setLastName(lastName);
+      setEmail(email);
+    }
+    setProfile();
+  }, []);
+
+  // console.log(firstName);
   return (
     <View style={styles.container}>
       <Text>Profile screen</Text>
+      <Text>
+        Name: {firstName} {lastName}
+        {"\n Email: "}
+        {email}
+      </Text>
       <TouchableOpacity
         style={styles.button}
         activeOpacity={0.85}
