@@ -109,7 +109,11 @@ router.get("/get-reset", async (req: Request, res: Response) => {
 
 router.post("/resetpassword", async (req: Request, res: Response) => {
   try {
-    const { email, resetCode, newPassword } = req.body;
+    const {
+      email,
+      resetCode,
+      newPassword,
+    }: { email: string; resetCode: string; newPassword: string } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
       throw {
