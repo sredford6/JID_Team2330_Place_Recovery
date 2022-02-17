@@ -15,10 +15,12 @@ export default function ProfileScreen({
   const { signOut } = React.useContext(AuthContext);
 
   const handleSignOut = () => {
-    if (testmode) {
-      signOut();
-      return;
-    }
+    // if (testmode) {
+    //   signOut();
+    //   return;
+    // }
+    console.log("logging out");
+    signOut();
   };
 
   return (

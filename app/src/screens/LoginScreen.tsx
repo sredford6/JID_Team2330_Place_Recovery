@@ -40,7 +40,7 @@ export default function LoginScreen({ navigation }) {
         const { status, data } = response;
         if (status == 200) {
           console.log("logged in");
-          navigation.navigate("MainScreen");
+          signIn(data.token);
         } else {
           // todo
           console.log(message);

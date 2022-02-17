@@ -52,66 +52,59 @@ function RootNavigator() {
  */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
-function BottomTabNavigator() {
+export function BottomTabNavigator() {
   const colorScheme = useColorScheme();
 
   return (
     <BottomTab.Navigator
-    initialRouteName="Home"
-    screenOptions={{
-      activeTintColor: Colors[colorScheme].tint,
-      headerStyle: {
-        backgroundColor: '#e3fbe3'
-      },
-    }}>
-    <BottomTab.Screen
-      name="Home"
-      component={HomeScreen}
-      options={{
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons name="home" color={color} size={size} />
-        ),
+      initialRouteName="Home"
+      screenOptions={{
+        activeTintColor: Colors[colorScheme].tint,
+        headerStyle: {
+          backgroundColor: "#e3fbe3",
+        },
       }}
-    />
-    <BottomTab.Screen
-      name="Location"
-      component={LocationScreen}
-      options={{
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons
-            name="map"
-            color={color}
-            size={size}
-          />
-        ),
-      }}
-    />
-    <BottomTab.Screen
-      name="Settings"
-      component={SettingsScreen}
-      options={{
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons
-            name="cog-outline"
-            color={color}
-            size={size}
-          />
-        ),
-      }}
-    />
-    <BottomTab.Screen
-      name="Profile"
-      component={ProfileScreen}
-      options={{
-        tabBarIcon: ({ color, size }) => (
-          <MaterialCommunityIcons
-            name="account"
-            color={color}
-            size={size}
-          />
-        ),
-      }}
-    />
-  </BottomTab.Navigator>
+    >
+      <BottomTab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Location"
+        component={LocationScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="map" color={color} size={size} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="cog-outline"
+              color={color}
+              size={size}
+            />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account" color={color} size={size} />
+          ),
+        }}
+      />
+    </BottomTab.Navigator>
   );
 }
