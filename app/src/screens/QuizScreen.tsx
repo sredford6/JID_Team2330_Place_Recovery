@@ -5,74 +5,112 @@ import {
   View,
   ScrollView,
 } from "react-native";
+import Sliders from "../components/Sliders";
 import React, { useEffect, useState } from "react";
-//import { TouchableOpacity } from "react-native-web";
+import SampleQuestion from "../sample_question.json";
+
+import { Slider, Icon } from "react-native-elements";
+import { TextInput } from "react-native-gesture-handler";
 
 export default function QuizScreen({ navigation }) {
-  const [question, setQuestion] = useState();
-  // 0 is the question number
-  const [answers, setAnswers] = useState([]);
-  const getQuiz = async () => {
-    // fetch data from the url
-    const url = "https://opentdb.com/api.php?amount=10&type=multiple";
-    const res = await fetch(url);
-    // return an array which contains result
-    const data = await res.json();
+  const [questions, setQuestions] = useState();
+  const [length, setLength] = useState(0);
+  const [index, setIndex] = useState(0);
 
-    console.log(data.results[0]);
-    /*
-      "category": "Entertainment: Books",
-    "correct_answer": "Rudyard Kipling",
-    "difficulty": "hard",
-    "incorrect_answers": Array [
-      "Edgar Allan Poe",
-      "William Shakespeare",
-      "William Wordsworth",
-    ],
-    "question": "Which author and poet famously wrote the line, &quot;The female of the species is more deadly than the male&quot;?",
-    "type": "multiple",
-    */
-    setQuestion(data.results[0]["question"]);
-    // console.log(data.results[0]["question"]);
-    const num = Math.floor(Math.random() * 4) + 2; // max = 3
-    const addition_answers = Array.from(
-      new Array(num),
-      (val, index) => "some string " + index
-    );
-    setAnswers(data.results[0]["incorrect_answers"].concat(addition_answers));
+  const loadQuiz = () => {
+    setLength(SampleQuestion.length);
+    setIndex(0);
+    setQuestions(SampleQuestion);
+    // console.log(arr);
+  };
+
+  const increase = () => {
+    if (index < length - 1) {
+      setIndex(index + 1);
+    }
+  };
+  const decrease = () => {
+    if (index > 0) {
+      setIndex(index - 1);
+    }
   };
 
   useEffect(() => {
-    getQuiz();
+    loadQuiz();
   }, []);
 
-  const renderQuestionList = () => {
-    return answers.map((answer, index) => (
-      <TouchableOpacity key={index} style={styles.optionButton}>
-        <Text style={styles.buttonText}>{answer}</Text>
+  const renderType0 = (i: number) => {
+    return questions[i]["choices"].map((option, idx) => (
+      <TouchableOpacity key={idx} style={styles.optionButton}>
+        <Text style={styles.buttonText}>{option}</Text>
       </TouchableOpacity>
     ));
+  };
+
+  const renderType1 = (i: number) => {
+    return <Sliders />;
+  };
+  const renderType2 = (i: number) => {
+    let choices = renderType0(i);
+    return (
+      <View>
+        {renderType0(i)}
+        <TextInput style={styles.input} placeholder="other:" />
+      </View>
+    );
+  };
+  const renderType3 = (i: number) => {
+    // TODO: replace the code from type0. Need to includes checkboxes
+    return questions[i]["choices"].map((option, idx) => (
+      <TouchableOpacity key={idx} style={styles.optionButton}>
+        <Text style={styles.buttonText}>{option}</Text>
+      </TouchableOpacity>
+    ));
+  };
+
+  const renderQuestionList = (i: number) => {
+    let type = questions[i]["type"];
+    switch (type) {
+      case 0:
+        console.log("type 0"); // multiple choice with single answer
+        return renderType0(i);
+      case 1:
+        console.log("type 1"); // scale question, from 1-5, continuous value, sliders
+        return renderType1(i);
+      case 2:
+        console.log("type 2"); // multiple choice with single answer that has additional free text box as last option
+        return renderType2(i);
+      case 3:
+        console.log("type 3"); // multiple choices
+        return renderType3(i);
+      default:
+        console.log("unable to parse type");
+    }
+
+    return null;
   };
 
   return (
     <View style={styles.container}>
       {/* If "question" is not null, execute this part of code */}
       {/* Those are buttons and questions */}
-      {question && (
+      {questions && (
         <View style={styles.parent}>
           <View style={styles.top}>
-            <Text style={styles.question}>Q. {question}</Text>
+            <Text style={styles.question}>
+              Q{index + 1}. {questions[index]["question"]}
+            </Text>
           </View>
 
           <ScrollView>
-            <View>{answers.length ? renderQuestionList() : null}</View>
+            <View>{renderQuestionList(index)}</View>
           </ScrollView>
 
           <View style={styles.bottom}>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>SKIP</Text>
+            <TouchableOpacity style={styles.button} onPress={decrease}>
+              <Text style={styles.buttonText}>PREVIOUS</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={increase}>
               <Text style={styles.buttonText}>NEXT</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -81,9 +119,6 @@ export default function QuizScreen({ navigation }) {
             >
               <Text style={styles.buttonText}>END</Text>
             </TouchableOpacity>
-            {/* <TouchableOpacity onPress={() => navigation.navigate("Result")}>
-          <Text>END</Text>
-        </TouchableOpacity> */}
           </View>
         </View>
       )}
@@ -142,5 +177,11 @@ const styles = StyleSheet.create({
   },
   parent: {
     height: "100%",
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
   },
 });

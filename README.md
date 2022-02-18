@@ -22,7 +22,7 @@ The project is a mobile application for mental health and risk stratification ba
 - Fixed email box text length unmatch problem.
 - 
 ### Known Issues
-- 
+- Expo Go issue in iOS: https://stackoverflow.com/questions/45547406/fetch-or-axios-in-react-native-not-working-for-expo-for-ios-apps
 
 ### TODO
 - 
