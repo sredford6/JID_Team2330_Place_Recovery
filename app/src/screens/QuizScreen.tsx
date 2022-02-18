@@ -33,25 +33,39 @@ export default function QuizScreen({ navigation }) {
     "type": "multiple",
     */
     setQuestion(data.results[0]["question"]);
-    console.log(data.results[0]["question"]);
-    setAnswers(data.results[0]["incorrect_answers"]);
-    console.log(data.results[0]["incorrect_answers"].length);
-    //put results into the question
+    // console.log(data.results[0]["question"]);
+    const num = Math.floor(Math.random() * 4) + 2; // max = 3
+    const addition_answers = Array.from(
+      new Array(num),
+      (val, index) => "some string " + index
+    );
+    setAnswers(data.results[0]["incorrect_answers"].concat(addition_answers));
   };
+
   useEffect(() => {
     getQuiz();
   }, []);
+
+  const renderQuestionList = () => {
+    return answers.map((answer, index) => (
+      <TouchableOpacity key={index} style={styles.optionButton}>
+        <Text style={styles.option}>{answer}</Text>
+      </TouchableOpacity>
+    ));
+  };
+
   return (
     <View style={styles.container}>
       {/* If "question" is not null, execute this part of code */}
       {/* Those are buttons and questions */}
       {question && (
-        <ScrollView contentContainerStyle={styles.parent}>
+        <View style={styles.parent}>
           <View style={styles.top}>
             <Text style={styles.question}>Q. {question}</Text>
           </View>
-          <View style={styles.options}>
-            <TouchableOpacity style={styles.optionButton}>
+
+          <ScrollView contentContainerStyle={styles.options}>
+            {/* <TouchableOpacity style={styles.optionButton}>
               <Text style={styles.option}>Cool Option 1</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.optionButton}>
@@ -62,8 +76,10 @@ export default function QuizScreen({ navigation }) {
             </TouchableOpacity>
             <TouchableOpacity style={styles.optionButton}>
               <Text style={styles.option}>Cool Option 1</Text>
-            </TouchableOpacity>
-          </View>
+            </TouchableOpacity> */}
+            <View>{answers.length ? renderQuestionList() : null}</View>
+          </ScrollView>
+
           <View style={styles.bottom}>
             <TouchableOpacity style={styles.button}>
               <Text style={styles.buttonText}>SKIP</Text>
@@ -81,7 +97,7 @@ export default function QuizScreen({ navigation }) {
           <Text>END</Text>
         </TouchableOpacity> */}
           </View>
-        </ScrollView>
+        </View>
       )}
     </View>
   );
