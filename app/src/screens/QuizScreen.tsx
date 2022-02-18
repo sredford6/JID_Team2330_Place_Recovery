@@ -8,7 +8,7 @@ import {
 import React, { useEffect, useState } from "react";
 //import { TouchableOpacity } from "react-native-web";
 
-export default function QuizScreen(navigation) {
+export default function QuizScreen({ navigation }) {
   const [question, setQuestion] = useState();
   // 0 is the question number
   const [answers, setAnswers] = useState([]);
