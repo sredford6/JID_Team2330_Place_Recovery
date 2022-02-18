@@ -11,101 +11,159 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import axios from 'axios';
 
+import { AuthContext } from "../navigation/context";
 
-export default function RegistrationScreen({navigation}) {
+export default function RegistrationScreen({ navigation }) {
+  const [email, setEmail] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [showErrorMessage, setShowErrorMessage] = React.useState(false);
+  const [showEmailErrorMessage, setShowEmailErrorMessage] =
+    React.useState(false);
+  const [error, setError] = React.useState("");
 
+  const { signUp } = React.useContext(AuthContext);
 
-    const [email, setEmail] = React.useState("");
-    const [firstName, setFirstName] = React.useState("");
-    const [lastName, setLastName] = React.useState("");
-    const [password, setPassword] = React.useState("");
-    const [phoneNumber, setPhoneNumber] = React.useState("");
-    const [confirmPassword, setConfirmPassword] = React.useState("");
-
-    const passwordMatchCheck = ()=> {
-      if (password == confirmPassword) {
-        handleRegistration({firstName, lastName, email, password, phoneNumber});
+  const passwordMatchCheck = () => {
+    if (
+      firstName == "" ||
+      lastName == "" ||
+      email == "" ||
+      password == "" ||
+      confirmPassword == "" ||
+      phoneNumber == ""
+    ) {
+      setShowErrorMessage(true);
+      setError("*Please fill in all the fields");
+    } else if (password == confirmPassword) {
+      let emailValidation =
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if (emailValidation.test(email)) {
+        if (password.length >= 6) {
+          handleRegistration({
+            firstName,
+            lastName,
+            email,
+            password,
+            phoneNumber,
+          });
+        } else {
+          setShowEmailErrorMessage(true);
+          setError("*Password has to contain at least 6 characters");
+        }
       } else {
-        alert("passwords don't match");
+        setShowEmailErrorMessage(true);
+        setError("*Please enter valid email");
       }
+    } else {
+      setShowEmailErrorMessage(true);
+      setError("*Passwords don't match");
     }
-    
-    const handleRegistration = (signUpInput) => {
-      
-      axios.post('http://localhost:2400/api/auth/signup', signUpInput).then((response) => {
+  };
+
+  const handleRegistration = (signUpInput) => {
+    axios
+      .post("http://localhost:2400/api/auth/signup", signUpInput)
+      .then((response) => {
         console.log(response.data);
-        const {message} = response.data;
-        const { status, data} = response;
+        const { message } = response.data;
+        const { status, data } = response;
         console.log(status);
         if (status == 200) {
-          navigation.navigate('MainScreen');
-        } 
+          // navigation.navigate('MainScreen');
+          signUp(data.token)
+        }
       })
       .catch((error) => {
-        const {message} = error.response.data;
+        const { message } = error.response.data;
         alert(message);
         console.log(error);
-
         console.log(error.response.data);
       });
-    }
-    
+  };
+
   return (
-    
-  <SafeAreaView style={{flex:1, justifyContent:'center'}}>
-      <ScrollView contentContainerStyle = {{flexGrow: 1, justifyContent: 'center'}}>
-        <KeyboardAvoidingView style={styles.container} behavior = "padding">
-    
-        <Text style = {styles.title}>Register</Text>
-          
-        <TextInput style = {styles.input}
-          placeholder = 'First Name'
-          maxLength = {15}
-          onChangeText={inp => setFirstName(inp)}
-          value = {firstName}
-        />
-        <TextInput style = {styles.input}
-          placeholder = 'Last Name'
-          maxLength = {20}
-          onChangeText={inp => setLastName(inp)}
-          value = {lastName}
-        />
-        <TextInput style = {styles.input}
-          placeholder = 'Email'
-          maxLength = {30}
-          onChangeText={inp => setEmail(inp)}
-          value = {email}
-        />
+    <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+      >
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
+          <Text style={styles.title}>Register</Text>
+          {showErrorMessage ? (
+            <Text style={styles.errorMessage}>{error}</Text>
+          ) : null}
 
-        <TextInput style = {styles.input}
-          placeholder = 'Phone Number'
-          maxLength = {30}
-          onChangeText={inp => setPhoneNumber(inp)}
-          value = {phoneNumber}
-        />
-        <TextInput style = {styles.input}
-          placeholder = 'Password'
-          maxLength = {20}
-          onChangeText={inp => setPassword(inp)}
-          value = {password}
-          secureTextEntry ={true}
-        />
-        
-        <TextInput style = {styles.input}
-          placeholder = 'Confirm Password'
-          maxLength = {20}
-          onChangeText={inp => setConfirmPassword(inp)}
-          value = {confirmPassword}
-          secureTextEntry ={true}
-        />
+          <TextInput
+            style={styles.input}
+            placeholder="First Name"
+            maxLength={15}
+            onChangeText={(inp) => setFirstName(inp)}
+            value={firstName}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Last Name"
+            maxLength={20}
+            onChangeText={(inp) => setLastName(inp)}
+            value={lastName}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            autoCapitalize="none"
+            autoCorrect={false}
+            maxLength={30}
+            onChangeText={(inp) => setEmail(inp)}
+            value={email}
+          />
 
-        <ButtonDesign name='Register' onPress={() => passwordMatchCheck()}/>
-        <Text style = {styles.label}>By registering, you automatically accept the Terms & Policies of Neighborhood app.</Text> 
-        
+          <TextInput
+            style={styles.input}
+            placeholder="Phone Number"
+            maxLength={10}
+            keyboardType="numeric"
+            onChangeText={(inp) => setPhoneNumber(inp)}
+            value={phoneNumber}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            autoCapitalize="none"
+            autoCorrect={false}
+            maxLength={20}
+            onChangeText={(inp) => setPassword(inp)}
+            value={password}
+            secureTextEntry={true}
+          />
+
+          <TextInput
+            style={[
+              styles.input,
+              password == confirmPassword
+                ? styles.input
+                : { borderColor: "red" },
+            ]}
+            placeholder="Confirm Password"
+            autoCapitalize="none"
+            autoCorrect={false}
+            maxLength={20}
+            onChangeText={(inp) => setConfirmPassword(inp)}
+            value={confirmPassword}
+            secureTextEntry={true}
+          />
+
+          <ButtonDesign name="Register" onPress={() => passwordMatchCheck()} />
+          <Text style={styles.label}>
+            By registering, you automatically accept the Terms & Policies of
+            Neighborhood app.
+          </Text>
         </KeyboardAvoidingView>
       </ScrollView>
-  </SafeAreaView>
-  )
+    </SafeAreaView>
+  );
 }
 
 
@@ -139,6 +197,14 @@ const styles = StyleSheet.create({
     marginRight: 40,
     color: '#072B4F', 
   },
+  errorMessage: {
+    textAlign: 'center',
+   
+    marginLeft: 40,
+    marginRight: 40,
+    color: 'red', 
+  },
+  
  
   
 });

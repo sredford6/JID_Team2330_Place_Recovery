@@ -15,12 +15,21 @@ import { NavigationContainer } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import axios from "axios";
 import { ScrollView } from "react-native";
+import { AuthContext } from "../navigation/context";
+import IsTestMode from "../constants/TestMode";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { signIn } = React.useContext(AuthContext);
+
+  let testmode = IsTestMode();
 
   const handleLogin = () => {
+    if (testmode) {
+      signIn();
+      return;
+    }
     axios
       .post("http://localhost:2400/api/auth/login", {
         email: email,
@@ -31,7 +40,7 @@ export default function LoginScreen({ navigation }) {
         const { status, data } = response;
         if (status == 200) {
           console.log("logged in");
-          navigation.navigate("MainScreen");
+          signIn(data.token);
         } else {
           // todo
           console.log(message);
@@ -65,6 +74,8 @@ export default function LoginScreen({ navigation }) {
               <TextInput
                 style={styles.textInput}
                 placeholder="Email"
+                autoCapitalize="none"
+                autoCorrect={false}
                 placeholderTextColor="#072B4F"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
@@ -74,6 +85,8 @@ export default function LoginScreen({ navigation }) {
               <TextInput
                 style={styles.textInput}
                 placeholder="Password"
+                autoCapitalize="none"
+                autoCorrect={false}
                 placeholderTextColor="#072B4F"
                 secureTextEntry
                 value={password}
@@ -96,18 +109,15 @@ export default function LoginScreen({ navigation }) {
               </TouchableOpacity>
             </View>
             <Text
-              style={{ color: "#072B4F", marginTop: 20 }}
-              onPress={handleForget}
+              style={{ marginTop: 20 }}
+              onPress={() => navigation.navigate("EmailVerificationScreen")}
             >
               Forgot Password ?
             </Text>
 
             <View style={{ flexDirection: "row", marginTop: 40 }}>
-              <Text style={{ color: "#072B4F" }}>Don't have an account? </Text>
-              <Text
-                style={{ color: "#072B4F", fontWeight: "bold" }}
-                onPress={handleSignUp}
-              >
+              <Text style={styles.contentText}>Don't have an account? </Text>
+              <Text style={styles.contentTextTouch} onPress={handleSignUp}>
                 Sign Up
               </Text>
             </View>
@@ -129,7 +139,7 @@ const styles = StyleSheet.create({
   },
   frameContainer: {
     width: "80%",
-    height: "50%",
+    flex: 0.1,
     backgroundColor: "#FFFFFF99",
     justifyContent: "center",
     alignItems: "center",
@@ -157,7 +167,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1.5,
   },
   textInput: {
-    width: "70%",
+    width: "95%",
     color: "#072B4F",
     fontSize: 17,
     marginTop: 5,
@@ -185,6 +195,18 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#072B4F",
     fontSize: 18,
+    fontWeight: "bold",
+  },
+  contentText: {
+    textAlign: "center",
+    color: "#072B4F",
+    fontSize: 15,
+    fontWeight: "normal",
+  },
+  contentTextTouch: {
+    textAlign: "center",
+    color: "#072B4F",
+    fontSize: 15,
     fontWeight: "bold",
   },
 });

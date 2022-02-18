@@ -13,8 +13,27 @@
 6. ????
 7. profit
 
-### Endpoints
+## Endpoints
 
 - Login [POST]: http://localhost:2400/api/auth/login
+    - Body
+        - email
+        - password
 - Signup [POST]: http://localhost:2400/api/auth/signup
+    - Body
+        - email
+        - password
+        - firstName
+        - lastName
+        - phoneNumber
 - Token Test [GET]: http://localhost:2400/api/auth/jwt-test
+    - Header
+        - authorization
+- Get Reset [GET]: http://localhost:2400/api/auth/get-reset
+    - Query
+        - email
+- Reset Password [POST]: http://localhost:2400/api/auth/resetpassword
+    - Body
+        - email
+        - resetCode
+        - newPassword
