@@ -69,7 +69,7 @@ export default function App() {
   const setItem = (name: string, data: string) => {
     try {
       SecureStore.setItemAsync(name, data);
-      console.log("data stored");
+      // console.log("data stored");
     } catch (error) {
       // Error saving data
       console.log("AsyncStorage save error: " + error.message);
@@ -86,8 +86,17 @@ export default function App() {
           },
         })
         .then((response) => {
-          console.log(response.data);
-
+          // console.log(response.data);
+          /* Sample Response 
+          "__v": 0,
+          "_id": "620ec8cac557a52657871051",
+          "email": "jqlin@gatech.edu",
+          "firstName": "Dorian",
+          "lastName": "Lin",
+          "password": "$2b$10$5QwRckvi3J5eCb/gdnIFte7DYi8HCQ4TfNMXdz5Rz7xR/fOiVjn5G",
+          "phoneNumber": "123456789",
+          "resetTries": 0,
+          */
           // TOFIX: probably this should be done somewhere else; maybe in signUp ?
           setItem("first_name", response.data["firstName"]);
           setItem("last_name", response.data["lastName"]);

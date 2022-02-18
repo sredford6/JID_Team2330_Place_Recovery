@@ -1,37 +1,54 @@
-import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 //import { TouchableOpacity } from "react-native-web";
 
-const Quiz = ({ navigation }) => {
-  const [questions, setQuestions] = useState();
+export default function QuizScreen(navigation) {
+  const [question, setQuestion] = useState();
   // 0 is the question number
-  const [ques, setQues] = useState(0);
+  const [answers, setAnswers] = useState([]);
   const getQuiz = async () => {
     // fetch data from the url
     const url = "https://opentdb.com/api.php?amount=10&type=multiple";
     const res = await fetch(url);
     // return an array which contains result
     const data = await res.json();
-    
+
     console.log(data.results[0]);
-    setQuestions(data.results);
+    /*
+      "category": "Entertainment: Books",
+    "correct_answer": "Rudyard Kipling",
+    "difficulty": "hard",
+    "incorrect_answers": Array [
+      "Edgar Allan Poe",
+      "William Shakespeare",
+      "William Wordsworth",
+    ],
+    "question": "Which author and poet famously wrote the line, &quot;The female of the species is more deadly than the male&quot;?",
+    "type": "multiple",
+    */
+    setQuestion(data.results[0]["question"]);
+    console.log(data.results[0]["question"]);
+    setAnswers(data.results[0]["incorrect_answers"]);
+    console.log(data.results[0]["incorrect_answers"].length);
     //put results into the question
   };
   useEffect(() => {
     getQuiz();
   }, []);
-  // console.log("cnm");
   return (
-
     <View style={styles.container}>
-    {/* If "question" is not null, execute this part of code */}
-    {/* Those are buttons and questions */}
-      {questions && (
-        <View style = {styles.parent}>
+      {/* If "question" is not null, execute this part of code */}
+      {/* Those are buttons and questions */}
+      {question && (
+        <ScrollView contentContainerStyle={styles.parent}>
           <View style={styles.top}>
-            <Text style={styles.question}>
-              Q. Image this is a really cool question
-            </Text>
+            <Text style={styles.question}>Q. {question}</Text>
           </View>
           <View style={styles.options}>
             <TouchableOpacity style={styles.optionButton}>
@@ -64,13 +81,11 @@ const Quiz = ({ navigation }) => {
           <Text>END</Text>
         </TouchableOpacity> */}
           </View>
-        </View>
+        </ScrollView>
       )}
     </View>
   );
-};
-
-export default Quiz;
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -121,7 +136,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 12,
   },
-  parent:{
-    height:'100%'
-  }
+  parent: {
+    height: "100%",
+  },
 });
