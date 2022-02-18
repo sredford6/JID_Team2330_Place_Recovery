@@ -3,6 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 const app = express();
 import authRoute from "routes/auth";
+import questionRoute from "routes/questionnaire";
 import authObj from "config/auth.json";
 
 const port = 2400;
@@ -22,6 +23,7 @@ app.use(
 );
 app.use(express.json());
 app.use("/api/auth", authRoute);
+app.use("/api/question", questionRoute);
 
 mongoose.connect(dbURI, dbOptions);
 const db = mongoose.connection;
