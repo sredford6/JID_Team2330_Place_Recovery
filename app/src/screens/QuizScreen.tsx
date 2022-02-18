@@ -49,7 +49,7 @@ export default function QuizScreen({ navigation }) {
   const renderQuestionList = () => {
     return answers.map((answer, index) => (
       <TouchableOpacity key={index} style={styles.optionButton}>
-        <Text style={styles.option}>{answer}</Text>
+        <Text style={styles.buttonText}>{answer}</Text>
       </TouchableOpacity>
     ));
   };
@@ -64,19 +64,7 @@ export default function QuizScreen({ navigation }) {
             <Text style={styles.question}>Q. {question}</Text>
           </View>
 
-          <ScrollView contentContainerStyle={styles.options}>
-            {/* <TouchableOpacity style={styles.optionButton}>
-              <Text style={styles.option}>Cool Option 1</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.optionButton}>
-              <Text style={styles.option}>Cool Option 1</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.optionButton}>
-              <Text style={styles.option}> Cool Option 1</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.optionButton}>
-              <Text style={styles.option}>Cool Option 1</Text>
-            </TouchableOpacity> */}
+          <ScrollView>
             <View>{answers.length ? renderQuestionList() : null}</View>
           </ScrollView>
 
@@ -105,9 +93,9 @@ export default function QuizScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 40,
+    paddingTop: 20,
     paddingHorizontal: 20,
-    height: "100%",
+    flex: 1,
   },
   top: {
     marginVertical: 16,
@@ -117,12 +105,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottom: {
-    marginBottom: 12,
-    paddingVertical: 16,
+    marginBottom: 5,
+    paddingVertical: 5,
     justifyContent: "space-between",
     flexDirection: "row",
   },
-
   button: {
     backgroundColor: "#184E77",
     padding: 12,
@@ -132,25 +119,26 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   buttonText: {
-    fontSize: 18,
-    fontWeight: "600",
+    fontSize: 15,
     color: "white",
   },
   question: {
-    fontSize: 28,
+    fontSize: 20,
   },
   option: {
     fontSize: 18,
-    fontWeight: "500",
+    fontWeight: "bold",
     color: "white",
   },
   optionButton: {
-    paddingVertical: 12,
-    marginVertical: 12,
+    width: "100%",
+    height: 50,
+    paddingVertical: 8,
+    marginVertical: 8,
     backgroundColor: "#34A0A4",
-    // 让内容往水平缩进
-    paddingHorizontal: 12,
-    borderRadius: 12,
+    paddingHorizontal: 15,
+    borderRadius: 8,
+    justifyContent: "center",
   },
   parent: {
     height: "100%",

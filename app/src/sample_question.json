@@ -1,0 +1,14 @@
+{
+  "problem1": {
+    "id": "1234567890",
+    "problem": "this is a sample multiple choice question",
+    "type": 0,
+    "choices": ["choice A", "choice B", "choice C"]
+  },
+  "problem2": {
+    "id": "abcdefghijk",
+    "problem": "this is a sample scale question",
+    "type": 1,
+    "choices": ["1", "2", "3", "4", "5"]
+  }
+}
