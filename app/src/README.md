@@ -19,6 +19,7 @@
 - answer choices should appear differently when selected
 - make answer choices into bubbles?
 - remove `END` button and replace it with `Submit` when users finish the last question?
+- find a way to save  user's answers and send them to backend
 - ...
 
 ### Known issues
