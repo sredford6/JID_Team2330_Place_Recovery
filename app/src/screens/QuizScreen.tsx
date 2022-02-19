@@ -17,6 +17,18 @@ export default function QuizScreen({ navigation }) {
   const [length, setLength] = useState(0);
   const [index, setIndex] = useState(0);
 
+  var user_answers: answer_type []= new Array<answer_type>(SampleQuestion.length)
+
+  // var c :answer_type = {
+  //   type: 1,
+  //   answer:"my answers"
+  // }
+  // user_answers.push(c)
+  
+  interface answer_type{
+    type:Number,
+    answer:String
+  }
   const loadQuiz = () => {
     setLength(SampleQuestion.length);
     setIndex(0);
@@ -25,11 +37,13 @@ export default function QuizScreen({ navigation }) {
   };
 
   const increase = () => {
+    user_answers = []
     if (index < length - 1) {
       setIndex(index + 1);
     }
   };
   const decrease = () => {
+    user_answers = []
     if (index > 0) {
       setIndex(index - 1);
     }
@@ -41,7 +55,19 @@ export default function QuizScreen({ navigation }) {
 
   const renderType0 = (i: number) => {
     return questions[i]["choices"].map((option, idx) => (
-      <TouchableOpacity key={idx} style={styles.optionButton}>
+      <TouchableOpacity 
+      key={idx} 
+      style={styles.optionButton}
+      onPress={() => {
+        var temp :answer_type = {
+          type: i,
+          answer:option
+        }
+        user_answers[i] = temp
+        console.log(user_answers);
+        console.log("here");
+      }}
+      >
         <Text style={styles.buttonText}>{option}</Text>
       </TouchableOpacity>
     ));
@@ -62,7 +88,20 @@ export default function QuizScreen({ navigation }) {
   const renderType3 = (i: number) => {
     // TODO: replace the code from type0. Need to includes checkboxes
     return questions[i]["choices"].map((option, idx) => (
-      <TouchableOpacity key={idx} style={styles.optionButton}>
+      <TouchableOpacity 
+      key={idx} 
+      style={styles.optionButton}
+      onPress={() => {
+
+        var temp :answer_type = {
+          type: idx,
+          answer:option
+        }
+        user_answers[i]=temp;
+        console.log(user_answers);
+        console.log(idx);
+      }}
+      >
         <Text style={styles.buttonText}>{option}</Text>
       </TouchableOpacity>
     ));
@@ -110,7 +149,11 @@ export default function QuizScreen({ navigation }) {
             <TouchableOpacity style={styles.button} onPress={decrease}>
               <Text style={styles.buttonText}>PREVIOUS</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={increase}>
+            <TouchableOpacity style={styles.button}
+             onPress={
+               increase
+              }
+             >
               <Text style={styles.buttonText}>NEXT</Text>
             </TouchableOpacity>
             <TouchableOpacity
