@@ -45,6 +45,7 @@ export function validateQuestionArray(arg: any): arg is Question[] {
   if (!Array.isArray(arg)) {
     return false;
   }
+  const question_ids = new Set<string>();
   for (let question of arg) {
     if (!validateQuestion(question)) {
       return false;
@@ -52,6 +53,10 @@ export function validateQuestionArray(arg: any): arg is Question[] {
     if (question.type != 1 && !validateChoiceQuestion(question)) {
       return false;
     }
+    if (question_ids.has(question.id)) {
+      return false;
+    }
+    question_ids.add(question.id);
   }
 
   return true;
