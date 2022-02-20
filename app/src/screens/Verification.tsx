@@ -18,6 +18,26 @@ export default function Verification({ route, navigation }) {
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const { email } = route.params;
+  const [error, setError] = React.useState("");
+  const [showErrorMessage,setShowErrorMessage] = React.useState(false);
+
+  const passwordMatchCheck = () => {
+    if (verification == "" ||password == "" || confirmPassword == "") {
+      setShowErrorMessage(true);
+      setError("*Please fill in all the fields");
+    } else if (password == confirmPassword) {
+        if (password.length >= 6) {
+          handleChangePassword(email, verification, password)
+        } else {
+          setShowErrorMessage(true);
+          setError("*Password has to contain at least 6 characters and at least one number");
+        }
+      } 
+    else {
+      setShowErrorMessage(true);
+      setError("*Passwords don't match");
+    }
+  };
 
   const handleChangePassword = (email, resetCode: string, newPassword) => {
     console.log(resetCode);
@@ -31,19 +51,22 @@ export default function Verification({ route, navigation }) {
       })
       .then((response) => {
         // console.log(response.data);
-
+        
         const { message } = response.data;
         const { status, data } = response;
         // console.log(status);
         if (status == 200) {
-          Alert.alert("Your password is reset!");
           navigation.navigate("Login");
+          Alert.alert("Your password is reset!");
         }
       })
       .catch((error) => {
         console.log("error");
         const { message } = error.response.data;
-        alert(message);
+        
+        setShowErrorMessage(true);
+        setError(message);
+        
         console.log(error);
         console.log(error.response.data);
       });
@@ -84,8 +107,11 @@ export default function Verification({ route, navigation }) {
 
           <ButtonDesign
             name="Confirm"
-            onPress={() => handleChangePassword(email, verification, password)}
+            onPress={() => passwordMatchCheck()}
           />
+          {showErrorMessage ? (
+            <Text style={styles.errorMessage}>{error}</Text>
+          ) : null}
         </KeyboardAvoidingView>
       </ScrollView>
     </SafeAreaView>
@@ -122,6 +148,13 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     marginRight: 40,
     color: '#072B4F', 
+  },
+  errorMessage: {
+    marginTop: 10,
+    textAlign: 'center',
+    marginLeft: 40,
+    marginRight: 40,
+    color: 'red', 
   },
  
   
