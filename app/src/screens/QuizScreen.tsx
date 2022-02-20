@@ -13,39 +13,43 @@ import { Slider, Icon } from "react-native-elements";
 import { TextInput } from "react-native-gesture-handler";
 
 export default function QuizScreen({ navigation }) {
+  const { useState } = React;
   const [questions, setQuestions] = useState();
   const [length, setLength] = useState(0);
   const [index, setIndex] = useState(0);
-
-  var user_answers: answer_type []= new Array<answer_type>(SampleQuestion.length)
-
-  // var c :answer_type = {
-  //   type: 1,
-  //   answer:"my answers"
-  // }
-  // user_answers.push(c)
+  const [freeText, setText] = useState(""); 
   
+  const [user_answers, setMyArray] = useState(new Array<answer_type>(SampleQuestion.length)); 
+
+  // var user_answers: answer_type []= new Array<answer_type>(SampleQuestion.length)
+
   interface answer_type{
     type:Number,
     answer:String
   }
+
+
   const loadQuiz = () => {
     setLength(SampleQuestion.length);
     setIndex(0);
     setQuestions(SampleQuestion);
+    // setMyArray(new Array<answer_type>(SampleQuestion.length));
+
     // console.log(arr);
   };
 
   const increase = () => {
-    user_answers = []
+    // user_answers = []
     if (index < length - 1) {
       setIndex(index + 1);
+
     }
   };
   const decrease = () => {
-    user_answers = []
+    // user_answers = []
     if (index > 0) {
       setIndex(index - 1);
+
     }
   };
 
@@ -59,11 +63,11 @@ export default function QuizScreen({ navigation }) {
       key={idx} 
       style={styles.optionButton}
       onPress={() => {
-        var temp :answer_type = {
+        var temp1 :answer_type = {
           type: i,
           answer:option
         }
-        user_answers[i] = temp
+        user_answers[i] = temp1
         console.log(user_answers);
         console.log("here");
       }}
@@ -81,7 +85,11 @@ export default function QuizScreen({ navigation }) {
     return (
       <View>
         {renderType0(i)}
-        <TextInput style={styles.input} placeholder="other:" />
+        <TextInput 
+        style={styles.input} 
+        placeholder="other:" 
+        onChangeText={(freeText) => setText(freeText)}
+        />
       </View>
     );
   };
@@ -129,6 +137,8 @@ export default function QuizScreen({ navigation }) {
     return null;
   };
 
+  var a = 0;
+
   return (
     <View style={styles.container}>
       {/* If "question" is not null, execute this part of code */}
@@ -151,6 +161,7 @@ export default function QuizScreen({ navigation }) {
             </TouchableOpacity>
             <TouchableOpacity style={styles.button}
              onPress={
+
                increase
               }
              >
