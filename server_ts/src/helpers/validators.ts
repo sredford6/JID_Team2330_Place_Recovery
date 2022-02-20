@@ -1,3 +1,4 @@
+import { IAnswer } from "models/answer.model";
 import { ChoiceQuestion, Question } from "models/question.model";
 
 const emailRegexp =
@@ -59,5 +60,32 @@ export function validateQuestionArray(arg: any): arg is Question[] {
     question_ids.add(question.id);
   }
 
+  return true;
+}
+
+export function validateAnswer(arg: any): arg is IAnswer {
+  if (!arg) return false;
+  if (!arg.questionId || typeof arg.questionId != "string") return false;
+  if (!arg.answer || typeof arg.answer != "string") return false;
+  if (arg.choice_index == undefined || typeof arg.choice_index != "number")
+    return false;
+  return true;
+}
+
+export function validateAnswerArray(arg: any): arg is IAnswer[] {
+  if (!Array.isArray(arg)) {
+    return false;
+  }
+
+  const question_ids = new Set<string>();
+  for (let answer of arg) {
+    if (!validateAnswer(answer)) {
+      return false;
+    }
+    if (question_ids.has(answer.questionId)) {
+      return false;
+    }
+    question_ids.add(answer.questionId);
+  }
   return true;
 }

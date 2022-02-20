@@ -3,10 +3,12 @@ import { writeFile, access } from "fs/promises";
 import path from "path";
 const router = express.Router();
 
+import Answers from "models/answer.model";
+import User from "models/user.model";
 import { verify } from "middleware";
 import { IUser } from "models/user.model";
 
-import { validateQuestionArray } from "helpers/validators";
+import { validateAnswerArray, validateQuestionArray } from "helpers/validators";
 const questionsPath = path.resolve("src", "public", "questions");
 
 router.post("/create", verify, async (req, res: Response) => {
@@ -44,6 +46,34 @@ router.get("/:questionnaire", async (req: Request, res: Response) => {
     await access(questionSaveFile);
     res.header("Content-Type", "application/json");
     res.sendFile(questionSaveFile);
+  } catch (error: any) {
+    res.status(error.httpCode || 500).json(error);
+  }
+});
+
+router.post("/answer", verify, async (req, res: Response) => {
+  try {
+    const user = await User.findOne({ email: req.currentUser.email });
+    const { questionnaire, answers } = req.body;
+    if (!validateAnswerArray(answers)) {
+      throw {
+        httpCode: 400,
+        message: `answers format is incorrect.`,
+        error: new Error(`answers format is incorrect.`),
+      };
+    }
+
+    const currentDateTime = new Date();
+    const newAnswers = new Answers({
+      datetime: currentDateTime.toISOString(),
+      questionnaire,
+      answers,
+    });
+
+    user.answers.push(newAnswers);
+    await user.save();
+
+    res.status(200).json(user);
   } catch (error: any) {
     res.status(error.httpCode || 500).json(error);
   }
