@@ -16,10 +16,10 @@
 ### TODO
 - currently quizscreen load data from local `sample_question.json` file, need to change that later
 - revise UI designs
-- answer choices should appear differently when selected
+- highlight selected choices
 - make answer choices into bubbles?
-- remove `END` button and replace it with `Submit` when users finish the last question?
-- find a way to save  user's answers and send them to backend
+- ~~remove `END` button and replace it with `Submit` when users finish the last question?~~ [DONE]
+- single choice is ok, but mc is not supported yet.
 - ...
 
 ### Known issues

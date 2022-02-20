@@ -19,14 +19,12 @@ export default function QuizScreen({ navigation }) {
   const [index, setIndex] = useState(0);
   // const [freeText, setText] = useState("");
 
-  const [user_answers, setMyArray] = useState(
-    new Array<answer_type>(SampleQuestion.length)
-  );
+  const [user_answers, setMyArray] = useState(new Array<answer_type>(length));
 
   // var user_answers: answer_type []= new Array<answer_type>(SampleQuestion.length)
 
   interface answer_type {
-    question_index: Number;
+    choice_index: Number;
     answer: String;
   }
 
@@ -56,17 +54,19 @@ export default function QuizScreen({ navigation }) {
     loadQuiz();
   }, []);
 
-  const renderType0 = (i: number, customArray: null | Array<any>) => {
+  const renderType0 = (i: number, customArray: null | Array<any> = null) => {
     return (customArray ? customArray : questions[i]["choices"]).map(
       (option, idx) => (
         <TouchableOpacity
           key={idx}
           style={styles.optionButton}
+          activeOpacity={0.8}
           onPress={() => {
             var temp1: answer_type = {
-              question_index: i,
+              choice_index: idx,
               answer: option,
             };
+
             user_answers[i] = temp1;
             console.log(user_answers);
           }}
@@ -91,7 +91,7 @@ export default function QuizScreen({ navigation }) {
           placeholder="other:"
           onChangeText={(freeText) => {
             var temp1: answer_type = {
-              question_index: i,
+              choice_index: questions[i]["choices"].length,
               answer: freeText,
             };
             user_answers[i] = temp1;
@@ -109,12 +109,11 @@ export default function QuizScreen({ navigation }) {
         style={styles.optionButton}
         onPress={() => {
           var temp: answer_type = {
-            question_index: idx,
+            choice_index: idx,
             answer: option,
           };
           user_answers[i] = temp;
           console.log(user_answers);
-          console.log(idx);
         }}
       >
         <Text style={styles.buttonText}>{option}</Text>
@@ -128,6 +127,7 @@ export default function QuizScreen({ navigation }) {
       case 0:
         // console.log("type 0"); // multiple choice with single answer
         return renderType0(i);
+
       case 1:
         // console.log("type 1"); // scale question, from 1-5, continuous value, sliders
         return renderType1(i);
@@ -146,10 +146,16 @@ export default function QuizScreen({ navigation }) {
 
   const renderSubmit = () => {
     return (
-      <TouchableOpacity style={styles.button} onPress={() => {}}>
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
     );
+  };
+
+  const handleSubmit = () => {
+    // TODO handle submit to endpoints
+    console.log("submit");
+    navigation.navigate("Home");
   };
 
   return (
