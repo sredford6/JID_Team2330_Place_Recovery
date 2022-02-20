@@ -26,6 +26,7 @@ export default function QuizScreen({ navigation }) {
   interface answer_type {
     choice_index: Number;
     answer: String;
+    problemID: String;
   }
 
   const loadQuiz = () => {
@@ -65,6 +66,7 @@ export default function QuizScreen({ navigation }) {
             var temp1: answer_type = {
               choice_index: idx,
               answer: option,
+              problemID: questions[i]["id"],
             };
 
             user_answers[i] = temp1;
@@ -93,6 +95,7 @@ export default function QuizScreen({ navigation }) {
             var temp1: answer_type = {
               choice_index: questions[i]["choices"].length,
               answer: freeText,
+              problemID: questions[i]["id"],
             };
             user_answers[i] = temp1;
             console.log(user_answers);
@@ -111,6 +114,7 @@ export default function QuizScreen({ navigation }) {
           var temp: answer_type = {
             choice_index: idx,
             answer: option,
+            problemID: questions[i]["id"],
           };
           user_answers[i] = temp;
           console.log(user_answers);
