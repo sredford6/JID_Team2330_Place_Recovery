@@ -16,7 +16,10 @@ export default function QuizScreen({ navigation }) {
   const { useState } = React;
   const [questions, setQuestions] = useState();
   const [length, setLength] = useState(0);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(-1);
+  const [prevIndex, setPrevIndex] = useState(-1);
+  const [buttonPressed, setButtonPressed] = useState(Array.from({ length: 20 }, i => false))
+ 
   // const [freeText, setText] = useState("");
 
   const [user_answers, setMyArray] = useState(new Array<answer_type>(length));
@@ -29,6 +32,12 @@ export default function QuizScreen({ navigation }) {
     problemID: String;
   }
 
+  const buttonFunction = (index) => {
+    setButtonPressed(arr => arr.map((buttonPressed, i) => i == index ? !buttonPressed : buttonPressed))
+    setButtonPressed(arr => arr.map((buttonPressed, i) => i != prevIndex ? buttonPressed : !buttonPressed))
+    setPrevIndex(index);
+    console.log(index);
+  }
   const loadQuiz = () => {
     setLength(SampleQuestion.length);
     setIndex(0);
@@ -43,12 +52,17 @@ export default function QuizScreen({ navigation }) {
     if (index < length - 1) {
       setIndex(index + 1);
     }
+    setPrevIndex(-1);
+    setButtonPressed(arr => arr.map((buttonPressed, i) => buttonPressed = false))
+
   };
   const decrease = () => {
     // user_answers = []
     if (index > 0) {
       setIndex(index - 1);
     }
+    setPrevIndex(-1);
+    setButtonPressed(arr => arr.map((buttonPressed, i) => buttonPressed = false))
   };
 
   useEffect(() => {
@@ -60,14 +74,22 @@ export default function QuizScreen({ navigation }) {
       (option, idx) => (
         <TouchableOpacity
           key={idx}
-          style={styles.optionButton}
+          style={[
+            styles.optionButton,
+            buttonPressed[idx] == true 
+              ? { backgroundColor: "#184E77" }
+              : styles.optionButton,
+          ]}
           activeOpacity={0.8}
           onPress={() => {
+            
             var temp1: answer_type = {
               choice_index: idx,
               answer: option,
               problemID: questions[i]["id"],
             };
+            
+            buttonFunction(idx);
 
             user_answers[i] = temp1;
             console.log(user_answers);
@@ -109,7 +131,12 @@ export default function QuizScreen({ navigation }) {
     return questions[i]["choices"].map((option, idx) => (
       <TouchableOpacity
         key={idx}
-        style={styles.optionButton}
+        style={[
+          styles.optionButton,
+          buttonPressed[idx] == true 
+            ? { backgroundColor: "#184E77" }
+            : styles.optionButton,
+        ]}
         onPress={() => {
           var temp: answer_type = {
             choice_index: idx,
@@ -118,6 +145,7 @@ export default function QuizScreen({ navigation }) {
           };
           user_answers[i] = temp;
           console.log(user_answers);
+          buttonFunction(idx);
         }}
       >
         <Text style={styles.buttonText}>{option}</Text>
