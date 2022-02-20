@@ -56,31 +56,33 @@ export default function QuizScreen({ navigation }) {
     loadQuiz();
   }, []);
 
-  const renderType0 = (i: number) => {
-    return questions[i]["choices"].map((option, idx) => (
-      <TouchableOpacity
-        key={idx}
-        style={styles.optionButton}
-        onPress={() => {
-          var temp1: answer_type = {
-            question_index: i,
-            answer: option,
-          };
-          user_answers[i] = temp1;
-          console.log(user_answers);
-          console.log("here");
-        }}
-      >
-        <Text style={styles.buttonText}>{option}</Text>
-      </TouchableOpacity>
-    ));
+  const renderType0 = (i: number, customArray: null | Array<any>) => {
+    return (customArray ? customArray : questions[i]["choices"]).map(
+      (option, idx) => (
+        <TouchableOpacity
+          key={idx}
+          style={styles.optionButton}
+          onPress={() => {
+            var temp1: answer_type = {
+              question_index: i,
+              answer: option,
+            };
+            user_answers[i] = temp1;
+            console.log(user_answers);
+          }}
+        >
+          <Text style={styles.buttonText}>{option}</Text>
+        </TouchableOpacity>
+      )
+    );
   };
 
   const renderType1 = (i: number) => {
-    return <Sliders />;
+    let scales = [...Array(5).keys()].map((i) => i + 1);
+    return renderType0(i, scales);
+    // return <Sliders />;
   };
   const renderType2 = (i: number) => {
-    let choices = renderType0(i);
     return (
       <View>
         {renderType0(i)}
@@ -124,16 +126,16 @@ export default function QuizScreen({ navigation }) {
     let type = questions[i]["type"];
     switch (type) {
       case 0:
-        console.log("type 0"); // multiple choice with single answer
+        // console.log("type 0"); // multiple choice with single answer
         return renderType0(i);
       case 1:
-        console.log("type 1"); // scale question, from 1-5, continuous value, sliders
+        // console.log("type 1"); // scale question, from 1-5, continuous value, sliders
         return renderType1(i);
       case 2:
-        console.log("type 2"); // multiple choice with single answer that has additional free text box as last option
+        // console.log("type 2"); // multiple choice with single answer that has additional free text box as last option
         return renderType2(i);
       case 3:
-        console.log("type 3"); // multiple choices
+        // console.log("type 3"); // multiple choices
         return renderType3(i);
       default:
         console.log("unable to parse type");
@@ -142,7 +144,13 @@ export default function QuizScreen({ navigation }) {
     return null;
   };
 
-  var a = 0;
+  const renderSubmit = () => {
+    return (
+      <TouchableOpacity style={styles.button} onPress={() => {}}>
+        <Text style={styles.buttonText}>Submit</Text>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -164,15 +172,12 @@ export default function QuizScreen({ navigation }) {
             <TouchableOpacity style={styles.button} onPress={decrease}>
               <Text style={styles.buttonText}>PREVIOUS</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={increase}>
-              <Text style={styles.buttonText}>NEXT</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigation.navigate("Home")}
-            >
-              <Text style={styles.buttonText}>END</Text>
-            </TouchableOpacity>
+            {index == length - 1 ? null : (
+              <TouchableOpacity style={styles.button} onPress={increase}>
+                <Text style={styles.buttonText}>NEXT</Text>
+              </TouchableOpacity>
+            )}
+            {index == length - 1 ? renderSubmit() : null}
           </View>
         </View>
       )}

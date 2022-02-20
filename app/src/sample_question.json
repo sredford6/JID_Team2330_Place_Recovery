@@ -1,22 +1,22 @@
 [
   {
     "id": "000_scale",
-    "question": "How happy do you feel?",
+    "question": "How happy do you feel? (1 = not at all to 5 = extremely). ",
     "type": 1
   },
   {
     "id": "001_scale",
-    "question": "How calm do you feel?",
+    "question": "How calm do you feel? (1 = not at all to 5 = extremely). ",
     "type": 1
   },
   {
     "id": "002_scale",
-    "question": "How sad do you feel?",
+    "question": "How sad do you feel? (1 = not at all to 5 = extremely). ",
     "type": 1
   },
   {
     "id": "003_scale",
-    "question": "How anxious do you feel?",
+    "question": "How anxious do you feel? (1 = not at all to 5 = extremely). ",
     "type": 1
   },
   {
@@ -42,7 +42,7 @@
   },
   {
     "id": "006_scale",
-    "question": "How engaged are you with these people? with Likert scale (1 = not at all to 5 = extremely) answer choices?",
+    "question": "How engaged are you with these people? (1 = not at all to 5 = extremely)",
     "type": 1
   },
   {
