@@ -17,17 +17,18 @@ export default function QuizScreen({ navigation }) {
   const [questions, setQuestions] = useState();
   const [length, setLength] = useState(0);
   const [index, setIndex] = useState(0);
-  const [freeText, setText] = useState(""); 
-  
-  const [user_answers, setMyArray] = useState(new Array<answer_type>(SampleQuestion.length)); 
+  // const [freeText, setText] = useState("");
+
+  const [user_answers, setMyArray] = useState(
+    new Array<answer_type>(SampleQuestion.length)
+  );
 
   // var user_answers: answer_type []= new Array<answer_type>(SampleQuestion.length)
 
-  interface answer_type{
-    type:Number,
-    answer:String
+  interface answer_type {
+    question_index: Number;
+    answer: String;
   }
-
 
   const loadQuiz = () => {
     setLength(SampleQuestion.length);
@@ -42,14 +43,12 @@ export default function QuizScreen({ navigation }) {
     // user_answers = []
     if (index < length - 1) {
       setIndex(index + 1);
-
     }
   };
   const decrease = () => {
     // user_answers = []
     if (index > 0) {
       setIndex(index - 1);
-
     }
   };
 
@@ -59,18 +58,18 @@ export default function QuizScreen({ navigation }) {
 
   const renderType0 = (i: number) => {
     return questions[i]["choices"].map((option, idx) => (
-      <TouchableOpacity 
-      key={idx} 
-      style={styles.optionButton}
-      onPress={() => {
-        var temp1 :answer_type = {
-          type: i,
-          answer:option
-        }
-        user_answers[i] = temp1
-        console.log(user_answers);
-        console.log("here");
-      }}
+      <TouchableOpacity
+        key={idx}
+        style={styles.optionButton}
+        onPress={() => {
+          var temp1: answer_type = {
+            question_index: i,
+            answer: option,
+          };
+          user_answers[i] = temp1;
+          console.log(user_answers);
+          console.log("here");
+        }}
       >
         <Text style={styles.buttonText}>{option}</Text>
       </TouchableOpacity>
@@ -85,10 +84,17 @@ export default function QuizScreen({ navigation }) {
     return (
       <View>
         {renderType0(i)}
-        <TextInput 
-        style={styles.input} 
-        placeholder="other:" 
-        onChangeText={(freeText) => setText(freeText)}
+        <TextInput
+          style={styles.input}
+          placeholder="other:"
+          onChangeText={(freeText) => {
+            var temp1: answer_type = {
+              question_index: i,
+              answer: freeText,
+            };
+            user_answers[i] = temp1;
+            console.log(user_answers);
+          }}
         />
       </View>
     );
@@ -96,19 +102,18 @@ export default function QuizScreen({ navigation }) {
   const renderType3 = (i: number) => {
     // TODO: replace the code from type0. Need to includes checkboxes
     return questions[i]["choices"].map((option, idx) => (
-      <TouchableOpacity 
-      key={idx} 
-      style={styles.optionButton}
-      onPress={() => {
-
-        var temp :answer_type = {
-          type: idx,
-          answer:option
-        }
-        user_answers[i]=temp;
-        console.log(user_answers);
-        console.log(idx);
-      }}
+      <TouchableOpacity
+        key={idx}
+        style={styles.optionButton}
+        onPress={() => {
+          var temp: answer_type = {
+            question_index: idx,
+            answer: option,
+          };
+          user_answers[i] = temp;
+          console.log(user_answers);
+          console.log(idx);
+        }}
       >
         <Text style={styles.buttonText}>{option}</Text>
       </TouchableOpacity>
@@ -159,12 +164,7 @@ export default function QuizScreen({ navigation }) {
             <TouchableOpacity style={styles.button} onPress={decrease}>
               <Text style={styles.buttonText}>PREVIOUS</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}
-             onPress={
-
-               increase
-              }
-             >
+            <TouchableOpacity style={styles.button} onPress={increase}>
               <Text style={styles.buttonText}>NEXT</Text>
             </TouchableOpacity>
             <TouchableOpacity
