@@ -19,7 +19,7 @@ export const AnswersSchema = new Schema<IAnswers>({
     {
       questionId: { type: String, required: true },
       answer: { type: Schema.Types.Mixed, required: true },
-      choice_index: { type: Number, required: true },
+      choiceIndex: { type: Number, required: true },
     },
   ],
 });
