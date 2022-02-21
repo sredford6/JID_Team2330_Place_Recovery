@@ -14,8 +14,11 @@ The project is a mobile application for mental health and risk stratification ba
 - User can take three questionnaires in three different time periods. During each time period, only one questionnaire will be activated. 
 - User will receive notifications during the first hour of each questionnaire being opened.   
 
-### Bugs
+### Bug Fixes
 - dimension of content container
+- unable to justify content (login page) 
+- email box text length
+- return button does not work
 - 
 ### Known Issues
 - Unable to login the app through Android simulator
