@@ -4,9 +4,8 @@ import path from "path";
 const router = express.Router();
 
 import Answers from "models/answer.model";
-import User from "models/user.model";
+import User, { IUser } from "models/user.model";
 import { verify } from "middleware";
-import { IUser } from "models/user.model";
 
 import { validateAnswerArray, validateQuestionArray } from "helpers/validators";
 const questionsPath = path.resolve("src", "public", "questions");
