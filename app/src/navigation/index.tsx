@@ -17,14 +17,14 @@ import HomeScreen from '../screens/HomeScreen';
 import LocationScreen from '../screens/LocationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import QuestionnaireScreen from '../screens/QuestionnaireScreen';
 import OpeningScreen from '../screens/OpeningScreen';
 import RegistrationScreen from '../screens/RegistrationScreen';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import { HomeStackParamList, RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
-    
       <RootNavigator />
    
   );
@@ -41,6 +41,7 @@ function RootNavigator() {
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} />
 
     </Stack.Navigator>
   );
@@ -59,7 +60,6 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
     initialRouteName="Home"
     screenOptions={{
-      activeTintColor: Colors[colorScheme].tint,
       headerStyle: {
         backgroundColor: '#e3fbe3'
       },
@@ -115,3 +115,4 @@ function BottomTabNavigator() {
   </BottomTab.Navigator>
   );
 }
+

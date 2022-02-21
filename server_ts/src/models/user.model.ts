@@ -1,4 +1,5 @@
-import { Schema, Model, model, Document } from "mongoose";
+import { Schema, model } from "mongoose";
+import { IAnswers, AnswersSchema } from "models/answer.model";
 
 export interface IUser {
   email: string;
@@ -8,6 +9,8 @@ export interface IUser {
   lastName: string;
   resetCode?: string;
   resetTries?: number;
+  admin: boolean;
+  answers: Array<IAnswers>;
 }
 
 const UserSchema = new Schema<IUser>({
@@ -18,6 +21,8 @@ const UserSchema = new Schema<IUser>({
   lastName: { type: String, required: true },
   resetCode: { type: String, required: false },
   resetTries: { type: Number, required: false },
+  admin: { type: Boolean, default: false },
+  answers: [AnswersSchema],
 });
 
 export default model<IUser>("User", UserSchema);
