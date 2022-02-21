@@ -19,10 +19,10 @@ The project is a mobile application for mental health and risk stratification ba
 - unable to justify content (login page) 
 - email box text length
 - return button does not work
-- 
+
 ### Known Issues
 - Unable to login the app through Android simulator
-- 
+
 
 ### TODO
 - Questionnaire section
