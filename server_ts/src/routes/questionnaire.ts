@@ -73,7 +73,7 @@ router.post("/answer", verify, async (req, res: Response) => {
     user.answers.push(newAnswers);
     await user.save();
 
-    res.status(200).json(user);
+    res.status(200).json({ storedAnswer: true });
   } catch (error: any) {
     res.status(error.httpCode || 500).json(error);
   }
