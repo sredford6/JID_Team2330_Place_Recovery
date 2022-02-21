@@ -16,55 +16,56 @@ import LocationScreen from './LocationScreen';
 import axios from "axios";
 import { ScrollView } from "react-native";
 import QuestionnaireScreen from "./QuestionnaireScreen";
+import QuizScreen from "./QuizScreen";
 
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+    >
       <KeyboardAvoidingView style={styles.container} behavior="padding">
-        
         <View style={[styles.frameContainer, styles.shadowProp]}>
-            <Text style={styles.headTextLeft}>Daily Questionnaire 1/3</Text>
-            <TouchableOpacity
-              disabled={true}
-              style={styles.button}
-              onPress={() => navigation.navigate("Questionnaire")}
-              activeOpacity={0.85}
-            >
-          <Text style={styles.buttonTextWhite}>Start</Text>
+          <Text style={styles.headTextLeft}>Daily Questionnaire 1/3</Text>
+          <TouchableOpacity
+            // disabled={true}
+            style={styles.button}
+            onPress={() => navigation.navigate("Questionnaire")}
+            activeOpacity={0.85}
+          >
+            <Text style={styles.buttonTextWhite}>Start</Text>
           </TouchableOpacity>
           <Text style={styles.blackText}>Available until 12:00 PM</Text>
-      </View>
-      
-      <Text></Text>
-      
-      <View style={[styles.frameContainer, styles.shadowProp]}>
-            <Text style={styles.headTextLeft}>Daily Questionnaire 2/3</Text>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigation.navigate("Questionnaire")}
-              activeOpacity={0.85}
-            >
-          <Text style={styles.buttonTextWhite}>Start</Text>
+        </View>
+
+        <Text></Text>
+
+        <View style={[styles.frameContainer, styles.shadowProp]}>
+          <Text style={styles.headTextLeft}>Daily Questionnaire 2/3</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("QuizScreen")}
+            activeOpacity={0.85}
+          >
+            <Text style={styles.buttonTextWhite}>Start</Text>
           </TouchableOpacity>
           <Text style={styles.blackText}>Available until 6:00 PM</Text>
-      </View>
-      
-      <Text></Text>
-      
-      <View style={[styles.frameContainer, styles.shadowProp]}>
-        <Text style={styles.headTextLeft}>Daily Questionnaire 3/3</Text>    
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigation.navigate("Questionnaire")}
-              activeOpacity={0.85}
-            >
-          <Text style={styles.buttonTextWhite}>Start</Text>
+        </View>
+
+        <Text></Text>
+
+        <View style={[styles.frameContainer, styles.shadowProp]}>
+          <Text style={styles.headTextLeft}>Daily Questionnaire 3/3</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("Questionnaire")}
+            activeOpacity={0.85}
+          >
+            <Text style={styles.buttonTextWhite}>Start</Text>
           </TouchableOpacity>
           <Text style={styles.blackText}>Available until 12:00 AM</Text>
-      </View>
-      
+        </View>
       </KeyboardAvoidingView>
     </ScrollView>
   );

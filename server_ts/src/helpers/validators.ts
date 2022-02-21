@@ -71,7 +71,7 @@ export function validateAnswer(arg: any): arg is IAnswer {
     (typeof arg.answer != "string" && typeof arg.answer != "number")
   )
     return false;
-  if (arg.choice_index == undefined || typeof arg.choice_index != "number")
+  if (arg.choiceIndex == undefined || typeof arg.choiceIndex != "number")
     return false;
   return true;
 }

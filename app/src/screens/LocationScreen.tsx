@@ -4,6 +4,8 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import Map from '../components/Map'
 
+import * as Location from "expo-location";
+
 export default function LocationScreen() {
   return (
     <View style={styles.container}>

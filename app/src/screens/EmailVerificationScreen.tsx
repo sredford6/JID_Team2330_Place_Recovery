@@ -13,29 +13,33 @@ import axios from 'axios';
 
 
 
-
 export default function EmailVerificationScreen({navigation}) {
-    const [email, setEmail] = React.useState("");
+    const[email, setEmail] = React.useState("");
     const[message, setMessage] = React.useState("");
     const[showMessage, setShowMessage] = React.useState(false);
+    
+
 
     const handleEmailVerification = (email: string) => {
   
       axios
         .get("http://localhost:2400/api/auth/get-reset", {params: {email}})
         .then((response) => {
+          
           const { message } = response.data;
           const { status, data } = response;
           console.log(response);
           if (status == 200) {
-            
-            navigation.navigate("VerificationScreen")
+            //emailSet = email;
+            navigation.navigate("VerificationScreen", {email})
           } else {
+            
             console.log(response);
           }
            
         })
         .catch((error) => {
+        
           setShowMessage(true);
           setMessage("We did not find the email in the system");
          
@@ -44,30 +48,33 @@ export default function EmailVerificationScreen({navigation}) {
     
 
   return (
-    
-  <SafeAreaView style={{flex:1, justifyContent:'center'}}>
-      <ScrollView contentContainerStyle = {{flexGrow: 1, justifyContent: 'center'}}>
-        <KeyboardAvoidingView style={styles.container} behavior = "padding">
-    
-        <Text style = {styles.title}>Verification</Text>
-       
-        <Text style = {styles.label}>Please enter your email</Text>
-        <TextInput style = {styles.input}
-          placeholder = 'Email'
-          maxLength = {30}
-          onChangeText={inp => setEmail(inp)}
-        
-        />
-         
-         { showMessage ?  <Text style = {styles.message}>{message}</Text> : null }
-        
+    <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+      >
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
+          <Text style={styles.title}>Verification</Text>
 
-        <ButtonDesign name='Next' onPress={() => handleEmailVerification(email)}/>
-       
+          <Text style={styles.label}>Please enter your email</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            maxLength={30}
+            autoCapitalize="none"
+            onChangeText={(inp) => setEmail(inp)}
+          />
+
+          {showMessage ? <Text style={styles.message}>{message}</Text> : null}
+
+          <ButtonDesign
+            name="Next"
+            onPress={() => handleEmailVerification(email)}
+          />
         </KeyboardAvoidingView>
       </ScrollView>
-  </SafeAreaView>
-  )
+    </SafeAreaView>
+  );
+  
 }
 
 
