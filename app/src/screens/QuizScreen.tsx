@@ -27,25 +27,36 @@ export default function QuizScreen({ navigation }) {
 
 
   interface answer_type {
-    choiceIndex: Number;
-    answer: String;
+    choiceIndex: Number | Array<number>;
+    answer: String | number | Array<String> | Array<number>;
     questionId: String;
   }
 
   const buttonFunction = (index) => {
-    setButtonPressed(arr => arr.map((buttonPressed, i) => i == index ? !buttonPressed : buttonPressed))
-    setButtonPressed(arr => arr.map((buttonPressed, i) => i != prevIndex ? buttonPressed : !buttonPressed))
+    setButtonPressed((arr) =>
+      arr.map((buttonPressed, i) =>
+        i == index ? !buttonPressed : buttonPressed
+      )
+    );
+    setButtonPressed((arr) =>
+      arr.map((buttonPressed, i) =>
+        i != prevIndex ? buttonPressed : !buttonPressed
+      )
+    );
     setPrevIndex(index);
     console.log(index);
-  }
+  };
   const loadQuiz = async () => {
-    const res = await axios.get(`http://localhost:2400/api/question/${questionnaire}.json`);
+    const res = await axios.get(
+      `http://localhost:2400/api/question/${questionnaire}.json`
+    );
     const sampleQuestions = res.data;
 
     setLength(sampleQuestions.length);
     setIndex(0);
     setQuestions(sampleQuestions);
 
+    setUserAnswers(new Array(sampleQuestions.length).fill(null));
   };
 
   const increase = () => {
@@ -53,15 +64,18 @@ export default function QuizScreen({ navigation }) {
       setIndex(index + 1);
     }
     setPrevIndex(-1);
-    setButtonPressed(arr => arr.map((buttonPressed, i) => buttonPressed = false))
-
+    setButtonPressed((arr) =>
+      arr.map((buttonPressed, i) => (buttonPressed = false))
+    );
   };
   const decrease = () => {
     if (index > 0) {
       setIndex(index - 1);
     }
     setPrevIndex(-1);
-    setButtonPressed(arr => arr.map((buttonPressed, i) => buttonPressed = false))
+    setButtonPressed((arr) =>
+      arr.map((buttonPressed, i) => (buttonPressed = false))
+    );
   };
 
   useEffect(() => {
@@ -75,22 +89,21 @@ export default function QuizScreen({ navigation }) {
           key={idx}
           style={[
             styles.optionButton,
-            buttonPressed[idx] == true 
+            buttonPressed[idx] == true
               ? { backgroundColor: "#184E77" }
               : styles.optionButton,
           ]}
           activeOpacity={0.8}
           onPress={() => {
-            
             var temp1: answer_type = {
               choiceIndex: idx,
               answer: option,
               questionId: questions[i]["id"],
             };
-            
+
             buttonFunction(idx);
 
-            user_answers.push(temp1);
+            user_answers[i] = temp1;
             console.log(user_answers);
           }}
         >
@@ -118,7 +131,7 @@ export default function QuizScreen({ navigation }) {
               answer: freeText,
               questionId: questions[i]["id"],
             };
-            user_answers.push(temp1);
+            user_answers[i] = temp1;
             console.log(user_answers);
           }}
         />
@@ -127,22 +140,24 @@ export default function QuizScreen({ navigation }) {
   };
   const renderType3 = (i: number) => {
     // TODO: replace the code from type0. Need to includes checkboxes
+    // user_answers[i] = Array<answer_type>();
+    var temp: answer_type = {
+      choiceIndex: Array(0),
+      answer: Array(),
+      questionId: questions[i]["id"],
+    };
+    user_answers[i] = temp;
     return questions[i]["choices"].map((option, idx) => (
       <TouchableOpacity
         key={idx}
         style={[
           styles.optionButton,
-          buttonPressed[idx] == true 
+          buttonPressed[idx] == true
             ? { backgroundColor: "#184E77" }
             : styles.optionButton,
         ]}
         onPress={() => {
-          var temp: answer_type = {
-            choiceIndex: idx,
-            answer: option,
-            questionId: questions[i]["id"],
-          };
-          user_answers.push(temp);
+          user_answers[i].answer.push(option);
           console.log(user_answers);
           buttonFunction(idx);
         }}
