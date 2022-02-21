@@ -12,8 +12,8 @@ export async function verify(req: Request, res: Response, next: NextFunction) {
   else {
     try {
       const decoded = jwt.verify(token, tokenSecret);
-      const { email } = decoded as JwtPayload;
-      const user: IUser = await User.findOne({ email });
+      const { email, password } = decoded as JwtPayload;
+      const user: IUser = await User.findOne({ email, password });
       req.currentUser = user;
       next();
     } catch (error) {

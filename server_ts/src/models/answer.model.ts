@@ -8,8 +8,8 @@ export interface IAnswer {
 
 export interface IAnswers {
   datetime: Date;
-  questionnaire: String;
-  answers: Array<IAnswer>;
+  questionnaire: string;
+  answers: IAnswer[];
 }
 
 export const AnswersSchema = new Schema<IAnswers>({
