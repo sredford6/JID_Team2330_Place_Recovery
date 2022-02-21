@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 
 export interface IAnswer {
   questionId: string;
-  answer: string;
+  answer: string | number;
   choiceIndex: number;
 }
 
@@ -18,8 +18,8 @@ export const AnswersSchema = new Schema<IAnswers>({
   answers: [
     {
       questionId: { type: String, required: true },
-      answer: { type: String, required: true },
-      choice_index: { type: Number, required: true },
+      answer: { type: Schema.Types.Mixed, required: true },
+      choiceIndex: { type: Number, required: true },
     },
   ],
 });

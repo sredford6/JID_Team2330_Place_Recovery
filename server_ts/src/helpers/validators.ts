@@ -66,8 +66,12 @@ export function validateQuestionArray(arg: any): arg is Question[] {
 export function validateAnswer(arg: any): arg is IAnswer {
   if (!arg) return false;
   if (!arg.questionId || typeof arg.questionId != "string") return false;
-  if (!arg.answer || typeof arg.answer != "string") return false;
-  if (arg.choice_index == undefined || typeof arg.choice_index != "number")
+  if (
+    !arg.answer ||
+    (typeof arg.answer != "string" && typeof arg.answer != "number")
+  )
+    return false;
+  if (arg.choiceIndex == undefined || typeof arg.choiceIndex != "number")
     return false;
   return true;
 }
