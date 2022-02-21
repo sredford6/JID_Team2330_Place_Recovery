@@ -11,15 +11,18 @@ The project is a mobile application for mental health and risk stratification ba
 ### Features
 - In the registration screen, the color of "Confirm password" will change to red if the passwords users enter do not match.
 - If the user doesn't input anything on the registration screen and clicked "Register", it will prompt the user to fill out the textboxes.
+- User can take three questionnaires in three different time periods. During each time period, only one questionnaire will be activated. 
+- User will receive notifications during the first hour of each questionnaire being opened.   
 
 ### Bugs
 - dimension of content container
 - 
 ### Known Issues
+- Unable to login the app through Android simulator
 - 
 
 ### TODO
-- 
+- Questionnaire section
 
 
 ## Version 0.1.0 (Sprint 1)
