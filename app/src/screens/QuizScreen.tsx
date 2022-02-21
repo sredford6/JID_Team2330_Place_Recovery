@@ -7,10 +7,12 @@ import {
 } from "react-native";
 import Sliders from "../components/Sliders";
 import React, { useEffect, useState } from "react";
-import SampleQuestion from "../sample_question.json";
+import axios from "axios";
+import {getItemAsync} from "expo-secure-store";
 
 import { Slider, Icon } from "react-native-elements";
 import { TextInput } from "react-native-gesture-handler";
+
 
 export default function QuizScreen({ navigation }) {
   const { useState } = React;
@@ -19,17 +21,15 @@ export default function QuizScreen({ navigation }) {
   const [index, setIndex] = useState(-1);
   const [prevIndex, setPrevIndex] = useState(-1);
   const [buttonPressed, setButtonPressed] = useState(Array.from({ length: 20 }, i => false))
- 
-  // const [freeText, setText] = useState("");
+  const questionnaire = "sampleq1";
 
-  const [user_answers, setMyArray] = useState(new Array<answer_type>(length));
+  const [user_answers, setUserAnswers]: [answer_type[], Function] = useState([]);
 
-  // var user_answers: answer_type []= new Array<answer_type>(SampleQuestion.length)
 
   interface answer_type {
-    choice_index: Number;
+    choiceIndex: Number;
     answer: String;
-    problemID: String;
+    questionId: String;
   }
 
   const buttonFunction = (index) => {
@@ -38,17 +38,17 @@ export default function QuizScreen({ navigation }) {
     setPrevIndex(index);
     console.log(index);
   }
-  const loadQuiz = () => {
-    setLength(SampleQuestion.length);
-    setIndex(0);
-    setQuestions(SampleQuestion);
-    // setMyArray(new Array<answer_type>(SampleQuestion.length));
+  const loadQuiz = async () => {
+    const res = await axios.get(`http://localhost:2400/api/question/${questionnaire}.json`);
+    const sampleQuestions = res.data;
 
-    // console.log(arr);
+    setLength(sampleQuestions.length);
+    setIndex(0);
+    setQuestions(sampleQuestions);
+
   };
 
   const increase = () => {
-    // user_answers = []
     if (index < length - 1) {
       setIndex(index + 1);
     }
@@ -57,7 +57,6 @@ export default function QuizScreen({ navigation }) {
 
   };
   const decrease = () => {
-    // user_answers = []
     if (index > 0) {
       setIndex(index - 1);
     }
@@ -84,14 +83,14 @@ export default function QuizScreen({ navigation }) {
           onPress={() => {
             
             var temp1: answer_type = {
-              choice_index: idx,
+              choiceIndex: idx,
               answer: option,
-              problemID: questions[i]["id"],
+              questionId: questions[i]["id"],
             };
             
             buttonFunction(idx);
 
-            user_answers[i] = temp1;
+            user_answers.push(temp1);
             console.log(user_answers);
           }}
         >
@@ -115,11 +114,11 @@ export default function QuizScreen({ navigation }) {
           placeholder="other:"
           onChangeText={(freeText) => {
             var temp1: answer_type = {
-              choice_index: questions[i]["choices"].length,
+              choiceIndex: questions[i]["choices"].length,
               answer: freeText,
-              problemID: questions[i]["id"],
+              questionId: questions[i]["id"],
             };
-            user_answers[i] = temp1;
+            user_answers.push(temp1);
             console.log(user_answers);
           }}
         />
@@ -139,11 +138,11 @@ export default function QuizScreen({ navigation }) {
         ]}
         onPress={() => {
           var temp: answer_type = {
-            choice_index: idx,
+            choiceIndex: idx,
             answer: option,
-            problemID: questions[i]["id"],
+            questionId: questions[i]["id"],
           };
-          user_answers[i] = temp;
+          user_answers.push(temp);
           console.log(user_answers);
           buttonFunction(idx);
         }}
@@ -184,8 +183,24 @@ export default function QuizScreen({ navigation }) {
     );
   };
 
-  const handleSubmit = () => {
+  
+
+  const handleSubmit = async () => {
     // TODO handle submit to endpoints
+    try {
+      const token: string = (await getItemAsync("user_token"))!;
+      const res = await axios.post(`http://localhost:2400/api/question/answer`, {
+        questionnaire,
+        answers: user_answers
+      }, {
+        headers: {
+          Authorization: token
+        }
+      });
+      console.log(res.data);
+    } catch(error: any) {
+      console.error(error);
+    }
     console.log("submit");
     navigation.navigate("Home");
   };

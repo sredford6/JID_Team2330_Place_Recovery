@@ -54,6 +54,7 @@ router.post("/answer", verify, async (req, res: Response) => {
   try {
     const user = await User.findOne({ email: req.currentUser.email });
     const { questionnaire, answers } = req.body;
+    console.log(answers);
     if (!validateAnswerArray(answers)) {
       throw {
         httpCode: 400,
