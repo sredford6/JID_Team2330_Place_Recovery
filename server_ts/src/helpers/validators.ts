@@ -15,11 +15,11 @@ export function validatePassword(password: string): boolean {
 
 export function validateQuestion(arg: any): arg is Question {
   if (!arg) return false;
-  if (!arg.id || typeof arg.id != "string") return false;
-  if (!arg.question || typeof arg.question != "string") return false;
+  if (!arg.id || typeof arg.id !== "string") return false;
+  if (!arg.question || typeof arg.question !== "string") return false;
   if (
-    arg.type == undefined ||
-    typeof arg.type != "number" ||
+    arg.type === undefined ||
+    typeof arg.type !== "number" ||
     arg.type < 0 ||
     arg.type > 3
   )
@@ -30,12 +30,12 @@ export function validateQuestion(arg: any): arg is Question {
 export function validateChoiceQuestion(arg: any): arg is ChoiceQuestion {
   if (!validateQuestion(arg)) return false;
   if (
-    !(<ChoiceQuestion>arg).choices ||
-    !Array.isArray((<ChoiceQuestion>arg).choices)
+    !(arg as ChoiceQuestion).choices ||
+    !Array.isArray((arg as ChoiceQuestion).choices)
   )
     return false;
-  for (let choice in (<ChoiceQuestion>arg).choices) {
-    if (typeof choice != "string") {
+  for (const choice in (arg as ChoiceQuestion).choices) {
+    if (typeof choice !== "string") {
       return false;
     }
   }
@@ -46,32 +46,46 @@ export function validateQuestionArray(arg: any): arg is Question[] {
   if (!Array.isArray(arg)) {
     return false;
   }
-  const question_ids = new Set<string>();
-  for (let question of arg) {
+  const questionIds = new Set<string>();
+  for (const question of arg) {
     if (!validateQuestion(question)) {
       return false;
     }
-    if (question.type != 1 && !validateChoiceQuestion(question)) {
+    if (question.type !== 1 && !validateChoiceQuestion(question)) {
       return false;
     }
-    if (question_ids.has(question.id)) {
+    if (questionIds.has(question.id)) {
       return false;
     }
-    question_ids.add(question.id);
+    questionIds.add(question.id);
   }
 
   return true;
 }
 
+function arrayOfType(arr: any[], type: string): boolean {
+  return arr.every((i) => typeof i === type);
+}
+
 export function validateAnswer(arg: any): arg is IAnswer {
   if (!arg) return false;
-  if (!arg.questionId || typeof arg.questionId != "string") return false;
-  if (
-    !arg.answer ||
-    (typeof arg.answer != "string" && typeof arg.answer != "number")
-  )
-    return false;
-  if (arg.choice_index == undefined || typeof arg.choice_index != "number")
+  if (!arg.questionId || typeof arg.questionId !== "string") return false;
+  if (arg.answer === undefined) return false;
+  if (Array.isArray(arg.answer)) {
+    if (
+      !arrayOfType(arg.answer, "string") &&
+      !arrayOfType(arg.answer, "number")
+    ) {
+      return false;
+    }
+  } else {
+    if (
+      !arg.answer ||
+      (typeof arg.answer !== "string" && typeof arg.answer !== "number")
+    )
+      return false;
+  }
+  if (arg.choiceIndex === undefined || typeof arg.choiceIndex !== "number")
     return false;
   return true;
 }
@@ -81,15 +95,15 @@ export function validateAnswerArray(arg: any): arg is IAnswer[] {
     return false;
   }
 
-  const question_ids = new Set<string>();
-  for (let answer of arg) {
+  const questionIds = new Set<string>();
+  for (const answer of arg) {
     if (!validateAnswer(answer)) {
       return false;
     }
-    if (question_ids.has(answer.questionId)) {
+    if (questionIds.has(answer.questionId)) {
       return false;
     }
-    question_ids.add(answer.questionId);
+    questionIds.add(answer.questionId);
   }
   return true;
 }

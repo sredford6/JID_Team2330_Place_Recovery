@@ -5,14 +5,36 @@
 The project is a mobile application for mental health and risk stratification based on neighborhood characteristics for both Apple and Android platforms. Virtually no research exists examining the daily influence of environmental factors on the development of mental health disorders such as schizophrenia. Our solution is a mobile app that collects real-time data (daily survey) on the status of the user’s mental health such as their feelings and emotions in relation to their location during the day. We can compile and organize this data into a database for our client and other clinicians to analyze and can better treat their own patients and gain knowledge of the development of mental health disorders.
 
 
+ ### Environment Setup
+- `cd ./app/src`, `npm i`
+- **react-navigation install**: change directory to ```./app/src```, and run ```npm install @react-navigation/native```, ```expo install react-native-screens react-native-safe-area-context```.
+- **react-native-keyboard-aware-scroll-view**: run ```npm i react-native-keyboard-aware-scroll-view --save```
+
 # Release Notes
 
 ## Version 0.2.0 (Sprint 2)
 ### Features
 - In the registration screen, the color of "Confirm password" will change to red if the passwords users enter do not match.
 - If the user doesn't input anything on the registration screen and clicked "Register", it will prompt the user to fill out the textboxes.
+- Allow users to keep signed in after reloading the app.
+- Allow users to log out.
+- Display basic users information in profile screen.
+- Allow users to reset password via an email verification code.
+- The app can load daily questionnaire that the client provides from backend database.
+- Users can take daily questionnaire and their responses will be recorded.
+
+### Bugs
+- Fixed dimension of content container.
+- Fixed the navigation problem between home screen and login screen.
+- Fixed email box text length unmatch problem.
+- 
+### Known Issues
+- Expo Go issue in iOS: https://stackoverflow.com/questions/45547406/fetch-or-axios-in-react-native-not-working-for-expo-for-ios-apps
+- Need to fix `components/Sliders.tsx` if we want to use sliders for type 1 (scales) question.
+- 
 - User can take three questionnaires in three different time periods. During each time period, only one questionnaire will be activated. 
 - User will receive notifications during the first hour of each questionnaire being opened.   
+- - Unable to login the app through Android simulator
 
 ### Bug Fixes
 - dimension of content container
@@ -20,12 +42,11 @@ The project is a mobile application for mental health and risk stratification ba
 - email box text length
 - return button does not work
 
-### Known Issues
-- Unable to login the app through Android simulator
-
 
 ### TODO
-- Questionnaire section
+- Refine UI design.
+- Do more testing and find edge cases. 
+- Should we allow users to skip question? 
 
 
 ## Version 0.1.0 (Sprint 1)
@@ -37,6 +58,7 @@ The project is a mobile application for mental health and risk stratification ba
 
 
 ### Bugs
+- Expo Go connection to database
 - Fixed error messages from backends
 - 
 
@@ -46,6 +68,10 @@ The project is a mobile application for mental health and risk stratification ba
 - Email box text length unmatch
 - Navigation problem; doesn't have a navigation bar; can go from home screen to login screen directly.
 ### TODO
+- Email Verification
+- Questionnaire 
+- User account screen
+- ...
 - Login session
 - Email verification
 

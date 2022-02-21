@@ -165,7 +165,14 @@ router.get("/jwt-test", verify, (req, res: Response) => {
 });
 
 function generateToken(user: IUser) {
-  return jwt.sign({ data: user }, tokenSecret, { expiresIn: "24h" });
+  return jwt.sign(
+    {
+      email: user.email,
+      password: user.password,
+    },
+    tokenSecret,
+    { expiresIn: "24h" }
+  );
 }
 
 export default router;

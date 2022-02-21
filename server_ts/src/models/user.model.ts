@@ -10,7 +10,7 @@ export interface IUser {
   resetCode?: string;
   resetTries?: number;
   admin: boolean;
-  answers: Array<IAnswers>;
+  answers: IAnswers[];
 }
 
 const UserSchema = new Schema<IUser>({
