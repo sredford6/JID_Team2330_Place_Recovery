@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 
 export interface IAnswer {
   questionId: string;
-  answer: string | number;
+  answer: string | number | string[] | number[];
   choiceIndex: number;
 }
 

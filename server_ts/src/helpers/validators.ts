@@ -63,15 +63,29 @@ export function validateQuestionArray(arg: any): arg is Question[] {
   return true;
 }
 
+function arrayOfType(arr: any[], type: string): boolean {
+  return arr.every((i) => typeof i === type);
+}
+
 export function validateAnswer(arg: any): arg is IAnswer {
   if (!arg) return false;
   if (!arg.questionId || typeof arg.questionId != "string") return false;
-  if (
-    !arg.answer ||
-    (typeof arg.answer != "string" && typeof arg.answer != "number")
-  )
-    return false;
-  if (arg.choiceIndex == undefined || typeof arg.choiceIndex != "number")
+  if (arg.answer === undefined) return false;
+  if (Array.isArray(arg.answer)) {
+    if (
+      !arrayOfType(arg.answer, "string") &&
+      !arrayOfType(arg.answer, "number")
+    ) {
+      return false;
+    }
+  } else {
+    if (
+      !arg.answer ||
+      (typeof arg.answer !== "string" && typeof arg.answer !== "number")
+    )
+      return false;
+  }
+  if (arg.choiceIndex === undefined || typeof arg.choiceIndex !== "number")
     return false;
   return true;
 }
