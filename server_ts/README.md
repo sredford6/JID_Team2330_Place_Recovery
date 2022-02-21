@@ -15,6 +15,7 @@
 
 ## Endpoints
 
+### Auth
 - Login [POST]: http://localhost:2400/api/auth/login
     - Body
         - email
@@ -37,3 +38,17 @@
         - email
         - resetCode
         - newPassword
+
+### Questionnaire
+- Create [POST]: http://localhost:2400/api/question/create
+    - Body
+        - id
+        - questions
+- Question Retrieval [GET]: http://localhost:2400/api/question/:question
+    - Just put the name of the question file as part of the URL
+- Token Test [GET]: http://localhost:2400/api/question/answer
+    - Header
+        - authorization
+    - Body
+        - questionnaire
+        - answers
