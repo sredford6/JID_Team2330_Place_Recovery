@@ -47,16 +47,25 @@ export default function QuizScreen({ navigation }) {
     console.log(index);
   };
   const loadQuiz = async () => {
-    const res = await axios.get(
-      `http://localhost:2400/api/question/${questionnaire}.json`
-    );
-    const sampleQuestions = res.data;
-
-    setLength(sampleQuestions.length);
-    setIndex(0);
-    setQuestions(sampleQuestions);
-
-    setUserAnswers(new Array(sampleQuestions.length).fill(null));
+    await axios
+      .get(`http://localhost:2400/api/question/${questionnaire}.json`)
+      .then((res) => {
+        const sampleQuestions = res.data;
+        setLength(sampleQuestions.length);
+        setIndex(0);
+        setQuestions(sampleQuestions);
+        let arr = [];
+        for (let i = 0; i < sampleQuestions.length; i++) {
+          let mc = sampleQuestions[i]["type"] == 3 ? true : false;
+          let value: answer_type = {
+            choiceIndex: mc ? [] : -1,
+            answer: mc ? [] : "",
+            questionId: sampleQuestions[i]["id"],
+          };
+          arr.push(value);
+        }
+        setUserAnswers(arr);
+      });
   };
 
   const increase = () => {
@@ -68,6 +77,7 @@ export default function QuizScreen({ navigation }) {
       arr.map((buttonPressed, i) => (buttonPressed = false))
     );
   };
+
   const decrease = () => {
     if (index > 0) {
       setIndex(index - 1);
@@ -95,15 +105,12 @@ export default function QuizScreen({ navigation }) {
           ]}
           activeOpacity={0.8}
           onPress={() => {
-            var temp1: answer_type = {
-              choiceIndex: idx,
-              answer: option,
-              questionId: questions[i]["id"],
-            };
-
             buttonFunction(idx);
-
-            user_answers[i] = temp1;
+            // https://stackoverflow.com/questions/55987953/how-do-i-update-states-onchange-in-an-array-of-object-in-react-hooks
+            let temp_answers = user_answers;
+            temp_answers[i].answer = option;
+            temp_answers[i].choiceIndex = idx;
+            setUserAnswers(temp_answers);
             console.log(user_answers);
           }}
         >
@@ -126,12 +133,11 @@ export default function QuizScreen({ navigation }) {
           style={styles.input}
           placeholder="other:"
           onChangeText={(freeText) => {
-            var temp1: answer_type = {
-              choiceIndex: questions[i]["choices"].length,
-              answer: freeText,
-              questionId: questions[i]["id"],
-            };
-            user_answers[i] = temp1;
+            let temp_answers = user_answers;
+            temp_answers[i].answer = freeText;
+            temp_answers[i].choiceIndex = questions[i]["choices"].length;
+            setUserAnswers(temp_answers);
+
             console.log(user_answers);
           }}
         />
@@ -139,14 +145,6 @@ export default function QuizScreen({ navigation }) {
     );
   };
   const renderType3 = (i: number) => {
-    // TODO: replace the code from type0. Need to includes checkboxes
-    // user_answers[i] = Array<answer_type>();
-    var temp: answer_type = {
-      choiceIndex: Array(0),
-      answer: Array(),
-      questionId: questions[i]["id"],
-    };
-    user_answers[i] = temp;
     return questions[i]["choices"].map((option, idx) => (
       <TouchableOpacity
         key={idx}
@@ -157,7 +155,10 @@ export default function QuizScreen({ navigation }) {
             : styles.optionButton,
         ]}
         onPress={() => {
-          user_answers[i].answer.push(option);
+          let temp_answers = user_answers;
+          temp_answers[i].answer.push(option);
+          temp_answers[i].choiceIndex.push(idx);
+          setUserAnswers(temp_answers);
           console.log(user_answers);
           buttonFunction(idx);
         }}
@@ -173,7 +174,6 @@ export default function QuizScreen({ navigation }) {
       case 0:
         // console.log("type 0"); // multiple choice with single answer
         return renderType0(i);
-
       case 1:
         // console.log("type 1"); // scale question, from 1-5, continuous value, sliders
         return renderType1(i);
