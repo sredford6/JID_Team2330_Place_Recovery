@@ -85,8 +85,14 @@ export function validateAnswer(arg: any): arg is IAnswer {
     )
       return false;
   }
-  if (arg.choiceIndex === undefined || typeof arg.choiceIndex !== "number")
+  if (arg.choiceIndex === undefined) return false;
+  if (
+    Array.isArray(arg.choiceIndex) &&
+    !arrayOfType(arg.choiceIndex, "number") &&
+    typeof arg.choiceIndex !== "number"
+  ) {
     return false;
+  }
   return true;
 }
 
