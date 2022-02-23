@@ -79,10 +79,7 @@ export function validateAnswer(arg: any): arg is IAnswer {
       return false;
     }
   } else {
-    if (
-      !arg.answer ||
-      (typeof arg.answer !== "string" && typeof arg.answer !== "number")
-    )
+    if (typeof arg.answer !== "string" && typeof arg.answer !== "number")
       return false;
   }
   if (arg.choiceIndex === undefined) return false;
