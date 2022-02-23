@@ -37,6 +37,7 @@ The project is a mobile application for mental health and risk stratification ba
 - Refine UI design. (checkbox instead of buttons?)
 - Do more testing and find edge cases. 
 - Should we allow users to skip question? -> prune skipped questions so needless data isn't stored in the database
+- Have better error messages from backend when validating questions and answers
 - Record user's location when they are filling the questionnaire.
 - Probably combine three questionnaire tabs into one?
 - Next Sprint: users answers thrend.
