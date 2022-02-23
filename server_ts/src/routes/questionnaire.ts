@@ -74,6 +74,7 @@ router.post("/answer", verify, async (req, res: Response) => {
 
     res.status(200).json({ storedAnswer: true });
   } catch (error: any) {
+    console.error(error);
     res.status(error.httpCode || 500).json(error);
   }
 });
