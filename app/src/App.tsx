@@ -4,18 +4,13 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 
-import LoginScreen from "./screens/LoginScreen";
-import Navigation from './navigation/index';
-// import AuthenticationStackNavigator from "./navigation/index";
+import HomeNavigation from "./navigation/index";
 
 import RegistrationScreen from "./screens/RegistrationScreen";
 import { NavigationContainer, TabActions } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./screens/HomeScreen";
-import LocationScreen from "./screens/LocationScreen";
 import OpeningScreen from "./screens/OpeningScreen";
 import Login from "./screens/LoginScreen";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Verification from "./screens/Verification";
 import EmailVerificationScreen from "./screens/EmailVerificationScreen";
 import Loading from "./screens/Loading";
@@ -52,9 +47,7 @@ const AuthenticationStackNavigator = () => {
         component={EmailVerificationScreen}
         options={{ headerShown: true, title: "Verification" }}
       />
-
     </AuthStack.Navigator>
-
   );
 };
 
@@ -148,7 +141,7 @@ export default function App() {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {authValid ? <Navigation /> : <AuthenticationStackNavigator />}
+        {authValid ? <HomeNavigation /> : <AuthenticationStackNavigator />}
       </NavigationContainer>
     </AuthContext.Provider>
   );

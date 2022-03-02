@@ -15,9 +15,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LocationScreen from './LocationScreen';
 import axios from "axios";
 import { ScrollView } from "react-native";
-import QuestionnaireScreen from "./QuestionnaireScreen";
-import QuizScreen from "./QuizScreen";
-
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   return (
@@ -30,7 +27,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              navigation.navigate("QuizScreen");
+              navigation.navigate("Questionnaire");
             }}
             activeOpacity={0.85}
           >

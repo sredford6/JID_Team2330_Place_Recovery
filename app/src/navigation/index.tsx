@@ -16,19 +16,23 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LocationScreen from '../screens/LocationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import SettingsScreen from '../screens/SettingsScreen';
-import QuestionnaireScreen from '../screens/QuestionnaireScreen';
-import OpeningScreen from '../screens/OpeningScreen';
-import RegistrationScreen from '../screens/RegistrationScreen';
-import { HomeStackParamList, RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
-import LinkingConfiguration from './LinkingConfiguration';
-import QuizScreen from '../screens/QuizScreen';
+import SettingsScreen from "../screens/SettingsScreen";
+import OpeningScreen from "../screens/OpeningScreen";
+import RegistrationScreen from "../screens/RegistrationScreen";
+import {
+  RootStackParamList,
+  RootTabParamList,
+  RootTabScreenProps,
+} from "../types";
+import LinkingConfiguration from "./LinkingConfiguration";
+import Questionnaire from "../screens/QuestionnaireScreen";
 
-export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
-  return (
-      <RootNavigator />
-   
-  );
+export default function HomeNavigation({
+  colorScheme,
+}: {
+  colorScheme: ColorSchemeName;
+}) {
+  return <RootNavigator />;
 }
 
 /**
@@ -40,10 +44,17 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} />
-      <Stack.Screen name="QuizScreen" component={QuizScreen} />
+      <Stack.Screen
+        name="Root"
+        component={BottomTabNavigator}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="NotFound"
+        component={NotFoundScreen}
+        options={{ title: "Oops!" }}
+      />
+      <Stack.Screen name="Questionnaire" component={Questionnaire} />
     </Stack.Navigator>
   );
 }
