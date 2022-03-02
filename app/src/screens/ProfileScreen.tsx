@@ -6,14 +6,12 @@ import { RootTabScreenProps } from '../types';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../navigation/context";
 import React, { useEffect, useState } from "react";
-import IsTestMode from "../constants/TestMode";
 
 import * as SecureStore from "expo-secure-store";
 
 export default function ProfileScreen({
   navigation,
 }: RootTabScreenProps<"TabOne">) {
-  let testmode = IsTestMode();
   const { signOut } = React.useContext(AuthContext);
 
   const [firstName, setFirstName] = useState<string | null>("");
