@@ -78,10 +78,14 @@ export default function RegistrationScreen({ navigation }) {
         }
       })
       .catch((error) => {
-        const { message } = error.response.data;
-        alert(message);
-        console.log(error);
-        console.log(error.response.data);
+        // const { message } = error.response.data;
+        // alert(message);
+        if (error.message == "Network Error") {
+          Alert.alert(error.message);
+        } else {
+          Alert.alert(error.response.data.message);
+        }
+        // console.log(error.response.data);
       });
   };
 

@@ -20,6 +20,8 @@ import { AuthContext } from "./navigation/context";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
 
+import { Alert } from "react-native";
+
 const AuthStack = createNativeStackNavigator();
 
 const AuthenticationStackNavigator = () => {
@@ -88,6 +90,7 @@ export default function App() {
         })
         .catch((error) => {
           console.log("Your are not logged in!"); // token error
+          Alert.alert("Connection failed. Please log in again.");
           setAuthValid(false);
         });
     });
