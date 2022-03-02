@@ -19,60 +19,14 @@ import QuestionnaireScreen from "./QuestionnaireScreen";
 import QuizScreen from "./QuizScreen";
 
 
-export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
-  const [completed, setCompleted] = useState(false);
-
+export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
     >
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <View style={[styles.frameContainer, styles.shadowProp]}>
-          <Text style={styles.headTextLeft}>Daily Questionnaire 1/3</Text>
-          <TouchableOpacity
-            // disabled={true}
-            style={styles.button}
-            onPress={
-              () =>
-                Alert.alert(
-                  "The questionnaire is not active"
-                ) /*navigation.navigate("Questionnaire")*/
-            }
-            activeOpacity={0.85}
-          >
-            <Text style={styles.buttonTextWhite}>Start</Text>
-          </TouchableOpacity>
-          <Text style={styles.blackText}>Available until 12:00 PM</Text>
-        </View>
-
-        <Text></Text>
-
-        <View style={[styles.frameContainer, styles.shadowProp]}>
-          <Text style={styles.headTextLeft}>Daily Questionnaire 2/3</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              if (!completed) {
-                navigation.navigate("QuizScreen");
-                setTimeout(() => {
-                  setCompleted(true);
-                }, 10000);
-              } else {
-                Alert.alert("You've already completed the questionnaire!");
-              }
-            }}
-            activeOpacity={0.85}
-          >
-            <Text style={styles.buttonTextWhite}>
-              {" "}
-              {completed ? "Completed!" : "Start"}
-            </Text>
-          </TouchableOpacity>
-          <Text style={styles.blackText}>Available until 6:00 PM</Text>
-        </View>
-
-        <View style={[styles.frameContainer, styles.shadowProp]}>
-          <Text style={styles.headTextLeft}>Daily Questionnaire 3/3</Text>
+          <Text style={styles.headTextLeft}>Daily Questionnaire</Text>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
@@ -82,16 +36,8 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
           >
             <Text style={styles.buttonTextWhite}>Start</Text>
           </TouchableOpacity>
-          <Text style={styles.blackText}>Available until 12:00 AM</Text>
+          <Text style={styles.blackText}>Available until 6:00 PM</Text>
         </View>
-
-        <Text
-          onPress={() => {
-            setCompleted(false);
-          }}
-        >
-          Reset
-        </Text>
       </KeyboardAvoidingView>
     </ScrollView>
   );
