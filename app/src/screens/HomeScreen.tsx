@@ -20,7 +20,8 @@ import QuizScreen from "./QuizScreen";
 
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
-  
+  const [completed, setCompleted] = useState(false);
+
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
@@ -31,7 +32,12 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
           <TouchableOpacity
             // disabled={true}
             style={styles.button}
-            onPress={() => navigation.navigate("Questionnaire")}
+            onPress={
+              () =>
+                Alert.alert(
+                  "The questionnaire is not active"
+                ) /*navigation.navigate("Questionnaire")*/
+            }
             activeOpacity={0.85}
           >
             <Text style={styles.buttonTextWhite}>Start</Text>
@@ -45,27 +51,47 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
           <Text style={styles.headTextLeft}>Daily Questionnaire 2/3</Text>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("QuizScreen")}
+            onPress={() => {
+              if (!completed) {
+                navigation.navigate("QuizScreen");
+                setTimeout(() => {
+                  setCompleted(true);
+                }, 10000);
+              } else {
+                Alert.alert("You've already completed the questionnaire!");
+              }
+            }}
             activeOpacity={0.85}
           >
-            <Text style={styles.buttonTextWhite}>Start</Text>
+            <Text style={styles.buttonTextWhite}>
+              {" "}
+              {completed ? "Completed!" : "Start"}
+            </Text>
           </TouchableOpacity>
           <Text style={styles.blackText}>Available until 6:00 PM</Text>
         </View>
-
-        <Text></Text>
 
         <View style={[styles.frameContainer, styles.shadowProp]}>
           <Text style={styles.headTextLeft}>Daily Questionnaire 3/3</Text>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("Questionnaire")}
+            onPress={() => {
+              navigation.navigate("QuizScreen");
+            }}
             activeOpacity={0.85}
           >
             <Text style={styles.buttonTextWhite}>Start</Text>
           </TouchableOpacity>
           <Text style={styles.blackText}>Available until 12:00 AM</Text>
         </View>
+
+        <Text
+          onPress={() => {
+            setCompleted(false);
+          }}
+        >
+          Reset
+        </Text>
       </KeyboardAvoidingView>
     </ScrollView>
   );

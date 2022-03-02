@@ -20,11 +20,14 @@ export default function QuizScreen({ navigation }) {
   const [length, setLength] = useState(0);
   const [index, setIndex] = useState(-1);
   const [prevIndex, setPrevIndex] = useState(-1);
-  const [buttonPressed, setButtonPressed] = useState(Array.from({ length: 20 }, i => false))
+  const [buttonPressed, setButtonPressed] = useState(
+    Array.from({ length: 20 }, (i) => false)
+  );
   const questionnaire = "sampleq1";
 
-  const [user_answers, setUserAnswers]: [answer_type[], Function] = useState([]);
-
+  const [user_answers, setUserAnswers]: [answer_type[], Function] = useState(
+    []
+  );
 
   interface answer_type {
     choiceIndex: Number | Array<number>;
@@ -198,22 +201,24 @@ export default function QuizScreen({ navigation }) {
     );
   };
 
-  
-
   const handleSubmit = async () => {
     // TODO handle submit to endpoints
     try {
       const token: string = (await getItemAsync("user_token"))!;
-      const res = await axios.post(`http://localhost:2400/api/question/answer`, {
-        questionnaire,
-        answers: user_answers
-      }, {
-        headers: {
-          Authorization: token
+      const res = await axios.post(
+        `http://localhost:2400/api/question/answer`,
+        {
+          questionnaire,
+          answers: user_answers,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
         }
-      });
+      );
       console.log(res.data);
-    } catch(error: any) {
+    } catch (error: any) {
       console.error(error);
     }
     console.log("submit");
