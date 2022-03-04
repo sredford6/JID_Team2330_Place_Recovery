@@ -6,13 +6,14 @@ import {
   ScrollView,
 } from "react-native";
 import Sliders from "../components/Sliders";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { getItemAsync } from "expo-secure-store";
 
 import { Slider, Icon } from "react-native-elements";
 import { TextInput } from "react-native-gesture-handler";
-import { storeDataString } from "../components/Helpers";
+import { convertTime, storeDataString } from "../components/Helpers";
+import { AuthContext, HomeContext } from "../navigation/context";
 
 export default function Questionnaire({ navigation }) {
   const { useState } = React;
@@ -29,13 +30,15 @@ export default function Questionnaire({ navigation }) {
     []
   );
 
+  const { userInfo } = useContext(AuthContext);
+
   interface answer_type {
     choiceIndex: Number | Array<number>;
     answer: String | number | Array<String> | Array<number>;
     questionId: String;
   }
 
-  const buttonFunction = (index) => {
+  const buttonFunction = (index: number) => {
     setButtonPressed((arr) =>
       arr.map((buttonPressed, i) =>
         i == index ? !buttonPressed : buttonPressed
@@ -222,7 +225,8 @@ export default function Questionnaire({ navigation }) {
       console.error(error);
     }
     console.log("submit");
-
+    let t = new Date().getTime();
+    storeDataString(userInfo.email + "_lastQTime", t.toString());
     navigation.navigate("Home");
   };
 

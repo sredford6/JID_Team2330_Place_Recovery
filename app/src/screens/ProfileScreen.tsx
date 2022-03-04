@@ -2,7 +2,7 @@ import { StyleSheet, Button } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
+import { RootTabScreenProps } from "../components/types";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../navigation/context";
 import React, { useEffect, useState } from "react";

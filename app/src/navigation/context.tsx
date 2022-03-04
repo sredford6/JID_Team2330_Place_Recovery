@@ -17,6 +17,15 @@ interface AuthContextType {
   userInfo: UserInfo;
 }
 
+interface HomeFunctions {
+  storeSubmitTime(time: number): any;
+}
+
+export interface HomeContextType {
+  homeFunctions: HomeFunctions;
+  homeVariables: string;
+}
+
 export const AuthContext = React.createContext<AuthContextType>({
   authFunctions: {
     signIn: (token: string) => {},
@@ -26,8 +35,9 @@ export const AuthContext = React.createContext<AuthContextType>({
   userInfo: { email: "", firstName: "", lastName: "" },
 });
 
-export const HomeContext = React.createContext<UserInfo>({
-  email: "",
-  firstName: "",
-  lastName: "",
+export const HomeContext = React.createContext<HomeContextType>({
+  homeFunctions: {
+    storeSubmitTime: (time: number) => {},
+  },
+  homeVariables: "abc",
 });
