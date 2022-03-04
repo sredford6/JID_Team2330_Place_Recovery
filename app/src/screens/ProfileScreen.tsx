@@ -7,13 +7,12 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../navigation/context";
 import React, { useEffect, useState } from "react";
 
-import * as SecureStore from "expo-secure-store";
 export default function ProfileScreen({
   navigation,
 }: RootTabScreenProps<"TabOne">) {
-  const { authContext, userInfo } = React.useContext(AuthContext);
+  const { authFunctions, userInfo } = React.useContext(AuthContext);
 
-  const { signOut } = authContext;
+  const { signOut } = authFunctions;
   const handleSignOut = () => {
     // if (testmode) {
     //   signOut();

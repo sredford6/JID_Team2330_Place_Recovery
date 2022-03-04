@@ -61,7 +61,7 @@ export default function App() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [authValid, setAuthValid] = React.useState(false);
 
-  const [userInfo, setUserInfo] = React.useState<UserInfo>();
+  const [userInfo, setUserInfo] = React.useState<UserInfo>(() => userInfo);
 
   const setItem = (name: string, data: string) => {
     try {
@@ -138,7 +138,7 @@ export default function App() {
 
   return (
     <AuthContext.Provider
-      value={{ authContext: authContext, userInfo: userInfo }}
+      value={{ authFunctions: authContext, userInfo: userInfo }}
     >
       <NavigationContainer>
         {authValid ? <HomeNavigation /> : <AuthenticationStackNavigator />}

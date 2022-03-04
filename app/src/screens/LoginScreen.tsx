@@ -20,8 +20,8 @@ import { AuthContext } from "../navigation/context";
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { authContext } = React.useContext(AuthContext);
-  const { signIn } = authContext;
+  const { authFunctions } = React.useContext(AuthContext);
+  const { signIn } = authFunctions;
   const handleLogin = () => {
     axios
       .post("http://localhost:2400/api/auth/login", {

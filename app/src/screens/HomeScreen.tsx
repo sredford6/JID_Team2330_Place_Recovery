@@ -15,7 +15,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import LocationScreen from "./LocationScreen";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as SecureStore from "expo-secure-store";
 import {
   convertTime,
   retrieveDataString,
@@ -65,7 +64,6 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
                   if (daysDifference < 1 && hoursDifference < 2) {
                     Alert.alert(
                       "TODO Alert Message",
-
                       "You've taken the questionnaire in " +
                         (hoursDifference == 0
                           ? minutesDifference == 0
