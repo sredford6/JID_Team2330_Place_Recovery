@@ -52,6 +52,18 @@ export default function Questionnaire({ navigation }) {
     setPrevIndex(index);
     console.log(index);
   };
+
+  const multipleButtonFunction = (index: number) => {
+    setButtonPressed((arr) =>
+      arr.map((buttonPressed, i) =>
+        i == index ? !buttonPressed : buttonPressed
+      )
+    );
+    //setPrevIndex(index);
+    console.log(index);
+  };
+
+
   const loadQuiz = async () => {
     await axios
       .get(`http://localhost:2400/api/question/${questionnaire}.json`)
@@ -166,7 +178,7 @@ export default function Questionnaire({ navigation }) {
           temp_answers[i].choiceIndex.push(idx);
           setUserAnswers(temp_answers);
           console.log(user_answers);
-          buttonFunction(idx);
+          multipleButtonFunction(idx);
         }}
       >
         <Text style={styles.buttonText}>{option}</Text>
