@@ -7,6 +7,29 @@ The project is a mobile application for mental health and risk stratification ba
   
 # Release Notes
 
+
+## Version 0.3.0 (Sprint 3)
+### Features
+- The app is able to store the time of the last questionnaire that user took. If the time difference is smaller than 2 hours, there will be an alert message to the user to ask if they want to take another questionnaire. If the time difference is larger than 2 hours, user can take questionnaire directly.  
+
+### Fixed Bugs
+- Will alert users they have no internet connection when they are trying to login.
+
+
+### Known Issues
+- Expo Go issue in iOS: https://stackoverflow.com/questions/45547406/fetch-or-axios-in-react-native-not-working-for-expo-for-ios-apps
+- Need to fix `components/Sliders.tsx` if we want to use sliders for type 1 (scales) question.
+- Need to update questionnaire avaliable time and completed status daily.
+
+### TODO
+- Refine UI design. (checkbox instead of buttons?)
+- Do more testing and find edge cases. 
+- Should we allow users to skip question? 
+- Record user's location when they are filling the questionnaire.
+- Probably combine three questionnaire tabs into one?
+- Next Sprint: users answers thrend.
+
+
 ## Version 0.2.0 (Sprint 2)
 ### Features
 - In the registration screen, the color of "Confirm password" will change to red if the passwords users enter do not match.
