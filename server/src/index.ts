@@ -7,7 +7,7 @@ import authRoute from "routes/auth";
 import questionRoute from "routes/questionnaire";
 import authObj from "config/auth.json";
 
-const port: number = parseInt(process.env.PORT || "") || 2400;
+const port: number = parseInt(process.env.PORT || "", 10) || 2400;
 const dbURI = authObj.mongodb.uri;
 const dbOptions = {
   useNewUrlParser: true,
