@@ -8,16 +8,12 @@ import { AuthContext } from "../navigation/context";
 import React, { useEffect, useState } from "react";
 
 import * as SecureStore from "expo-secure-store";
-
 export default function ProfileScreen({
   navigation,
 }: RootTabScreenProps<"TabOne">) {
-  const { signOut } = React.useContext(AuthContext);
+  const { authContext, userInfo } = React.useContext(AuthContext);
 
-  const [firstName, setFirstName] = useState<string | null>("");
-  const [lastName, setLastName] = useState<string | null>("");
-  const [email, setEmail] = useState<string | null>("");
-
+  const { signOut } = authContext;
   const handleSignOut = () => {
     // if (testmode) {
     //   signOut();
@@ -29,14 +25,6 @@ export default function ProfileScreen({
 
   useEffect(() => {
     // load user info
-    (async () => {
-      const firstName = await SecureStore.getItemAsync("first_name");
-      const lastName = await SecureStore.getItemAsync("last_name");
-      const email = await SecureStore.getItemAsync("email");
-      setFirstName(firstName);
-      setLastName(lastName);
-      setEmail(email);
-    })();
   }, []);
 
   // console.log(firstName);
@@ -44,9 +32,9 @@ export default function ProfileScreen({
     <View style={styles.container}>
       <Text>Profile screen</Text>
       <Text>
-        Name: {firstName} {lastName}
+        Name: {userInfo.firstName} {userInfo.lastName}
         {"\n Email: "}
-        {email}
+        {userInfo.email}
       </Text>
       <TouchableOpacity
         style={styles.button}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Alert,
   StyleSheet,
@@ -22,99 +22,102 @@ import {
   storeDataString,
   timeDifference,
 } from "../components/Helpers";
+import { HomeContext, UserInfo, AuthContext } from "../navigation/context";
 
 import { ScrollView } from "react-native";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
   const [email, setEmail] = useState<string | null>("");
-  const [lastQTime, setLastQTime] = useState<number>(-1);
 
+  const { userInfo } = useContext(AuthContext);
+  const [lastQTime, setLastQTime] = useState<number>(0);
   useEffect(() => {
     // load email info and last q time
     (async () => {
-      const email_ = await SecureStore.getItemAsync("email");
-      setEmail(email_);
       const lastQTime_ = Number(
-        await retrieveDataString(email_ + "_lastQTime")
+        await retrieveDataString(userInfo.email + "_lastQTime")
       );
       if (!lastQTime_) {
         console.log("fail to fetech last qtime.");
       }
-      // console.log(lastQTime_);
+      console.log(lastQTime_);
       setLastQTime(lastQTime_);
     })();
   }, []);
 
+  console.log(userInfo.firstName, userInfo.lastName);
   return (
-    <ScrollView
-      contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
-    >
-      <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <View style={[styles.frameContainer, styles.shadowProp]}>
-          <Text style={styles.headTextLeft}>Daily Questionnaire</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              let time = new Date().getTime();
-              if (lastQTime != -1) {
-                let { daysDifference, hoursDifference, minutesDifference } =
-                  timeDifference(time, lastQTime);
-                // 1 is the threshold of reminding
-                if (daysDifference < 1 && hoursDifference < 2) {
-                  Alert.alert(
-                    "TODO Alert Message",
+    <HomeContext.Provider value={userInfo}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+      >
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
+          <View style={[styles.frameContainer, styles.shadowProp]}>
+            <Text style={styles.headTextLeft}>Daily Questionnaire</Text>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                let time = new Date().getTime();
+                if (lastQTime != -1) {
+                  let { daysDifference, hoursDifference, minutesDifference } =
+                    timeDifference(time, lastQTime);
+                  // 1 is the threshold of reminding
+                  if (daysDifference < 1 && hoursDifference < 2) {
+                    Alert.alert(
+                      "TODO Alert Message",
 
-                    "You've taken the questionnaire in " +
-                      (hoursDifference == 0
-                        ? minutesDifference == 0
-                          ? "less than a minute"
-                          : minutesDifference +
-                            (minutesDifference > 1 ? " minutes " : " minute")
-                        : hoursDifference +
-                          (hoursDifference > 1 ? "hours" : "hour")) +
-                      " ago, do you want to take it again?",
-                    [
-                      { text: "Cancel" },
-                      {
-                        text: "Yes",
-                        onPress: () => {
-                          navigation.navigate("Questionnaire");
+                      "You've taken the questionnaire in " +
+                        (hoursDifference == 0
+                          ? minutesDifference == 0
+                            ? "less than a minute"
+                            : minutesDifference +
+                              (minutesDifference > 1 ? " minutes " : " minute")
+                          : hoursDifference +
+                            (hoursDifference > 1 ? " hours" : " hour")) +
+                        " ago, do you want to take it again?",
+                      [
+                        { text: "Cancel" },
+                        {
+                          text: "Yes",
+                          onPress: () => {
+                            navigation.navigate("Questionnaire");
+                          },
                         },
-                      },
-                    ]
-                  );
+                      ]
+                    );
+                  } else {
+                    navigation.navigate("Questionnaire");
+                  }
+                  // move to questionnaire
+                  storeDataString(email + "_lastQTime", time.toString());
+                  setLastQTime(time);
                 } else {
                   navigation.navigate("Questionnaire");
+                  storeDataString(email + "_lastQTime", time.toString());
+                  setLastQTime(time);
                 }
-                // move to questionnaire
-                storeDataString(email + "_lastQTime", time.toString());
-                setLastQTime(time);
-              } else {
-                navigation.navigate("Questionnaire");
-                storeDataString(email + "_lastQTime", time.toString());
-                setLastQTime(time);
-              }
-            }}
-            activeOpacity={0.85}
-          >
-            <Text style={styles.buttonTextWhite}>Start</Text>
-          </TouchableOpacity>
-          <Text style={styles.blackText}>
-            {lastQTime != -1
-              ? "Last questionnaire taken at: " +
-                convertTime(new Date(lastQTime))
-              : "You haven't take any questionnaire yet!"}
-          </Text>
-          <Text
-            onPress={() => {
-              setLastQTime(-1);
-            }}
-          >
-            TESR: remove last taken date
-          </Text>
-        </View>
-      </KeyboardAvoidingView>
-    </ScrollView>
+              }}
+              activeOpacity={0.85}
+            >
+              <Text style={styles.buttonTextWhite}>Start</Text>
+            </TouchableOpacity>
+            <Text style={styles.blackText}>
+              {lastQTime != 0
+                ? "Last questionnaire taken at: " +
+                  convertTime(new Date(lastQTime))
+                : "You haven't take any questionnaire yet!"}
+            </Text>
+            <Text
+              onPress={() => {
+                setLastQTime(0);
+              }}
+            >
+              TEST: remove last taken date
+            </Text>
+          </View>
+        </KeyboardAvoidingView>
+      </ScrollView>
+    </HomeContext.Provider>
   );
 }
 

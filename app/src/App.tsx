@@ -15,7 +15,7 @@ import Verification from "./screens/Verification";
 import EmailVerificationScreen from "./screens/EmailVerificationScreen";
 import Loading from "./screens/Loading";
 import React, { useState } from "react";
-import { AuthContext } from "./navigation/context";
+import { AuthContext, UserInfo } from "./navigation/context";
 
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
@@ -61,6 +61,8 @@ export default function App() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [authValid, setAuthValid] = React.useState(false);
 
+  const [userInfo, setUserInfo] = React.useState<UserInfo>();
+
   const setItem = (name: string, data: string) => {
     try {
       SecureStore.setItemAsync(name, data);
@@ -82,10 +84,14 @@ export default function App() {
         })
         .then((response) => {
           // TOFIX: probably this should be done somewhere else; maybe in signUp ?
-          setItem("first_name", response.data["firstName"]);
-          setItem("last_name", response.data["lastName"]);
-          setItem("email", response.data["email"]);
-
+          // setItem("first_name", response.data["firstName"]);
+          // setItem("last_name", response.data["lastName"]);
+          // setItem("email", response.data["email"]);
+          setUserInfo({
+            email: response.data["email"],
+            firstName: response.data["firstName"],
+            lastName: response.data["lastName"],
+          });
           setAuthValid(true);
         })
         .catch((error) => {
@@ -131,9 +137,11 @@ export default function App() {
   }
 
   return (
-    <AuthContext.Provider value={authContext}>
+    <AuthContext.Provider
+      value={{ authContext: authContext, userInfo: userInfo }}
+    >
       <NavigationContainer>
-        {true ? <HomeNavigation /> : <AuthenticationStackNavigator />}
+        {authValid ? <HomeNavigation /> : <AuthenticationStackNavigator />}
       </NavigationContainer>
     </AuthContext.Provider>
   );

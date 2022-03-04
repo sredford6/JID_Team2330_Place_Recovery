@@ -12,7 +12,8 @@ import { getItemAsync } from "expo-secure-store";
 
 import { Slider, Icon } from "react-native-elements";
 import { TextInput } from "react-native-gesture-handler";
-import { ConvertTime } from "../components/Helpers";
+import { storeDataString } from "../components/Helpers";
+
 export default function Questionnaire({ navigation }) {
   const { useState } = React;
   const [questions, setQuestions] = useState();
@@ -221,6 +222,7 @@ export default function Questionnaire({ navigation }) {
       console.error(error);
     }
     console.log("submit");
+
     navigation.navigate("Home");
   };
 
