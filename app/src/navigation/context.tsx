@@ -8,7 +8,6 @@ export interface UserInfo {
 
 interface AuthFunctions {
   signIn(token: string): any;
-  signUp(token: string): any;
   signOut(): any;
 }
 
@@ -29,7 +28,6 @@ export interface HomeContextType {
 export const AuthContext = React.createContext<AuthContextType>({
   authFunctions: {
     signIn: (token: string) => {},
-    signUp: (token: string) => {},
     signOut: () => {},
   },
   userInfo: { email: "", firstName: "", lastName: "" },

@@ -109,11 +109,11 @@ export default function App() {
         setItem("user_token", token);
         verifyToken();
       },
-      signUp: (token: string) => {
-        setIsLoading(false);
-        setItem("user_token", token);
-        verifyToken();
-      },
+      // signUp: (token: string) => {
+      //   setIsLoading(false);
+      //   setItem("user_token", token);
+      //   verifyToken();
+      // },
       signOut: () => {
         setIsLoading(false);
         setAuthValid(false);

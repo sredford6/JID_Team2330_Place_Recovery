@@ -7,8 +7,13 @@ import {
   TextInput,
   KeyboardAvoidingView,
   ImageBackground,
+  TouchableOpacity,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
+import { NavigationContainer } from "@react-navigation/native";
+
 import axios from "axios";
 import { ScrollView } from "react-native";
 import { AuthContext } from "../navigation/context";
