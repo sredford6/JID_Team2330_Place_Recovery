@@ -28,15 +28,15 @@ export default function ProfileScreen({
   };
 
   useEffect(() => {
-    async function setProfile() {
+    // load user info
+    (async () => {
       const firstName = await SecureStore.getItemAsync("first_name");
       const lastName = await SecureStore.getItemAsync("last_name");
       const email = await SecureStore.getItemAsync("email");
       setFirstName(firstName);
       setLastName(lastName);
       setEmail(email);
-    }
-    setProfile();
+    })();
   }, []);
 
   // console.log(firstName);

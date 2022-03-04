@@ -12,7 +12,7 @@ import { getItemAsync } from "expo-secure-store";
 
 import { Slider, Icon } from "react-native-elements";
 import { TextInput } from "react-native-gesture-handler";
-
+import { ConvertTime } from "../components/Helpers";
 export default function Questionnaire({ navigation }) {
   const { useState } = React;
   const [questions, setQuestions] = useState();

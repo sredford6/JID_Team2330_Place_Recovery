@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Alert,
   StyleSheet,
@@ -7,16 +7,44 @@ import {
   KeyboardAvoidingView,
   ImageBackground,
 } from "react-native";
-import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
+import { Text, View } from "../components/Themed";
+import { RootTabScreenProps } from "../types";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import LocationScreen from './LocationScreen';
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import LocationScreen from "./LocationScreen";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
+import {
+  convertTime,
+  retrieveDataString,
+  storeDataString,
+  timeDifference,
+} from "../components/Helpers";
+
 import { ScrollView } from "react-native";
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
+  const [email, setEmail] = useState<string | null>("");
+  const [lastQTime, setLastQTime] = useState<number>(-1);
+
+  useEffect(() => {
+    // load email info and last q time
+    (async () => {
+      const email_ = await SecureStore.getItemAsync("email");
+      setEmail(email_);
+      const lastQTime_ = Number(
+        await retrieveDataString(email_ + "_lastQTime")
+      );
+      if (!lastQTime_) {
+        console.log("fail to fetech last qtime.");
+      }
+      // console.log(lastQTime_);
+      setLastQTime(lastQTime_);
+    })();
+  }, []);
+
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
@@ -27,13 +55,63 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              navigation.navigate("Questionnaire");
+              let time = new Date().getTime();
+              if (lastQTime != -1) {
+                let { daysDifference, hoursDifference, minutesDifference } =
+                  timeDifference(time, lastQTime);
+                // 1 is the threshold of reminding
+                if (daysDifference < 1 && hoursDifference < 2) {
+                  Alert.alert(
+                    "TODO Alert Message",
+
+                    "You've taken the questionnaire in " +
+                      (hoursDifference == 0
+                        ? minutesDifference == 0
+                          ? "less than a minute"
+                          : minutesDifference +
+                            (minutesDifference > 1 ? " minutes " : " minute")
+                        : hoursDifference +
+                          (hoursDifference > 1 ? "hours" : "hour")) +
+                      " ago, do you want to take it again?",
+                    [
+                      { text: "Cancel" },
+                      {
+                        text: "Yes",
+                        onPress: () => {
+                          navigation.navigate("Questionnaire");
+                        },
+                      },
+                    ]
+                  );
+                } else {
+                  navigation.navigate("Questionnaire");
+                }
+                // move to questionnaire
+                storeDataString(email + "_lastQTime", time.toString());
+                setLastQTime(time);
+              } else {
+                navigation.navigate("Questionnaire");
+                storeDataString(email + "_lastQTime", time.toString());
+                setLastQTime(time);
+              }
             }}
             activeOpacity={0.85}
           >
             <Text style={styles.buttonTextWhite}>Start</Text>
           </TouchableOpacity>
-          <Text style={styles.blackText}>Available until 6:00 PM</Text>
+          <Text style={styles.blackText}>
+            {lastQTime != -1
+              ? "Last questionnaire taken at: " +
+                convertTime(new Date(lastQTime))
+              : "You haven't take any questionnaire yet!"}
+          </Text>
+          <Text
+            onPress={() => {
+              setLastQTime(-1);
+            }}
+          >
+            TESR: remove last taken date
+          </Text>
         </View>
       </KeyboardAvoidingView>
     </ScrollView>
@@ -41,11 +119,10 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
 }
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   frameContainer: {
     width: "88%",
@@ -67,24 +144,24 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   leftContainer: {
-    alignItems: 'flex-start',
-    alignContent: 'space-between',
+    alignItems: "flex-start",
+    alignContent: "space-between",
   },
   blackText: {
     fontSize: 14,
-    color: "#000000"
+    color: "#000000",
   },
   headTextLeft: {
-    textAlign: 'left',
+    textAlign: "left",
     fontSize: 18,
     color: "#000000",
     //paddingLeft: 8,
   },
   headTextRight: {
-    textAlign: 'right',
+    textAlign: "right",
     fontSize: 18,
     //paddingRight: 8,
   },
@@ -108,6 +185,4 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-
 });
-

@@ -65,7 +65,7 @@ export default function App() {
     try {
       SecureStore.setItemAsync(name, data);
       // console.log("data stored");
-    } catch (error) {
+    } catch (error: any) {
       // Error saving data
       console.log("AsyncStorage save error: " + error.message);
     }
@@ -133,7 +133,7 @@ export default function App() {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {authValid ? <HomeNavigation /> : <AuthenticationStackNavigator />}
+        {true ? <HomeNavigation /> : <AuthenticationStackNavigator />}
       </NavigationContainer>
     </AuthContext.Provider>
   );

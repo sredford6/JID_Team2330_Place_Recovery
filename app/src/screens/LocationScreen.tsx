@@ -17,6 +17,7 @@ import React, { useState, useEffect } from "react";
 
 import * as Location from "expo-location";
 import { LocationGeocodedAddress, LocationObject } from "expo-location";
+import { convertTime } from "../components/Helpers";
 
 export default function LocationScreen() {
   const [location, setLocation] = useState<LocationObject>();
@@ -25,25 +26,6 @@ export default function LocationScreen() {
   const [localTime, setLocalTime] = useState<string>();
   const [timestamp, setTimestamp] = useState<number>();
   const [fetching, setFetching] = useState(false);
-
-  const ConvertTime = (t: Date) => {
-    let format =
-      t.toString().split(" ")[0] +
-      ", " +
-      ("0" + (t.getMonth() + 1)).slice(-2) +
-      "/" +
-      ("0" + t.getDate()).slice(-2) +
-      "/" +
-      t.getFullYear() +
-      " - " +
-      ("0" + t.getHours()).slice(-2) +
-      ":" +
-      ("0" + t.getMinutes()).slice(-2) +
-      ":" +
-      ("0" + t.getSeconds()).slice(-2) +
-      " ";
-    return format;
-  };
 
   const GetLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -70,7 +52,7 @@ export default function LocationScreen() {
     setLocation(location);
     setAddress(address[0]);
     setTimestamp(location.timestamp);
-    setLocalTime(ConvertTime(new Date(location.timestamp)));
+    setLocalTime(convertTime(new Date(location.timestamp)));
   };
 
   const FormatInfo = () => {
