@@ -1,6 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 
@@ -16,6 +13,8 @@ import EmailVerificationScreen from "./screens/EmailVerificationScreen";
 import Loading from "./screens/Loading";
 import React, { useState } from "react";
 import { AuthContext, UserInfo } from "./navigation/context";
+
+import {backendUrl} from "./config/config.json";
 
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
@@ -77,7 +76,7 @@ export default function App() {
     SecureStore.getItemAsync("user_token").then((token) => {
       // console.log(token);
       axios
-        .get("http://localhost:2400/api/auth/jwt-test", {
+        .get(`${backendUrl}/api/auth/jwt-test`, {
           headers: {
             Authorization: token,
           },
