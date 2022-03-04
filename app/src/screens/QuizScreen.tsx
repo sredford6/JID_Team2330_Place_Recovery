@@ -5,17 +5,15 @@ import {
   View,
   ScrollView,
 } from "react-native";
-import Sliders from "../components/Sliders";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {getItemAsync} from "expo-secure-store";
-
-import { Slider, Icon } from "react-native-elements";
 import { TextInput } from "react-native-gesture-handler";
+
+import {backendUrl} from "../config/config.json";
 
 
 export default function QuizScreen({ navigation }) {
-  const { useState } = React;
   const [questions, setQuestions] = useState();
   const [length, setLength] = useState(0);
   const [index, setIndex] = useState(-1);
@@ -48,7 +46,7 @@ export default function QuizScreen({ navigation }) {
   };
   const loadQuiz = async () => {
     await axios
-      .get(`http://localhost:2400/api/question/${questionnaire}.json`)
+      .get(`${backendUrl}/api/question/${questionnaire}.json`)
       .then((res) => {
         const sampleQuestions = res.data;
         setLength(sampleQuestions.length);
@@ -204,7 +202,7 @@ export default function QuizScreen({ navigation }) {
     // TODO handle submit to endpoints
     try {
       const token: string = (await getItemAsync("user_token"))!;
-      const res = await axios.post(`http://localhost:2400/api/question/answer`, {
+      const res = await axios.post(`${backendUrl}/api/question/answer`, {
         questionnaire,
         answers: user_answers
       }, {

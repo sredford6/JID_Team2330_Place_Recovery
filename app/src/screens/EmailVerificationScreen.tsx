@@ -1,13 +1,11 @@
 import React from 'react';
-import { ReactDOM } from 'react';
-import { StyleSheet, Button, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import { StyleSheet, TextInput, ScrollView, KeyboardAvoidingView } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import ButtonDesign from '../components/Button';
-import { useLinkProps } from '@react-navigation/native';
-import HomeScreen from '../screens/HomeScreen';
-import OpeningScreen from './OpeningScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import {backendUrl} from "../config/config.json";
 
 import axios from 'axios';
 
@@ -21,9 +19,9 @@ export default function EmailVerificationScreen({navigation}) {
 
 
     const handleEmailVerification = (email: string) => {
-  
+      console.log(backendUrl);
       axios
-        .get("http://localhost:2400/api/auth/get-reset", {params: {email}})
+        .get(`${backendUrl}/api/auth/get-reset`, {params: {email}})
         .then((response) => {
           
           const { message } = response.data;

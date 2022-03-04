@@ -1,0 +1,7 @@
+{
+    "backendUrls": [
+        "https://placenrecovery.loca.lt",
+        "http://localhost:2400"
+    ],
+    "backendUrl": "https://placenrecovery.loca.lt"
+}

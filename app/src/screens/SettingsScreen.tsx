@@ -1,8 +1,6 @@
 import { StyleSheet, Button } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from "../components/types";
 
 export default function SettingsScreen() {
   return (
