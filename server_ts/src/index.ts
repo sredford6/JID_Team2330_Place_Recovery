@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
+import localtunnel from "localtunnel";
 const app = express();
 import authRoute from "routes/auth";
 import questionRoute from "routes/questionnaire";
@@ -42,4 +43,13 @@ async function startServer() {
   });
 }
 
+async function setupTunnel() {
+  const tunnel = await localtunnel({ port, subdomain: "placenrecovery" });
+  console.log(`Tunnel URL: ${tunnel.url}`);
+  tunnel.on("close", () => {
+    console.log("Tunnel Closed.");
+  });
+}
+
 startServer();
+setupTunnel();

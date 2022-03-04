@@ -38,18 +38,6 @@ router.post("/create", verify, async (req, res: Response) => {
   }
 });
 
-router.get("/:questionnaire", async (req: Request, res: Response) => {
-  try {
-    const { questionnaire } = req.params;
-    const questionSaveFile = path.join(questionsPath, questionnaire);
-    await access(questionSaveFile);
-    res.header("Content-Type", "application/json");
-    res.sendFile(questionSaveFile);
-  } catch (error: any) {
-    res.status(error.httpCode || 500).json(error);
-  }
-});
-
 router.post("/answer", verify, async (req, res: Response) => {
   try {
     const user = await User.findOne({ email: req.currentUser.email });
@@ -73,6 +61,29 @@ router.post("/answer", verify, async (req, res: Response) => {
     await user.save();
 
     res.status(200).json({ storedAnswer: true });
+  } catch (error: any) {
+    console.error(error);
+    res.status(error.httpCode || 500).json(error);
+  }
+});
+
+router.get("/answer", verify, async (req, res: Response) => {
+  try {
+    const user = await User.findOne({ email: req.currentUser.email });
+    res.status(200).json({ answers: user.answers });
+  } catch (error: any) {
+    console.error(error);
+    res.status(error.httpCode || 500).json(error);
+  }
+});
+
+router.get("/:questionnaire", async (req: Request, res: Response) => {
+  try {
+    const { questionnaire } = req.params;
+    const questionSaveFile = path.join(questionsPath, questionnaire);
+    await access(questionSaveFile);
+    res.header("Content-Type", "application/json");
+    res.sendFile(questionSaveFile);
   } catch (error: any) {
     res.status(error.httpCode || 500).json(error);
   }
