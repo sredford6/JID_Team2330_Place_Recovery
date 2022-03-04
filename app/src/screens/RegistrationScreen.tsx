@@ -25,8 +25,8 @@ export default function RegistrationScreen({ navigation }) {
     React.useState(false);
   const [error, setError] = React.useState("");
 
-  const { authContext } = React.useContext(AuthContext);
-  const { signUp } = authContext;
+  const { authFunctions } = React.useContext(AuthContext);
+  const { signUp } = authFunctions;
 
   const passwordMatchCheck = () => {
     if (
