@@ -2,31 +2,22 @@ import React, { useState, useEffect, useContext } from "react";
 import {
   Alert,
   StyleSheet,
-  TouchableHighlight,
-  TextInput,
   KeyboardAvoidingView,
-  ImageBackground,
 } from "react-native";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../components/types";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useIsFocused } from "@react-navigation/native";
 
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import LocationScreen from "./LocationScreen";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   convertTime,
   retrieveDataString,
   storeDataString,
   timeDifference,
 } from "../components/Helpers";
-import { HomeContext, UserInfo, AuthContext } from "../navigation/context";
+import { AuthContext } from "../navigation/context";
 
 import { ScrollView } from "react-native";
-import Questionnaire from "./QuestionnaireScreen";
 
 export default function HomeScreen({
   navigation,
@@ -48,7 +39,6 @@ export default function HomeScreen({
       setLastQTime(lastQTime_);
     })();
   }, [isFocused]);
-
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}

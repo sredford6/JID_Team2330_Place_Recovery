@@ -1,15 +1,12 @@
 import React from 'react';
-import { ReactDOM } from 'react';
-import { StyleSheet, Button, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import { StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import ButtonDesign from '../components/Button';
-import { useLinkProps } from '@react-navigation/native';
-import HomeScreen from '../screens/HomeScreen';
-import OpeningScreen from './OpeningScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import axios from 'axios';
+
+import {backendUrl} from "../config/config.json";
 
 import { AuthContext } from "../navigation/context";
 
@@ -67,7 +64,7 @@ export default function RegistrationScreen({ navigation }) {
 
   const handleRegistration = (signUpInput) => {
     axios
-      .post("http://localhost:2400/api/auth/signup", signUpInput)
+      .post(`${backendUrl}/api/auth/signup`, signUpInput)
       .then((response) => {
         console.log(response.data);
         const { message } = response.data;

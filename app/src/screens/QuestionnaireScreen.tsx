@@ -5,15 +5,15 @@ import {
   View,
   ScrollView,
 } from "react-native";
-import Sliders from "../components/Sliders";
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { getItemAsync } from "expo-secure-store";
 
-import { Slider, Icon } from "react-native-elements";
 import { TextInput } from "react-native-gesture-handler";
-import { convertTime, storeDataString } from "../components/Helpers";
-import { AuthContext, HomeContext } from "../navigation/context";
+import { storeDataString } from "../components/Helpers";
+import { AuthContext } from "../navigation/context";
+
+import {backendUrl} from "../config/config.json";
 
 export default function Questionnaire({ navigation }) {
   const { useState } = React;
@@ -52,9 +52,21 @@ export default function Questionnaire({ navigation }) {
     setPrevIndex(index);
     console.log(index);
   };
+
+  const multipleButtonFunction = (index: number) => {
+    setButtonPressed((arr) =>
+      arr.map((buttonPressed, i) =>
+        i == index ? !buttonPressed : buttonPressed
+      )
+    );
+    //setPrevIndex(index);
+    console.log(index);
+  };
+
+
   const loadQuiz = async () => {
     await axios
-      .get(`http://localhost:2400/api/question/${questionnaire}.json`)
+      .get(`${backendUrl}/api/question/${questionnaire}.json`)
       .then((res) => {
         const sampleQuestions = res.data;
         setLength(sampleQuestions.length);
@@ -166,7 +178,7 @@ export default function Questionnaire({ navigation }) {
           temp_answers[i].choiceIndex.push(idx);
           setUserAnswers(temp_answers);
           console.log(user_answers);
-          buttonFunction(idx);
+          multipleButtonFunction(idx);
         }}
       >
         <Text style={styles.buttonText}>{option}</Text>
@@ -209,7 +221,7 @@ export default function Questionnaire({ navigation }) {
     try {
       const token: string = (await getItemAsync("user_token"))!;
       const res = await axios.post(
-        `http://localhost:2400/api/question/answer`,
+        `${backendUrl}/api/question/answer`,
         {
           questionnaire,
           answers: user_answers,

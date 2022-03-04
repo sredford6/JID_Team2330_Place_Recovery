@@ -4,18 +4,21 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableHighlight,
   TextInput,
   KeyboardAvoidingView,
   ImageBackground,
   TouchableOpacity,
 } from "react-native";
+
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { NavigationContainer } from "@react-navigation/native";
+
 import axios from "axios";
 import { ScrollView } from "react-native";
 import { AuthContext } from "../navigation/context";
+
+import {backendUrl} from "../config/config.json";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -24,7 +27,7 @@ export default function LoginScreen({ navigation }) {
   const { signIn } = authFunctions;
   const handleLogin = () => {
     axios
-      .post("http://localhost:2400/api/auth/login", {
+      .post(`${backendUrl}/api/auth/login`, {
         email: email,
         password: password,
       })
