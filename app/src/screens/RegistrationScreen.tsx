@@ -25,7 +25,8 @@ export default function RegistrationScreen({ navigation }) {
     React.useState(false);
   const [error, setError] = React.useState("");
 
-  const { signUp } = React.useContext(AuthContext);
+  const { authContext } = React.useContext(AuthContext);
+  const { signUp } = authContext;
 
   const passwordMatchCheck = () => {
     if (
@@ -78,10 +79,14 @@ export default function RegistrationScreen({ navigation }) {
         }
       })
       .catch((error) => {
-        const { message } = error.response.data;
-        alert(message);
-        console.log(error);
-        console.log(error.response.data);
+        // const { message } = error.response.data;
+        // alert(message);
+        if (error.message == "Network Error") {
+          Alert.alert(error.message);
+        } else {
+          Alert.alert(error.response.data.message);
+        }
+        // console.log(error.response.data);
       });
   };
 

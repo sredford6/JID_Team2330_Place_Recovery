@@ -1,5 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
+import User, { IUser } from "models/user.model";
 
 import authObj from "config/auth.json";
 
@@ -11,7 +12,9 @@ export async function verify(req: Request, res: Response, next: NextFunction) {
   else {
     try {
       const decoded = jwt.verify(token, tokenSecret);
-      req.currentUser = (decoded as JwtPayload).data;
+      const { email, password } = decoded as JwtPayload;
+      const user: IUser = await User.findOne({ email, password });
+      req.currentUser = user;
       next();
     } catch (error) {
       res.status(500).json({ error: "failed to authenticate token" });

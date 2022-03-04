@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Alert,
   StyleSheet,
@@ -7,64 +7,110 @@ import {
   KeyboardAvoidingView,
   ImageBackground,
 } from "react-native";
-import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
+import { Text, View } from "../components/Themed";
+import { RootTabScreenProps } from "../components/types";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import LocationScreen from './LocationScreen';
+import { useIsFocused } from "@react-navigation/native";
+
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import LocationScreen from "./LocationScreen";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  convertTime,
+  retrieveDataString,
+  storeDataString,
+  timeDifference,
+} from "../components/Helpers";
+import { HomeContext, UserInfo, AuthContext } from "../navigation/context";
+
 import { ScrollView } from "react-native";
-import QuestionnaireScreen from "./QuestionnaireScreen";
-import QuizScreen from "./QuizScreen";
+import Questionnaire from "./QuestionnaireScreen";
 
+export default function HomeScreen({
+  navigation,
+}: RootTabScreenProps<"HomeStack">) {
+  const { userInfo } = useContext(AuthContext);
+  const [lastQTime, setLastQTime] = useState<number>(0);
 
-export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
-  
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    // load email info and last q time
+    (async () => {
+      const lastQTime_ = Number(
+        await retrieveDataString(userInfo.email + "_lastQTime")
+      );
+      if (!lastQTime_) {
+        console.log("fail to fetech last qtime.");
+      }
+      setLastQTime(lastQTime_);
+    })();
+  }, [isFocused]);
+
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
     >
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <View style={[styles.frameContainer, styles.shadowProp]}>
-          <Text style={styles.headTextLeft}>Daily Questionnaire 1/3</Text>
+          <Text style={styles.headTextLeft}>Daily Questionnaire</Text>
           <TouchableOpacity
-            // disabled={true}
             style={styles.button}
-            onPress={() => navigation.navigate("Questionnaire")}
+            onPress={() => {
+              let time = new Date().getTime();
+              if (lastQTime != -1) {
+                let { daysDifference, hoursDifference, minutesDifference } =
+                  timeDifference(time, lastQTime);
+                // 1 is the threshold of reminding
+                if (daysDifference < 1 && hoursDifference < 2) {
+                  Alert.alert(
+                    "TODO Alert Message",
+                    "You've taken the questionnaire in " +
+                      (hoursDifference == 0
+                        ? minutesDifference == 0
+                          ? "less than a minute"
+                          : minutesDifference +
+                            (minutesDifference > 1 ? " minutes " : " minute")
+                        : hoursDifference +
+                          (hoursDifference > 1 ? " hours" : " hour")) +
+                      " ago, do you want to take it again?",
+                    [
+                      { text: "Cancel" },
+                      {
+                        text: "Yes",
+                        onPress: () => {
+                          navigation.navigate("Questionnaire");
+                        },
+                      },
+                    ]
+                  );
+                } else {
+                  navigation.navigate("Questionnaire");
+                }
+              } else {
+                navigation.navigate("Questionnaire");
+              }
+            }}
             activeOpacity={0.85}
           >
             <Text style={styles.buttonTextWhite}>Start</Text>
           </TouchableOpacity>
-          <Text style={styles.blackText}>Available until 12:00 PM</Text>
-        </View>
-
-        <Text></Text>
-
-        <View style={[styles.frameContainer, styles.shadowProp]}>
-          <Text style={styles.headTextLeft}>Daily Questionnaire 2/3</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate("QuizScreen")}
-            activeOpacity={0.85}
+          <Text style={styles.blackText}>
+            {lastQTime != 0
+              ? "Last questionnaire taken at: " +
+                convertTime(new Date(lastQTime))
+              : "You haven't take any questionnaire yet!"}
+          </Text>
+          <Text
+            onPress={() => {
+              setLastQTime(0);
+              storeDataString(userInfo.email + "_lastQTime", "0");
+            }}
           >
-            <Text style={styles.buttonTextWhite}>Start</Text>
-          </TouchableOpacity>
-          <Text style={styles.blackText}>Available until 6:00 PM</Text>
-        </View>
-
-        <Text></Text>
-
-        <View style={[styles.frameContainer, styles.shadowProp]}>
-          <Text style={styles.headTextLeft}>Daily Questionnaire 3/3</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate("Questionnaire")}
-            activeOpacity={0.85}
-          >
-            <Text style={styles.buttonTextWhite}>Start</Text>
-          </TouchableOpacity>
-          <Text style={styles.blackText}>Available until 12:00 AM</Text>
+            TEST: remove last taken date
+          </Text>
         </View>
       </KeyboardAvoidingView>
     </ScrollView>
@@ -72,11 +118,10 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
 }
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   frameContainer: {
     width: "88%",
@@ -98,24 +143,24 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   leftContainer: {
-    alignItems: 'flex-start',
-    alignContent: 'space-between',
+    alignItems: "flex-start",
+    alignContent: "space-between",
   },
   blackText: {
     fontSize: 14,
-    color: "#000000"
+    color: "#000000",
   },
   headTextLeft: {
-    textAlign: 'left',
+    textAlign: "left",
     fontSize: 18,
     color: "#000000",
     //paddingLeft: 8,
   },
   headTextRight: {
-    textAlign: 'right',
+    textAlign: "right",
     fontSize: 18,
     //paddingRight: 8,
   },
@@ -139,6 +184,4 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-
 });
-

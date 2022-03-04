@@ -1,3 +1,4 @@
+/* tslint:disable:max-classes-per-file */
 enum QuestionType {
   SINGLE_CHOICE = 0,
   SCALE = 1,

@@ -8,10 +8,10 @@
     "lint": "tslint -c tslint.json -p tsconfig.json --fix",
     "tsc": "tsc",
     "build": "npm-run-all clean lint tsc",
-    "watch": "nodemon -r tsconfig-paths/register src/index.ts",
+    "watch": "NODE_PATH=src/ nodemon src/index.ts",
     "dev": "npm-run-all watch",
     "start": "npm-run-all build start:prod",
-    "start:prod": "node -r ts-node/register/transpile-only -r tsconfig-paths/register .",
+    "start:prod": "NODE_PATH=dist/ node dist/index.js",
     "encrypt": "ts-node scripts/encrypt.ts",
     "decrypt": "ts-node scripts/decrypt.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -41,7 +41,6 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.3.1",
     "mongoose": "^6.1.8",
-    "nodemailer": "^6.7.2",
-    "tsconfig-paths": "^3.12.0"
+    "nodemailer": "^6.7.2"
   }
 }

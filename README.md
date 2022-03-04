@@ -4,13 +4,31 @@
 ### Project Introduction
 The project is a mobile application for mental health and risk stratification based on neighborhood characteristics for both Apple and Android platforms. Virtually no research exists examining the daily influence of environmental factors on the development of mental health disorders such as schizophrenia. Our solution is a mobile app that collects real-time data (daily survey) on the status of the user’s mental health such as their feelings and emotions in relation to their location during the day. We can compile and organize this data into a database for our client and other clinicians to analyze and can better treat their own patients and gain knowledge of the development of mental health disorders.
 
-
- ### Environment Setup
-- `cd ./app/src`, `npm i`
-- **react-navigation install**: change directory to ```./app/src```, and run ```npm install @react-navigation/native```, ```expo install react-native-screens react-native-safe-area-context```.
-- **react-native-keyboard-aware-scroll-view**: run ```npm i react-native-keyboard-aware-scroll-view --save```
-
+  
 # Release Notes
+
+
+## Version 0.3.0 (Sprint 3)
+### Features
+- The app is able to store the time of the last questionnaire that user took. If the time difference is smaller than 2 hours, there will be an alert message to the user to ask if they want to take another questionnaire. If the time difference is larger than 2 hours, user can take questionnaire directly.  
+
+### Fixed Bugs
+- Will alert users they have no internet connection when they are trying to login.
+
+
+### Known Issues
+- Expo Go issue in iOS: https://stackoverflow.com/questions/45547406/fetch-or-axios-in-react-native-not-working-for-expo-for-ios-apps
+- Need to fix `components/Sliders.tsx` if we want to use sliders for type 1 (scales) question.
+- Need to update questionnaire avaliable time and completed status daily.
+
+### TODO
+- Refine UI design. (checkbox instead of buttons?)
+- Do more testing and find edge cases. 
+- Should we allow users to skip question? 
+- Record user's location when they are filling the questionnaire.
+- Probably combine three questionnaire tabs into one?
+- Next Sprint: users answers thrend.
+
 
 ## Version 0.2.0 (Sprint 2)
 ### Features
@@ -22,31 +40,29 @@ The project is a mobile application for mental health and risk stratification ba
 - Allow users to reset password via an email verification code.
 - The app can load daily questionnaire that the client provides from backend database.
 - Users can take daily questionnaire and their responses will be recorded.
+- Users can take questionnaire within the avaliable time.
+- Questionnaire will be marked as completed after submission.
+- Questionnaire supports four types of questions and the screen will automatically parse the type of question and number of choices.
 
-### Bugs
+### Fixed Bugs
 - Fixed dimension of content container.
 - Fixed the navigation problem between home screen and login screen.
 - Fixed email box text length unmatch problem.
 - 
+
+
 ### Known Issues
 - Expo Go issue in iOS: https://stackoverflow.com/questions/45547406/fetch-or-axios-in-react-native-not-working-for-expo-for-ios-apps
 - Need to fix `components/Sliders.tsx` if we want to use sliders for type 1 (scales) question.
-- 
-- User can take three questionnaires in three different time periods. During each time period, only one questionnaire will be activated. 
-- User will receive notifications during the first hour of each questionnaire being opened.   
-- - Unable to login the app through Android simulator
-
-### Bug Fixes
-- dimension of content container
-- unable to justify content (login page) 
-- email box text length
-- return button does not work
-
+- Need to update questionnaire avaliable time and completed status daily.
 
 ### TODO
-- Refine UI design.
+- Refine UI design. (checkbox instead of buttons?)
 - Do more testing and find edge cases. 
 - Should we allow users to skip question? 
+- Record user's location when they are filling the questionnaire.
+- Probably combine three questionnaire tabs into one?
+- Next Sprint: users answers thrend.
 
 
 ## Version 0.1.0 (Sprint 1)
@@ -57,7 +73,7 @@ The project is a mobile application for mental health and risk stratification ba
 - Design tabs for home screen.
 
 
-### Bugs
+### Fixed Bugs
 - Expo Go connection to database
 - Fixed error messages from backends
 - 
@@ -78,10 +94,9 @@ The project is a mobile application for mental health and risk stratification ba
 
 # Environment Setup
 - `cd ./app/src`, `npm i`
+- `cd` to `.server_ts`, and follow the instructions in `server_ts/README.md` to run the server.
 - **react-navigation install**: change directory to ```./app/src```, and run ```npm install @react-navigation/native```, ```expo install react-native-screens react-native-safe-area-context```.
 - **react-native-keyboard-aware-scroll-view**: run ```npm i react-native-keyboard-aware-scroll-view --save```
-- TODO: set up for the server
-
 
 # How To Run
 - TODO

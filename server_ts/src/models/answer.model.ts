@@ -2,14 +2,14 @@ import { Schema, model } from "mongoose";
 
 export interface IAnswer {
   questionId: string;
-  answer: string | number;
-  choiceIndex: number;
+  answer: string | number | string[] | number[];
+  choiceIndex: number | number[];
 }
 
 export interface IAnswers {
   datetime: Date;
-  questionnaire: String;
-  answers: Array<IAnswer>;
+  questionnaire: string;
+  answers: IAnswer[];
 }
 
 export const AnswersSchema = new Schema<IAnswers>({
@@ -19,7 +19,7 @@ export const AnswersSchema = new Schema<IAnswers>({
     {
       questionId: { type: String, required: true },
       answer: { type: Schema.Types.Mixed, required: true },
-      choiceIndex: { type: Number, required: true },
+      choiceIndex: { type: Schema.Types.Mixed, required: true },
     },
   ],
 });

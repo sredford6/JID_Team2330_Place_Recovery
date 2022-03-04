@@ -16,20 +16,13 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import axios from "axios";
 import { ScrollView } from "react-native";
 import { AuthContext } from "../navigation/context";
-import IsTestMode from "../constants/TestMode";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signIn } = React.useContext(AuthContext);
-
-  let testmode = IsTestMode();
-
+  const { authFunctions } = React.useContext(AuthContext);
+  const { signIn } = authFunctions;
   const handleLogin = () => {
-    if (testmode) {
-      signIn();
-      return;
-    }
     axios
       .post("http://localhost:2400/api/auth/login", {
         email: email,
@@ -48,7 +41,11 @@ export default function LoginScreen({ navigation }) {
         // console.log(response);
       })
       .catch((error) => {
-        Alert.alert("Email or password is incorrect");
+        if (error.message == "Network Error") {
+          Alert.alert(error.message);
+        } else {
+          Alert.alert("Email or password is incorrect");
+        }
       });
   };
   const handleForget = () => {};

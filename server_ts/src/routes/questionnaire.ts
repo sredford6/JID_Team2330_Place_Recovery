@@ -8,7 +8,7 @@ import User, { IUser } from "models/user.model";
 import { verify } from "middleware";
 
 import { validateAnswerArray, validateQuestionArray } from "helpers/validators";
-const questionsPath = path.resolve("src", "public", "questions");
+const questionsPath = path.resolve(__dirname, "..", "public", "questions");
 
 router.post("/create", verify, async (req, res: Response) => {
   try {

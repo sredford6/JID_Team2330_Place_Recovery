@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "module": "commonjs",
+        "moduleResolution": "node",
         "target": "es6",
         "baseUrl": ".",
         "resolveJsonModule": true,
@@ -19,6 +20,7 @@
         }
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        "src/public/**/*.json"
     ]
 }
