@@ -74,7 +74,7 @@ export default function App() {
 
   const verifyToken = () => {
     SecureStore.getItemAsync("user_token").then((token) => {
-      // console.log(token);
+      console.log(token);
       axios
         .get(`${backendUrl}/api/auth/jwt-test`, {
           headers: {
@@ -82,10 +82,6 @@ export default function App() {
           },
         })
         .then((response) => {
-          // TOFIX: probably this should be done somewhere else; maybe in signUp ?
-          // setItem("first_name", response.data["firstName"]);
-          // setItem("last_name", response.data["lastName"]);
-          // setItem("email", response.data["email"]);
           setUserInfo({
             email: response.data["email"],
             firstName: response.data["firstName"],

@@ -23,7 +23,7 @@ export default function RegistrationScreen({ navigation }) {
   const [error, setError] = React.useState("");
 
   const { authFunctions } = React.useContext(AuthContext);
-  const { signUp } = authFunctions;
+  const { signIn } = authFunctions;
 
   const passwordMatchCheck = () => {
     if (
@@ -72,7 +72,7 @@ export default function RegistrationScreen({ navigation }) {
         console.log(status);
         if (status == 200) {
           // navigation.navigate('MainScreen');
-          signUp(data.token)
+          signIn(data.token);
         }
       })
       .catch((error) => {
