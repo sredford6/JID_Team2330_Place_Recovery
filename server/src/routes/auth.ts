@@ -160,6 +160,10 @@ router.post("/resetpassword", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/user", verify, (req, res: Response) => {
+  res.status(200).json(req.currentUser);
+});
+
 router.get("/jwt-test", verify, (req, res: Response) => {
   res.status(200).json(req.currentUser);
 });
