@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import localtunnel from "localtunnel";
@@ -25,6 +25,10 @@ app.use(
 app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/question", questionRoute);
+
+app.get("/", (req: Request, res: Response) => {
+  res.send("Yup, it's working. You can close the tab now...");
+});
 
 mongoose.connect(dbURI, dbOptions);
 const db = mongoose.connection;
@@ -55,4 +59,3 @@ startServer();
 if (process.env.NODE_ENV !== "PRODUCTION") {
   setupTunnel();
 }
-
