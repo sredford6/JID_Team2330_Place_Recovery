@@ -4,15 +4,21 @@ import path from "path";
 
 const configFile = path.join("./src/config/auth.json");
 const encryptedfile = path.join("./src/config/auth.json.enc");
-const key = process.argv[process.argv.length - 1];
+const key = process.env.DECRYPT_KEY || process.argv[process.argv.length - 1];
 const iv1 = "wF2kRE4CQayRFc86";
 
-const input = createReadStream(encryptedfile);
-const decipher = createDecipheriv("aes-256-cbc", key, iv1);
-const output = createWriteStream(configFile);
 
-input.pipe(decipher).pipe(output);
+try {
+  const input = createReadStream(encryptedfile);
+  const decipher = createDecipheriv("aes-256-cbc", key, iv1);
+  const output = createWriteStream(configFile);
 
-output.on("finish", () => {
-  console.log("Decrypted file written to disk!");
-});
+  input.pipe(decipher).pipe(output);
+
+  output.on("finish", () => {
+    console.log("Decrypted file written to disk!");
+  });
+} catch (e) {
+  console.error("No file decrypted.");
+  console.error(e);
+}
