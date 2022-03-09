@@ -21,6 +21,6 @@
     },
     "include": [
         "src/**/*",
-        "src/public/**/*.json"
+        "src/**/*.json"
     ]
 }
