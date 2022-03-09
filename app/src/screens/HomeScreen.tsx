@@ -5,7 +5,7 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { Text, View } from "../components/Themed";
-import { RootTabScreenProps } from "../components/types";
+import { RootTabScreenProps, CountOfTakenQofDay } from "../components/types";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useIsFocused } from "@react-navigation/native";
 
@@ -14,6 +14,7 @@ import {
   retrieveDataString,
   storeDataString,
   timeDifference,
+  formatDate,
 } from "../components/Helpers";
 import { AuthContext } from "../navigation/context";
 
@@ -26,17 +27,47 @@ export default function HomeScreen({
   const [lastQTime, setLastQTime] = useState<number>(0);
 
   const isFocused = useIsFocused();
+  const [takenQCount, setTakenQCount] = useState<CountOfTakenQofDay>({
+    date: "-1",
+    count: 0,
+  });
 
   useEffect(() => {
     // load email info and last q time
     (async () => {
+      /**
+       * TODO: last taken time might not be useful, but it's nice to have it?
+       */
       const lastQTime_ = Number(
         await retrieveDataString(userInfo.email + "_lastQTime")
       );
       if (!lastQTime_) {
         console.log("fail to fetech last qtime.");
       }
+
       setLastQTime(lastQTime_);
+
+      /**
+       * TODO: These information may should be fetech from backend.
+       */
+      const lastTakenQCount = await retrieveDataString(
+        userInfo.email + "_takenQCount"
+      );
+      let date = new Date();
+      if (
+        !lastTakenQCount ||
+        JSON.parse(lastTakenQCount).date != formatDate(date)
+      ) {
+        console.log("setting up a new q counts for the day!");
+        let newCount = { date: formatDate(date), count: 0 };
+        setTakenQCount(newCount);
+        storeDataString(
+          userInfo.email + "_takenQCount",
+          JSON.stringify(newCount)
+        );
+      } else {
+        setTakenQCount(JSON.parse(lastTakenQCount));
+      }
     })();
   }, [isFocused]);
   return (
@@ -49,36 +80,41 @@ export default function HomeScreen({
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              let time = new Date().getTime();
-              if (lastQTime != -1) {
-                let { daysDifference, hoursDifference, minutesDifference } =
-                  timeDifference(time, lastQTime);
-                // 1 is the threshold of reminding
-                if (daysDifference < 1 && hoursDifference < 2) {
-                  Alert.alert(
-                    "TODO Alert Message",
-                    "You've taken the questionnaire in " +
-                      (hoursDifference == 0
-                        ? minutesDifference == 0
-                          ? "less than a minute"
-                          : minutesDifference +
-                            (minutesDifference > 1 ? " minutes " : " minute")
-                        : hoursDifference +
-                          (hoursDifference > 1 ? " hours" : " hour")) +
-                      " ago, do you want to take it again?",
-                    [
-                      { text: "Cancel" },
-                      {
-                        text: "Yes",
-                        onPress: () => {
-                          navigation.navigate("Questionnaire");
-                        },
-                      },
-                    ]
-                  );
-                } else {
-                  navigation.navigate("Questionnaire");
-                }
+              let time = new Date();
+              // if (lastQTime != -1) {
+              //   let { daysDifference, hoursDifference, minutesDifference } =
+              //     timeDifference(time, lastQTime);
+              //   // 1 is the threshold of reminding
+              //   if (daysDifference < 1 && hoursDifference < 2) {
+              //     Alert.alert(
+              //       "TODO Alert Message",
+              //       "You've taken the questionnaire in " +
+              //         (hoursDifference == 0
+              //           ? minutesDifference == 0
+              //             ? "less than a minute"
+              //             : minutesDifference +
+              //               (minutesDifference > 1 ? " minutes " : " minute")
+              //           : hoursDifference +
+              //             (hoursDifference > 1 ? " hours" : " hour")) +
+              //         " ago, do you want to take it again?",
+              //       [
+              //         { text: "Cancel" },
+              //         {
+              //           text: "Yes",
+              //           onPress: () => {
+              //             navigation.navigate("Questionnaire");
+              //           },
+              //         },
+              //       ]
+              //     );
+              //   } else {
+              //     navigation.navigate("Questionnaire");
+              //   }
+              // } else {
+              //   navigation.navigate("Questionnaire");
+              // }
+              if (takenQCount.count == 3) {
+                Alert.alert("You've taken all 3 questionnaires of today! ");
               } else {
                 navigation.navigate("Questionnaire");
               }
@@ -93,13 +129,29 @@ export default function HomeScreen({
                 convertTime(new Date(lastQTime))
               : "You haven't take any questionnaire yet!"}
           </Text>
+
+          <Text>You've taken {takenQCount.count} / 3 questionnaire today!</Text>
           <Text
-            onPress={() => {
-              setLastQTime(0);
-              storeDataString(userInfo.email + "_lastQTime", "0");
-            }}
+            onPress={
+              /**
+               * ONLY for development puroposes.
+               */
+              async () => {
+                setLastQTime(0);
+                await storeDataString(userInfo.email + "_lastQTime", "0");
+                let newQcount = {
+                  date: formatDate(new Date()),
+                  count: 0,
+                };
+                setTakenQCount(newQcount);
+                await storeDataString(
+                  userInfo.email + "_takenQCount",
+                  JSON.stringify(newQcount)
+                );
+              }
+            }
           >
-            TEST: remove last taken date
+            TEST: remove last taken date and count
           </Text>
         </View>
       </KeyboardAvoidingView>

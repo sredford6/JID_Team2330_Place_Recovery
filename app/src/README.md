@@ -13,6 +13,8 @@
 ### Note
 
 ### TODO
+- Fix cases when network connection is unstable (axios catech error: Network error). 
+- 
 - Login: email addr w/ correct password won't work if some characters in email addr are upper case.
 - revise UI designs
 - highlight selected choices for multiple choices; highlight previous question's choices

@@ -10,10 +10,10 @@ import axios from "axios";
 import { getItemAsync } from "expo-secure-store";
 
 import { TextInput } from "react-native-gesture-handler";
-import { storeDataString } from "../components/Helpers";
+import { retrieveDataString, storeDataString } from "../components/Helpers";
 import { AuthContext } from "../navigation/context";
 
-import {backendUrl} from "../config/config.json";
+import { backendUrl } from "../config/config.json";
 
 export default function Questionnaire({ navigation }) {
   const { useState } = React;
@@ -63,27 +63,30 @@ export default function Questionnaire({ navigation }) {
     console.log(index);
   };
 
-
   const loadQuiz = async () => {
-    await axios
-      .get(`${backendUrl}/api/question/${questionnaire}.json`)
-      .then((res) => {
-        const sampleQuestions = res.data;
-        setLength(sampleQuestions.length);
-        setIndex(0);
-        setQuestions(sampleQuestions);
-        let arr = [];
-        for (let i = 0; i < sampleQuestions.length; i++) {
-          let mc = sampleQuestions[i]["type"] == 3 ? true : false;
-          let value: answer_type = {
-            choiceIndex: mc ? [] : -1,
-            answer: mc ? [] : "",
-            questionId: sampleQuestions[i]["id"],
-          };
-          arr.push(value);
-        }
-        setUserAnswers(arr);
-      });
+    try {
+      await axios
+        .get(`${backendUrl}/api/question/${questionnaire}.json`)
+        .then((res) => {
+          const sampleQuestions = res.data;
+          setLength(sampleQuestions.length);
+          setIndex(0);
+          setQuestions(sampleQuestions);
+          let arr = [];
+          for (let i = 0; i < sampleQuestions.length; i++) {
+            let mc = sampleQuestions[i]["type"] == 3 ? true : false;
+            let value: answer_type = {
+              choiceIndex: mc ? [] : -1,
+              answer: mc ? [] : "",
+              questionId: sampleQuestions[i]["id"],
+            };
+            arr.push(value);
+          }
+          setUserAnswers(arr);
+        });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const increase = () => {
@@ -218,27 +221,41 @@ export default function Questionnaire({ navigation }) {
 
   const handleSubmit = async () => {
     // TODO handle submit to endpoints
-    try {
-      const token: string = (await getItemAsync("user_token"))!;
-      const res = await axios.post(
-        `${backendUrl}/api/question/answer`,
-        {
-          questionnaire,
-          answers: user_answers,
-        },
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-      console.log(res.data);
-    } catch (error: any) {
-      console.error(error);
-    }
+    // try {
+    //   const token: string = (await getItemAsync("user_token"))!;
+    //   const res = await axios.post(
+    //     `${backendUrl}/api/question/answer`,
+    //     {
+    //       questionnaire,
+    //       answers: user_answers,
+    //     },
+    //     {
+    //       headers: {
+    //         Authorization: token,
+    //       },
+    //     }
+    //   );
+    //   console.log(res.data);
+    // } catch (error: any) {
+    //   console.error(error);
+    // }
     console.log("submit");
+
+    /**
+     * TODO: The following part might also need to be sent to backend.
+     */
     let t = new Date().getTime();
-    storeDataString(userInfo.email + "_lastQTime", t.toString());
+    await storeDataString(userInfo.email + "_lastQTime", t.toString());
+
+    let lastQCount = await retrieveDataString(userInfo.email + "_takenQCount");
+    if (lastQCount) {
+      let updatedQCount = JSON.parse(lastQCount);
+      updatedQCount.count = Math.min(updatedQCount.count + 1, 3);
+      await storeDataString(
+        userInfo.email + "_takenQCount",
+        JSON.stringify(updatedQCount)
+      );
+    }
     navigation.navigate("Home");
   };
 

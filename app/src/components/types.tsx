@@ -38,3 +38,8 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
     BottomTabScreenProps<RootTabParamList, Screen>,
     NativeStackScreenProps<RootStackParamList>
   >;
+
+export type countOfTakenQofDay = {
+  date: string;
+  count: number;
+};
