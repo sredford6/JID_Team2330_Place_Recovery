@@ -56,6 +56,6 @@ async function setupTunnel() {
 }
 
 startServer();
-if (process.env.NODE_ENV !== "PRODUCTION") {
+if (process.env.NODE_ENV !== "production") {
   setupTunnel();
 }
