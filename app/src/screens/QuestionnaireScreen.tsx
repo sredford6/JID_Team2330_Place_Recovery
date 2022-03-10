@@ -21,6 +21,7 @@ export default function Questionnaire({ navigation }) {
   const [length, setLength] = useState(0);
   const [index, setIndex] = useState(-1);
   const [prevIndex, setPrevIndex] = useState(-1);
+  const [nextButton, setNextButton] = useState(false);
   const [buttonPressed, setButtonPressed] = useState(
     Array.from({ length: 20 }, (i) => false)
   );
@@ -51,6 +52,13 @@ export default function Questionnaire({ navigation }) {
     );
     setPrevIndex(index);
     console.log(index);
+   
+    console.log(nextButton)
+    if (index <= 0 ) {
+      setNextButton(true)
+    } else {
+      setNextButton(false)
+    }
   };
 
   const multipleButtonFunction = (index: number) => {
@@ -60,6 +68,13 @@ export default function Questionnaire({ navigation }) {
       )
     );
     //setPrevIndex(index);
+    console.log(index)
+    console.log(nextButton)
+    if (index <= 0 ) {
+      setNextButton(true)
+    } else {
+      setNextButton(false)
+    }
     console.log(index);
   };
 
@@ -90,6 +105,7 @@ export default function Questionnaire({ navigation }) {
   };
 
   const increase = () => {
+    setNextButton(true)
     if (index < length - 1) {
       setIndex(index + 1);
     }
@@ -132,7 +148,7 @@ export default function Questionnaire({ navigation }) {
             temp_answers[i].answer = option;
             temp_answers[i].choiceIndex = idx;
             setUserAnswers(temp_answers);
-            console.log(user_answers);
+            //console.log(user_answers);
           }}
         >
           <Text style={styles.buttonText}>{option}</Text>
@@ -159,7 +175,7 @@ export default function Questionnaire({ navigation }) {
             temp_answers[i].choiceIndex = questions[i]["choices"].length;
             setUserAnswers(temp_answers);
 
-            console.log(user_answers);
+            //console.log(user_answers);
           }}
         />
       </View>
@@ -180,7 +196,7 @@ export default function Questionnaire({ navigation }) {
           temp_answers[i].answer.push(option);
           temp_answers[i].choiceIndex.push(idx);
           setUserAnswers(temp_answers);
-          console.log(user_answers);
+          //console.log(user_answers);
           multipleButtonFunction(idx);
         }}
       >
@@ -281,7 +297,7 @@ export default function Questionnaire({ navigation }) {
               <Text style={styles.buttonText}>PREVIOUS</Text>
             </TouchableOpacity>
             {index == length - 1 ? null : (
-              <TouchableOpacity style={styles.button} onPress={increase}>
+              <TouchableOpacity disabled = {nextButton} style={styles.button} onPress={increase}>
                 <Text style={styles.buttonText}>NEXT</Text>
               </TouchableOpacity>
             )}
