@@ -204,7 +204,23 @@ export default function Questionnaire({ navigation }) {
       </TouchableOpacity>
     ));
   };
+  const renderType4 = (i: number) => {
+    return (
+        <TextInput
+          style={styles.input}
+          //placeholder="Answer here"
+          onChangeText={(freeText) => {
+            let temp_answers = user_answers;
+            temp_answers[i].answer = freeText;
+            //temp_answers[i].choiceIndex = questions[i]["choices"].length;
+            setUserAnswers(temp_answers);
 
+            //console.log(user_answers);
+          }}
+        />
+      
+    );
+  };
 
   const renderQuestionList = (i: number) => {
     let type = questions[i]["type"];
@@ -221,6 +237,9 @@ export default function Questionnaire({ navigation }) {
       case 3:
         // console.log("type 3"); // multiple choices, multiple select
         return renderType3(i);
+      case 4:
+        // single text entry
+        return renderType4(i);
       default:
         console.log("unable to parse type");
     }

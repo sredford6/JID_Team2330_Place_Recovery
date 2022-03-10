@@ -18,5 +18,5 @@
     {"id":"017_sc","question":"I feel discriminated against.","type":0,"choices": ["Not at all","Slightly","Moderately","Very","Extremely"]},
     {"id":"018_sc","question":"I feel a sense of community and belonging here.","type":0,"choices": ["Not at all","Slightly","Moderately","Very","Extremely"]},
     {"id":"019_sc","question":"How lonely do you feel right now?","type":0,"choices": ["Not at all","Slightly","Moderately","Very","Extremely"]},
-    
+    {"id":"020_sc","question":"What will you be doing in this place right after answering these questions?","type":4}
 ]
