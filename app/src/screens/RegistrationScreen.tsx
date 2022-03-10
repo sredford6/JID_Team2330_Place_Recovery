@@ -48,7 +48,7 @@ export default function RegistrationScreen({ navigation }) {
       setShowErrorMessage(true);
       setError("*Please fill in all the fields");
     } else if (password == confirmPassword) {
-      let emailValidation =
+     const emailValidation =
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       if (emailValidation.test(email)) {
         if (password.length >= 6) {
@@ -82,19 +82,15 @@ export default function RegistrationScreen({ navigation }) {
         const { status, data } = response;
         console.log(status);
         if (status == 200) {
-          // navigation.navigate('MainScreen');
           signIn(data.token);
         }
       })
       .catch((error) => {
-        // const { message } = error.response.data;
-        // alert(message);
         if (error.message == "Network Error") {
           Alert.alert(error.message);
         } else {
           Alert.alert(error.response.data.message);
         }
-        // console.log(error.response.data);
       });
   };
 
