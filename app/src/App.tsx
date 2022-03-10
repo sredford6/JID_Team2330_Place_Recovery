@@ -136,7 +136,7 @@ export default function App() {
       value={{ authFunctions: authContext, userInfo: userInfo }}
     >
       <NavigationContainer>
-        {authValid ? <HomeNavigation /> : <AuthenticationStackNavigator />}
+        {true ? <HomeNavigation /> : <AuthenticationStackNavigator />}
       </NavigationContainer>
     </AuthContext.Provider>
   );
