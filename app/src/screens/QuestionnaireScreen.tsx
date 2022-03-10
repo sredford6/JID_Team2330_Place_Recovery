@@ -189,6 +189,7 @@ export default function Questionnaire({ navigation }) {
     ));
   };
 
+
   const renderQuestionList = (i: number) => {
     let type = questions[i]["type"];
     switch (type) {
@@ -202,7 +203,7 @@ export default function Questionnaire({ navigation }) {
         // console.log("type 2"); // multiple choice with single answer that has additional free text box as last option
         return renderType2(i);
       case 3:
-        // console.log("type 3"); // multiple choices
+        // console.log("type 3"); // multiple choices, multiple select
         return renderType3(i);
       default:
         console.log("unable to parse type");
