@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import {Button, Platform, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import ButtonDesign from '../components/Button';
@@ -9,6 +9,8 @@ import axios from 'axios';
 import {backendUrl} from "../config/config.json";
 
 import { AuthContext } from "../navigation/context";
+
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function RegistrationScreen({ navigation }) {
   const [email, setEmail] = React.useState("");
@@ -24,7 +26,16 @@ export default function RegistrationScreen({ navigation }) {
 
   const { authFunctions } = React.useContext(AuthContext);
   const { signIn } = authFunctions;
+  const [bedtime, setBedtime] = React.useState(new Date(1598051730000));
+  const [wakeupTime, setWakeupTime] = React.useState(new Date(1598051730000));
 
+  const changeTime = (event, newTime) => {
+    setBedtime(newTime);
+  };
+  const changeWakeupTime = (event, newTime) => {
+    setWakeupTime(newTime);
+  };
+  
   const passwordMatchCheck = () => {
     if (
       firstName == "" ||
@@ -121,7 +132,6 @@ export default function RegistrationScreen({ navigation }) {
             onChangeText={(inp) => setEmail(inp)}
             value={email}
           />
-
           <TextInput
             style={styles.input}
             placeholder="Phone Number"
@@ -130,6 +140,7 @@ export default function RegistrationScreen({ navigation }) {
             onChangeText={(inp) => setPhoneNumber(inp)}
             value={phoneNumber}
           />
+          <Text style = {styles.password}>*Password has to be more than 6 characters long and contain at least one number</Text>
           <TextInput
             style={styles.input}
             placeholder="Password"
@@ -156,7 +167,24 @@ export default function RegistrationScreen({ navigation }) {
             value={confirmPassword}
             secureTextEntry={true}
           />
-
+          <Text style = {styles.header}> Sleep Schedule</Text>
+          <Text style = {styles.textName}> Bedtime:</Text>
+        <DateTimePicker style ={{width: 100, backgroundColor: "transparent"}}
+          value={bedtime}
+          mode={'time'}
+          is24Hour={true}
+          display="default" 
+          onChange={changeTime}
+        />
+        <Text style = {styles.textName}> Wake-up time:</Text>
+        <DateTimePicker style ={{width: 100, backgroundColor: "transparent"}}
+          value={wakeupTime}
+          mode={'time'}
+          is24Hour={true}
+          display="default"
+          onChange={changeWakeupTime}
+        />
+      
           <ButtonDesign name="Register" onPress={() => passwordMatchCheck()} />
           <Text style={styles.label}>
             By registering, you automatically accept the Terms & Policies of
@@ -175,6 +203,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  password: {
+    textAlign: 'center',
+    marginLeft: 40,
+    marginRight: 40,
+    color: '#072B4F',
   },
   title: {
     fontSize: 30,
@@ -199,50 +233,28 @@ const styles = StyleSheet.create({
     marginRight: 40,
     color: '#072B4F', 
   },
+  textName: {
+    textAlign: 'center',
+    margin: 20,
+    marginLeft: 40,
+    marginRight: 40,
+    color: '#072B4F', 
+    fontSize: 18,
+  },
+  header: {
+    textAlign: 'center',
+    marginTop: 20,
+    marginLeft: 40,
+    marginRight: 40,
+    color: '#072B4F', 
+    fontWeight: 'bold',
+    fontSize: 23,
+  },
   errorMessage: {
     textAlign: 'center',
-   
     marginLeft: 40,
     marginRight: 40,
     color: 'red', 
+    fontSize: 18,
   },
-  
- 
-  
 });
-
-//Potential solutions for form submissions and validations
-
-/* export class UserValidation extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      requiredFieldErrorMessage: "",
-      passwordErrorMessage: "",
-      confirmPasswordErrorMessage: "",
-      loading: false,
-
-    }
-  }
-
-  // Authenticate User: https://infinitbility.com/how-to-check-password-and-confirm-password-in-react-native
-
-  formValidation = async () => {
-    this.setState({loading: true})
-    let errorFlag = false
-
-    // Input Validation
-    if (this.state.firstName.length == 0) {
-      errorFlag: true
-      this.setState({})
-    }
-
-  }
-} */
-
-// Form Validation Tutorial: https://www.youtube.com/watch?v=uxawinQ2tTk
