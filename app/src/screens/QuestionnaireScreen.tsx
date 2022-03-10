@@ -54,7 +54,7 @@ export default function Questionnaire({ navigation }) {
     console.log(index);
    
     console.log(nextButton)
-    if (index <= 0 ) {
+    if (index < 0 ) {
       setNextButton(true)
     } else {
       setNextButton(false)
@@ -70,7 +70,7 @@ export default function Questionnaire({ navigation }) {
     //setPrevIndex(index);
     console.log(index)
     console.log(nextButton)
-    if (index <= 0 ) {
+    if (index < 0 ) {
       setNextButton(true)
     } else {
       setNextButton(false)
@@ -297,7 +297,7 @@ export default function Questionnaire({ navigation }) {
               <Text style={styles.buttonText}>PREVIOUS</Text>
             </TouchableOpacity>
             {index == length - 1 ? null : (
-              <TouchableOpacity disabled = {nextButton} style={styles.button} onPress={increase}>
+              <TouchableOpacity disabled = {nextButton} style={nextButton ? styles.disabledButton : styles.button} onPress={increase}>
                 <Text style={styles.buttonText}>NEXT</Text>
               </TouchableOpacity>
             )}
@@ -335,6 +335,15 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     alignItems: "center",
     marginBottom: 30,
+  },
+  disabledButton: {
+    backgroundColor: "#184E77",
+    padding: 12,
+    paddingHorizontal: 16,
+    borderRadius: 16,
+    alignItems: "center",
+    marginBottom: 30,
+    opacity: 0.2
   },
   buttonText: {
     fontSize: 15,
