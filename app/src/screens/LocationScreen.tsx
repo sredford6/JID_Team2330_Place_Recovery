@@ -14,7 +14,7 @@ import React, { useState, useEffect } from "react";
 
 import * as Location from "expo-location";
 import { LocationGeocodedAddress, LocationObject } from "expo-location";
-import { convertTime } from "../components/Helpers";
+import { convertTime, goToSettings } from "../components/Helpers";
 
 export default function LocationScreen() {
   const [location, setLocation] = useState<LocationObject>();
@@ -27,20 +27,9 @@ export default function LocationScreen() {
   const GetLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
-      Alert.alert(
+      goToSettings(
         "Require location sharing",
-        "The app requires to access to your location when you are using the app. Please enable location permission in Settings.",
-        [
-          { text: "Cancel" },
-          {
-            text: "Ok",
-            onPress: () => {
-              Platform.OS === "ios"
-                ? Linking.openURL("app-settings:")
-                : AndroidOpenSettings.applicationSettings();
-            },
-          },
-        ]
+        "The app requires to access to your location when you are using the app. Please enable location permission in Settings."
       );
       return;
     }

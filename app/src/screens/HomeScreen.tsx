@@ -32,6 +32,13 @@ export default function HomeScreen({
     count: 0,
   });
 
+  /**
+   * pseudo sleep schedule for development
+   * hours in 24-hour clock
+   */
+  let wakeUp = 8;
+  let sleep = 23;
+
   useEffect(() => {
     // load email info and last q time
     (async () => {
@@ -41,10 +48,9 @@ export default function HomeScreen({
       const lastQTime_ = Number(
         await retrieveDataString(userInfo.email + "_lastQTime")
       );
-      if (!lastQTime_) {
-        console.log("fail to fetech last qtime.");
-      }
-
+      // if (!lastQTime_) {
+      //   console.log("fail to fetech last qtime.");
+      // }
       setLastQTime(lastQTime_);
 
       /**
@@ -58,7 +64,6 @@ export default function HomeScreen({
         !lastTakenQCount ||
         JSON.parse(lastTakenQCount).date != formatDate(date)
       ) {
-        console.log("setting up a new q counts for the day!");
         let newCount = { date: formatDate(date), count: 0 };
         setTakenQCount(newCount);
         storeDataString(
