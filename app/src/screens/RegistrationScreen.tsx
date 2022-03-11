@@ -26,14 +26,14 @@ export default function RegistrationScreen({ navigation }) {
 
   const { authFunctions } = React.useContext(AuthContext);
   const { signIn } = authFunctions;
-  const [bedtime, setBedtime] = React.useState(new Date(1598051730000));
-  const [wakeupTime, setWakeupTime] = React.useState(new Date(1598051730000));
+  const [sleepTime, setSleepTime] = React.useState(new Date(1598051730000));
+  const [wakeTime, setWakeTime] = React.useState(new Date(1598051730000));
 
   const changeTime = (event, newTime) => {
-    setBedtime(newTime);
+    setSleepTime(newTime);
   };
   const changeWakeupTime = (event, newTime) => {
-    setWakeupTime(newTime);
+    setWakeTime(newTime);
   };
   
   const passwordMatchCheck = () => {
@@ -58,6 +58,9 @@ export default function RegistrationScreen({ navigation }) {
             email,
             password,
             phoneNumber,
+            wakeTime,
+            sleepTime,
+
           });
         } else {
           setShowEmailErrorMessage(true);
@@ -166,7 +169,7 @@ export default function RegistrationScreen({ navigation }) {
           <Text style = {styles.header}> Sleep Schedule</Text>
           <Text style = {styles.textName}> Bedtime:</Text>
         <DateTimePicker style ={{width: 100, backgroundColor: "transparent"}}
-          value={bedtime}
+          value={sleepTime}
           mode={'time'}
           is24Hour={true}
           display="default" 
@@ -174,7 +177,7 @@ export default function RegistrationScreen({ navigation }) {
         />
         <Text style = {styles.textName}> Wake-up time:</Text>
         <DateTimePicker style ={{width: 100, backgroundColor: "transparent"}}
-          value={wakeupTime}
+          value={wakeTime}
           mode={'time'}
           is24Hour={true}
           display="default"

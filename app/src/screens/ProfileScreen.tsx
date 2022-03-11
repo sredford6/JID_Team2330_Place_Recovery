@@ -32,7 +32,7 @@ export default function ProfileScreen({
       <Text>Profile screen</Text>
       <Text>
         Name: {userInfo.firstName} {userInfo.lastName}
-        {"\n Email: "}
+       {"\n Email: "}
         {userInfo.email}
       </Text>
       <TouchableOpacity
