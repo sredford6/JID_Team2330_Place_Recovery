@@ -21,7 +21,7 @@ export default function Questionnaire({ navigation }) {
   const [length, setLength] = useState(0);
   const [index, setIndex] = useState(-1);
   const [prevIndex, setPrevIndex] = useState(-1);
-  const [nextButton, setNextButton] = useState(false);
+  const [nextButton, setNextButton] = useState(true);
   const [buttonPressed, setButtonPressed] = useState(
     Array.from({ length: 20 }, (i) => false)
   );
@@ -312,9 +312,9 @@ export default function Questionnaire({ navigation }) {
           </ScrollView>
 
           <View style={styles.bottom}>
-            <TouchableOpacity style={styles.button} onPress={decrease}>
+            {/* <TouchableOpacity style={styles.button} onPress={decrease}>
               <Text style={styles.buttonText}>PREVIOUS</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             {index == length - 1 ? null : (
               <TouchableOpacity disabled = {nextButton} style={nextButton ? styles.disabledButton : styles.button} onPress={increase}>
                 <Text style={styles.buttonText}>NEXT</Text>
@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
   bottom: {
     marginBottom: 5,
     paddingVertical: 5,
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     flexDirection: "row",
   },
   button: {
@@ -354,6 +354,8 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     alignItems: "center",
     marginBottom: 30,
+    width: 100,
+    height: 45,
   },
   disabledButton: {
     backgroundColor: "#184E77",
@@ -362,7 +364,9 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     alignItems: "center",
     marginBottom: 30,
-    opacity: 0.2
+    opacity: 0.2,
+    width: 100,
+    height: 45,
   },
   buttonText: {
     fontSize: 15,
