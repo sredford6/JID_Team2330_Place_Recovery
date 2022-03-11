@@ -43,8 +43,10 @@ export default function Questionnaire({ navigation }) {
     setButtonPressed((arr) =>
       arr.map((buttonPressed, i) =>
         i == index ? !buttonPressed : buttonPressed
+        
       )
     );
+    
     setButtonPressed((arr) =>
       arr.map((buttonPressed, i) =>
         i != prevIndex ? buttonPressed : !buttonPressed
@@ -62,20 +64,42 @@ export default function Questionnaire({ navigation }) {
   };
 
   const multipleButtonFunction = (index: number) => {
+    let count = 0
+    let checkBool = 0
     setButtonPressed((arr) =>
       arr.map((buttonPressed, i) =>
         i == index ? !buttonPressed : buttonPressed
       )
     );
-    //setPrevIndex(index);
+    buttonPressed.map((prop, index) => {
+      if (buttonPressed[index] == false) {
+        count++;
+      } else {
+        checkBool = index;
+      }
+    })
+    
+    console.log(count)
+    
+    
     console.log(index)
-    console.log(nextButton)
-    if (index < 0 ) {
+    console.log(checkBool)
+    //console.log(prevIndex);
+    //console.log(nextButton)
+    if (index < 0) {
       setNextButton(true)
     } else {
-      setNextButton(false)
+      if ((count == 19 && (index == checkBool))) {
+        console.log('here')
+        setNextButton(true)
+        console.log(nextButton)
+      } else {
+        setNextButton(false)
+
+      }
+     
     }
-    console.log(index);
+    
   };
 
   const loadQuiz = async () => {
@@ -134,13 +158,6 @@ export default function Questionnaire({ navigation }) {
       (option, idx) => (
         <TouchableOpacity
           key={idx}
-          style={[
-            styles.optionButton,
-            buttonPressed[idx] == true
-              ? { backgroundColor: "#184E77" }
-              : styles.optionButton,
-          ]}
-          activeOpacity={0.8}
           onPress={() => {
             buttonFunction(idx);
             // https://stackoverflow.com/questions/55987953/how-do-i-update-states-onchange-in-an-array-of-object-in-react-hooks
@@ -150,6 +167,14 @@ export default function Questionnaire({ navigation }) {
             setUserAnswers(temp_answers);
             //console.log(user_answers);
           }}
+          style={[
+            styles.optionButton,
+            buttonPressed[idx] == true
+              ? { backgroundColor: "#184E77" }
+              : styles.optionButton,
+          ]}
+          activeOpacity={0.8}
+          
         >
           <Text style={styles.buttonText}>{option}</Text>
         </TouchableOpacity>
