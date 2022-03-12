@@ -3,6 +3,7 @@ import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { Platform, Alert, Linking } from "react-native";
 import AndroidOpenSettings from "react-native-android-open-settings";
+import { DaySchedule, TimeBlock } from "./types";
 
 /**
  * Return the date in the format "YYYY-MM-DD".
@@ -189,4 +190,74 @@ export function goToSettings(title: string, content: string) {
       },
     },
   ]);
+}
+
+/**
+ * generate a day schedule based on sleep schedule
+ * @param wakeUp wake up time
+ * @param sleep sleep time
+ * @returns a day schedule
+ */
+export function generateDaySchedule(
+  wakeUp: number,
+  sleep: number
+): DaySchedule {
+  let interval = Math.floor((sleep - wakeUp) / 3);
+  let times = Array<TimeBlock>(3);
+  for (var i = 0; i < times.length; ++i) {
+    times[i] = {
+      begin: wakeUp + i * interval,
+      end: wakeUp + (i + 1) * interval,
+      completed: false,
+    };
+  }
+  let daySchedule = {
+    timeBlocks: times,
+    completedCount: 0,
+    notificationTime: generateNotificationTime(times),
+  };
+  return daySchedule;
+}
+
+export function generateNotificationTime(
+  timeBlocks: Array<TimeBlock>
+): Array<number> {
+  let times = new Array<number>(timeBlocks.length);
+  timeBlocks.forEach(function (item, index) {
+    let time = getRandomInt(item.begin, item.end);
+    times[index] = time;
+  });
+  return times;
+}
+
+/**
+ * Generate random int between [min, max)
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+ * @param min number
+ * @param max number
+ * @returns a random int in [min, max)
+ */
+export function getRandomInt(min: number, max: number) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
+
+/**
+ * Return the index (base 0) of interval that current tims is in. If the questionnaire is not open in during the time, it will return -1
+ * @param current current date or hour
+ * @param notificationTimes an array of notification time. Questionnaire is open within an hour after the notification time.
+ * @returns index or -1
+ */
+export function inQuestionnaireOpenInterval(
+  current: Date | number,
+  notificationTimes: Array<number>
+): number {
+  let hour = typeof current == "number" ? current : current.getHours();
+  for (var i = 0; i < notificationTimes.length; ++i) {
+    if (hour == notificationTimes[i]) {
+      return i;
+    }
+  }
+  return -1;
 }

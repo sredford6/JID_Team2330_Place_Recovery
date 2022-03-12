@@ -39,7 +39,22 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
     NativeStackScreenProps<RootStackParamList>
   >;
 
-export type countOfTakenQofDay = {
+export type CountOfTakenQofDay = {
   date: string;
   count: number;
+};
+
+/**
+ * begin and end are hours (24-hour). end - begin must >= 1.
+ */
+export type TimeBlock = {
+  begin: number;
+  end: number;
+  completed: boolean;
+};
+
+export type DaySchedule = {
+  timeBlocks: [TimeBlock];
+  completedCount: number;
+  notificationTime: [number];
 };

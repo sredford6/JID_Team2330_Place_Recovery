@@ -3,10 +3,15 @@ import {
   Alert,
   StyleSheet,
   KeyboardAvoidingView,
+  TextInputComponent,
 } from "react-native";
 import { Text, View } from "../components/Themed";
-import { RootTabScreenProps, CountOfTakenQofDay } from "../components/types";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import {
+  RootTabScreenProps,
+  CountOfTakenQofDay,
+  DaySchedule,
+} from "../components/types";
+import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { useIsFocused } from "@react-navigation/native";
 
 import {
@@ -15,6 +20,8 @@ import {
   storeDataString,
   timeDifference,
   formatDate,
+  generateDaySchedule,
+  inQuestionnaireOpenInterval,
 } from "../components/Helpers";
 import { AuthContext } from "../navigation/context";
 
@@ -24,13 +31,12 @@ export default function HomeScreen({
   navigation,
 }: RootTabScreenProps<"HomeStack">) {
   const { userInfo } = useContext(AuthContext);
-  const [lastQTime, setLastQTime] = useState<number>(0);
 
   const isFocused = useIsFocused();
-  const [takenQCount, setTakenQCount] = useState<CountOfTakenQofDay>({
-    date: "-1",
-    count: 0,
-  });
+
+  const [daySchedule, SetDaySchedule] = useState<DaySchedule>(
+    generateDaySchedule(8, 22)
+  );
 
   /**
    * pseudo sleep schedule for development
@@ -38,43 +44,42 @@ export default function HomeScreen({
    */
   let wakeUp = 8;
   let sleep = 23;
+  const [currentHour, setCurrentHour] = useState<number>(-1);
+  const [isAvailable, setIsAvailable] = useState<number>(-1);
 
   useEffect(() => {
+    let schedule = generateDaySchedule(wakeUp, sleep);
+    SetDaySchedule(schedule);
+
+    setIsAvailable(
+      inQuestionnaireOpenInterval(new Date(), daySchedule.notificationTime)
+    );
     // load email info and last q time
     (async () => {
       /**
-       * TODO: last taken time might not be useful, but it's nice to have it?
-       */
-      const lastQTime_ = Number(
-        await retrieveDataString(userInfo.email + "_lastQTime")
-      );
-      // if (!lastQTime_) {
-      //   console.log("fail to fetech last qtime.");
-      // }
-      setLastQTime(lastQTime_);
-
-      /**
        * TODO: These information may should be fetech from backend.
        */
-      const lastTakenQCount = await retrieveDataString(
-        userInfo.email + "_takenQCount"
-      );
-      let date = new Date();
-      if (
-        !lastTakenQCount ||
-        JSON.parse(lastTakenQCount).date != formatDate(date)
-      ) {
-        let newCount = { date: formatDate(date), count: 0 };
-        setTakenQCount(newCount);
-        storeDataString(
-          userInfo.email + "_takenQCount",
-          JSON.stringify(newCount)
-        );
-      } else {
-        setTakenQCount(JSON.parse(lastTakenQCount));
-      }
+      // const todaySchedule = await
+      // const lastTakenQCount = await retrieveDataString(
+      //   userInfo.email + "_takenQCount"
+      // );
+      // let date = new Date();
+      // if (
+      //   !lastTakenQCount ||
+      //   JSON.parse(lastTakenQCount).date != formatDate(date)
+      // ) {
+      //   let newCount = { date: formatDate(date), count: 0 };
+      //   setTakenQCount(newCount);
+      //   storeDataString(
+      //     userInfo.email + "_takenQCount",
+      //     JSON.stringify(newCount)
+      //   );
+      // } else {
+      //   setTakenQCount(JSON.parse(lastTakenQCount));
+      // }
     })();
-  }, [isFocused]);
+  }, []);
+
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
@@ -85,80 +90,70 @@ export default function HomeScreen({
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              let time = new Date();
-              // if (lastQTime != -1) {
-              //   let { daysDifference, hoursDifference, minutesDifference } =
-              //     timeDifference(time, lastQTime);
-              //   // 1 is the threshold of reminding
-              //   if (daysDifference < 1 && hoursDifference < 2) {
-              //     Alert.alert(
-              //       "TODO Alert Message",
-              //       "You've taken the questionnaire in " +
-              //         (hoursDifference == 0
-              //           ? minutesDifference == 0
-              //             ? "less than a minute"
-              //             : minutesDifference +
-              //               (minutesDifference > 1 ? " minutes " : " minute")
-              //           : hoursDifference +
-              //             (hoursDifference > 1 ? " hours" : " hour")) +
-              //         " ago, do you want to take it again?",
-              //       [
-              //         { text: "Cancel" },
-              //         {
-              //           text: "Yes",
-              //           onPress: () => {
-              //             navigation.navigate("Questionnaire");
-              //           },
-              //         },
-              //       ]
-              //     );
-              //   } else {
-              //     navigation.navigate("Questionnaire");
-              //   }
-              // } else {
-              //   navigation.navigate("Questionnaire");
-              // }
-              if (takenQCount.count == 3) {
-                Alert.alert("You've taken all 3 questionnaires of today! ");
-              } else {
+              if (
+                isAvailable != -1 &&
+                !daySchedule.timeBlocks[isAvailable].completed
+              ) {
                 navigation.navigate("Questionnaire");
               }
             }}
             activeOpacity={0.85}
           >
-            <Text style={styles.buttonTextWhite}>Start</Text>
+            <Text style={styles.buttonTextWhite}>
+              {isAvailable != -1 ? "Start" : "Not available yet"}
+            </Text>
           </TouchableOpacity>
-          <Text style={styles.blackText}>
-            {lastQTime != 0
-              ? "Last questionnaire taken at: " +
-                convertTime(new Date(lastQTime))
-              : "You haven't take any questionnaire yet!"}
+          <Text>
+            Current Time (testing): {currentHour}, isAvailable: {isAvailable}
           </Text>
 
-          <Text>You've taken {takenQCount.count} / 3 questionnaire today!</Text>
+          <Text>
+            Morning Block: {daySchedule.timeBlocks[0].begin} -
+            {daySchedule.timeBlocks[0].end}, available at{" "}
+            {daySchedule.notificationTime[0]} {"\n"}
+            Midday Block: {daySchedule.timeBlocks[1].begin} -{" "}
+            {daySchedule.timeBlocks[1].end}, available at{" "}
+            {daySchedule.notificationTime[1]} {"\n"}
+            Evening Block: {daySchedule.timeBlocks[2].begin} - {""}
+            {daySchedule.timeBlocks[2].end}, available at{" "}
+            {daySchedule.notificationTime[2]} {"\n"}
+          </Text>
           <Text
             onPress={
               /**
                * ONLY for development puroposes.
                */
               async () => {
-                setLastQTime(0);
-                await storeDataString(userInfo.email + "_lastQTime", "0");
-                let newQcount = {
-                  date: formatDate(new Date()),
-                  count: 0,
-                };
-                setTakenQCount(newQcount);
-                await storeDataString(
-                  userInfo.email + "_takenQCount",
-                  JSON.stringify(newQcount)
-                );
+                // setLastQTime(0);
+                // await storeDataString(userInfo.email + "_lastQTime", "0");
+                // let newQcount = {
+                //   date: formatDate(new Date()),
+                //   count: 0,
+                // };
+                // setTakenQCount(newQcount);
+                // await storeDataString(
+                //   userInfo.email + "_takenQCount",
+                //   JSON.stringify(newQcount)
+                // );
               }
             }
           >
             TEST: remove last taken date and count
           </Text>
         </View>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Current Time (0-24 integer,for testing)"
+          onChangeText={(h) => {
+            setCurrentHour(parseInt(h));
+            setIsAvailable(
+              inQuestionnaireOpenInterval(
+                parseInt(h),
+                daySchedule.notificationTime
+              )
+            );
+          }}
+        ></TextInput>
       </KeyboardAvoidingView>
     </ScrollView>
   );
@@ -230,5 +225,14 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     justifyContent: "center",
+  },
+  textInput: {
+    width: "95%",
+    color: "#072B4F",
+    fontSize: 12,
+    marginTop: 5,
+    paddingVertical: 10,
+    borderRadius: 10,
+    borderBottomColor: "white",
   },
 });
