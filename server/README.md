@@ -16,37 +16,40 @@
 ## Endpoints
 
 ### Auth
-- Login [POST]: http://localhost:2400/api/auth/login
+- Login [POST]: /api/auth/login
     - Body
         - email
         - password
-- Signup [POST]: http://localhost:2400/api/auth/signup
+- Signup [POST]: /api/auth/signup
     - Body
         - email
         - password
         - firstName
         - lastName
         - phoneNumber
-- Token Test [GET]: http://localhost:2400/api/auth/jwt-test
+- User [GET]: /api/auth/user
     - Header
         - authorization
-- Get Reset [GET]: http://localhost:2400/api/auth/get-reset
+- Token Test [GET]: /api/auth/jwt-test
+    - Header
+        - authorization
+- Get Reset [GET]: /api/auth/get-reset
     - Query
         - email
-- Reset Password [POST]: http://localhost:2400/api/auth/resetpassword
+- Reset Password [POST]: /api/auth/resetpassword
     - Body
         - email
         - resetCode
         - newPassword
 
 ### Questionnaire
-- Create [POST]: http://localhost:2400/api/question/create
+- Create [POST]: /api/question/create
     - Body
         - id
         - questions
-- Question Retrieval [GET]: http://localhost:2400/api/question/:question
+- Question Retrieval [GET]: /api/question/:question
     - Just put the name of the question file as part of the URL
-- Token Test [GET]: http://localhost:2400/api/question/answer
+- Token Test [GET]: /api/question/answer
     - Header
         - authorization
     - Body
