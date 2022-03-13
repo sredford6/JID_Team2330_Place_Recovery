@@ -28,6 +28,10 @@ The project is a mobile application for mental health and risk stratification ba
 ### Known Issues
 - Dark Mode text/UI color
 - The server cannot be run locally by two or more team members simultaneously 
+- Need to fix the issue ``Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function. at screens/QuestionnaireScreen.tsx:52:22 in GetLocation``(showed up when going back to home screen with unfinished questionnaire)
+- Unstable server connection? Network Error message (from axios, try-catch).
+- 
+
 
 
 ### TODO
@@ -35,6 +39,11 @@ The project is a mobile application for mental health and risk stratification ba
 - Test the newly implemented functionalities on Android platform
 - Display the message to the user if they entered a small sleep schedule time window(less than 8 hours)
 - Add the basic demographics form
+- Add geocoding
+- Generate timeblock and random notification time for future days.
+- Better UI to show the complete status of the questionnaire.
+- Update complete status of the questionnaire from QuestionnaireScreen
+- Implementing an loading screen (show loading whenever the app is using endpoints; the app should also try the requests multiple times if encounters network problem).  
 - Next sprint: implement the profile screen 
 
 ## Version 0.2.0 (Sprint 2)
