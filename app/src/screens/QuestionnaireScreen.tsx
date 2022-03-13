@@ -303,11 +303,25 @@ export default function Questionnaire({ navigation }) {
 
   const handleSubmit = async () => {
     // TODO handle submit to endpoints
+
+    if (!location) {
+      await GetLocation().then((res) => {
+        if (!res) {
+          console.log("fail to fetch location");
+          // set deafult coordiantes
+        }
+      });
+    }
+
     try {
       const token: string = (await getItemAsync("user_token"))!;
       const res = await axios.post(
         `${backendUrl}/api/question/answer`,
         {
+          location: {
+            longitude: location?.coords ? location?.coords.longitude : 0,
+            latitude: location?.coords ? location?.coords.latitude : 0,
+          },
           questionnaire,
           answers: user_answers,
         },
@@ -322,7 +336,7 @@ export default function Questionnaire({ navigation }) {
       console.error(error);
     }
     console.log("submit");
-
+    console.log(location);
     /**
      * TODO: The following part might also need to be sent to backend.
      */
@@ -339,16 +353,6 @@ export default function Questionnaire({ navigation }) {
     //   );
     // }
 
-    if (!location) {
-      await GetLocation().then((res) => {
-        if (!res) {
-          console.log("fail to fetch location");
-          // set deafult coordiantes
-        }
-      });
-    }
-
-    console.log(location);
     navigation.navigate("Home");
   };
 

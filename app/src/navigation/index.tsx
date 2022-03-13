@@ -16,7 +16,7 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LocationScreen from '../screens/LocationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import SettingsScreen from "../screens/SettingsScreen";
+import SettingsScreen from "../screens/ProgressScreen";
 import OpeningScreen from "../screens/OpeningScreen";
 import RegistrationScreen from "../screens/RegistrationScreen";
 import {
