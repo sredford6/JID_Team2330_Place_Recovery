@@ -10,7 +10,18 @@ export interface IAnswers {
   datetime: Date;
   questionnaire: string;
   answers: IAnswer[];
+  location: ILocation;
 }
+
+export interface ILocation {
+  latitude: number;
+  longitude: number;
+}
+
+export const LocationSchema = new Schema<ILocation>({
+  latitude: { type: Number },
+  longitude: { type: Number },
+});
 
 export const AnswersSchema = new Schema<IAnswers>({
   datetime: { type: Date, required: true },
@@ -22,6 +33,7 @@ export const AnswersSchema = new Schema<IAnswers>({
       choiceIndex: { type: Schema.Types.Mixed, required: true },
     },
   ],
+  location: { type: LocationSchema },
 });
 
 export default model<IAnswers>("Answers", AnswersSchema);
