@@ -12,13 +12,13 @@ The project is a mobile application for mental health and risk stratification ba
 ### Features
 
 - The questionnaire is available at random times within three time blocks
-- The user has one hour time block to fill out the questionnaire
-- If the user does not fill out the questionnaire within the avaialable time block, the questionnaire becomes unavailable
-- All questions in a questionnaire are required to answer; the user cannot proceed to the next question if they didn't provide an answer to the one currently displayed
+- The user has one hour to fill out the questionnaire once it opens
+- If the user does not fill out the questionnaire within an hour, the questionnaire becomes unavailable
+- The user is required to answer all questions; the user cannot proceed to the next question if they didn't provide an answer to the one currently displayed
 - The location of the user is recorded upon submitting the questionnaire  
 - The UI of the home page is changed to display only one questionnaire tab
-- The progress screen contains bar charts that will be used to illustrate the user's progress in the following sprint
-- The user can enter their bedtime and wakeup time when registering an account
+- The progress screen contains bar charts that will be used to illustrate the user's progress/trends in the following sprint
+- The user can enter their bedtime and wakeup time when registering for an account
 - The questionnaire was updated with the newly received questions from the client
 
 ### Fixed Bugs
@@ -27,7 +27,7 @@ The project is a mobile application for mental health and risk stratification ba
 
 ### Known Issues
 - Dark Mode text/UI color
-- The server cannot be run locally by two or more people simultaneously 
+- The server cannot be run locally by two or more team members simultaneously 
 
 
 ### TODO
