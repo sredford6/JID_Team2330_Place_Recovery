@@ -1,29 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 
-import LoginScreen from "./screens/LoginScreen";
-import Navigation from './navigation/index';
-// import AuthenticationStackNavigator from "./navigation/index";
+import HomeNavigation from "./navigation/index";
 
 import RegistrationScreen from "./screens/RegistrationScreen";
 import { NavigationContainer, TabActions } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./screens/HomeScreen";
-import LocationScreen from "./screens/LocationScreen";
 import OpeningScreen from "./screens/OpeningScreen";
 import Login from "./screens/LoginScreen";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Verification from "./screens/Verification";
 import EmailVerificationScreen from "./screens/EmailVerificationScreen";
 import Loading from "./screens/Loading";
 import React, { useState } from "react";
-import { AuthContext } from "./navigation/context";
+import { AuthContext, UserInfo } from "./navigation/context";
+
+import {backendUrl} from "./config/config.json";
 
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
+
+import { Alert } from "react-native";
 
 const AuthStack = createNativeStackNavigator();
 
@@ -52,9 +48,7 @@ const AuthenticationStackNavigator = () => {
         component={EmailVerificationScreen}
         options={{ headerShown: true, title: "Verification" }}
       />
-
     </AuthStack.Navigator>
-
   );
 };
 
@@ -66,11 +60,13 @@ export default function App() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [authValid, setAuthValid] = React.useState(false);
 
+  const [userInfo, setUserInfo] = React.useState<UserInfo>(() => userInfo);
+
   const setItem = (name: string, data: string) => {
     try {
       SecureStore.setItemAsync(name, data);
       // console.log("data stored");
-    } catch (error) {
+    } catch (error: any) {
       // Error saving data
       console.log("AsyncStorage save error: " + error.message);
     }
@@ -78,34 +74,24 @@ export default function App() {
 
   const verifyToken = () => {
     SecureStore.getItemAsync("user_token").then((token) => {
-      // console.log(token);
+      console.log(token);
       axios
-        .get("http://localhost:2400/api/auth/jwt-test", {
+        .get(`${backendUrl}/api/auth/jwt-test`, {
           headers: {
             Authorization: token,
           },
         })
         .then((response) => {
-          // console.log(response.data);
-          /* Sample Response 
-          "__v": 0,
-          "_id": "620ec8cac557a52657871051",
-          "email": "jqlin@gatech.edu",
-          "firstName": "Dorian",
-          "lastName": "Lin",
-          "password": "$2b$10$5QwRckvi3J5eCb/gdnIFte7DYi8HCQ4TfNMXdz5Rz7xR/fOiVjn5G",
-          "phoneNumber": "123456789",
-          "resetTries": 0,
-          */
-          // TOFIX: probably this should be done somewhere else; maybe in signUp ?
-          setItem("first_name", response.data["firstName"]);
-          setItem("last_name", response.data["lastName"]);
-          setItem("email", response.data["email"]);
-
+          setUserInfo({
+            email: response.data["email"],
+            firstName: response.data["firstName"],
+            lastName: response.data["lastName"],
+          });
           setAuthValid(true);
         })
         .catch((error) => {
           console.log("Your are not logged in!"); // token error
+          Alert.alert("Connection failed. Please log in again.");
           setAuthValid(false);
         });
     });
@@ -118,11 +104,11 @@ export default function App() {
         setItem("user_token", token);
         verifyToken();
       },
-      signUp: (token: string) => {
-        setIsLoading(false);
-        setItem("user_token", token);
-        verifyToken();
-      },
+      // signUp: (token: string) => {
+      //   setIsLoading(false);
+      //   setItem("user_token", token);
+      //   verifyToken();
+      // },
       signOut: () => {
         setIsLoading(false);
         setAuthValid(false);
@@ -146,9 +132,11 @@ export default function App() {
   }
 
   return (
-    <AuthContext.Provider value={authContext}>
+    <AuthContext.Provider
+      value={{ authFunctions: authContext, userInfo: userInfo }}
+    >
       <NavigationContainer>
-        {authValid ? <Navigation /> : <AuthenticationStackNavigator />}
+        {authValid ? <HomeNavigation /> : <AuthenticationStackNavigator />}
       </NavigationContainer>
     </AuthContext.Provider>
   );

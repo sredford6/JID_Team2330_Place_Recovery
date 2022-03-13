@@ -1,17 +1,13 @@
 import React from 'react';
-import { ReactDOM } from 'react';
-import { StyleSheet, Button, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import { StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
 
-import { Text, View } from '../components/Themed';
+import { Text } from '../components/Themed';
 import ButtonDesign from '../components/Button';
-import { useLinkProps } from '@react-navigation/native';
-import HomeScreen from '../screens/HomeScreen';
 
-import OpeningScreen from './OpeningScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import axios from 'axios';
-import emailSet from '../screens/EmailVerificationScreen';
+
+import {backendUrl} from "../config/config.json";
 
 export default function Verification({ route, navigation }) {
   const [verification, setVerificationCode] = React.useState("");
@@ -44,7 +40,7 @@ export default function Verification({ route, navigation }) {
     console.log(email);
     console.log(newPassword);
     axios
-      .post("http://localhost:2400/api/auth/resetpassword", {
+      .post(`${backendUrl}/api/auth/resetpassword`, {
         email,
         resetCode,
         newPassword,
