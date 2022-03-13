@@ -1,12 +1,8 @@
 import React from 'react';
-import { ReactDOM } from 'react';
-import { StyleSheet, Button, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import { StyleSheet, KeyboardAvoidingView } from 'react-native';
 
-import { Text, View } from '../components/Themed';
+import { Text } from '../components/Themed';
 import ButtonDesign from '../components/Button';
-import { useLinkProps } from '@react-navigation/native';
-import HomeScreen from '../screens/HomeScreen';
-import RegistrationScreen from './RegistrationScreen';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function OpeningScreen({navigation}) {

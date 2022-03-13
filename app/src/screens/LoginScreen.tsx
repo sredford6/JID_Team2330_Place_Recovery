@@ -4,34 +4,30 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableHighlight,
   TextInput,
   KeyboardAvoidingView,
   ImageBackground,
+  TouchableOpacity,
 } from "react-native";
+
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { NavigationContainer } from "@react-navigation/native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+
 import axios from "axios";
 import { ScrollView } from "react-native";
 import { AuthContext } from "../navigation/context";
-import IsTestMode from "../constants/TestMode";
+
+import {backendUrl} from "../config/config.json";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signIn } = React.useContext(AuthContext);
-
-  let testmode = IsTestMode();
-
+  const { authFunctions } = React.useContext(AuthContext);
+  const { signIn } = authFunctions;
   const handleLogin = () => {
-    if (testmode) {
-      signIn();
-      return;
-    }
     axios
-      .post("http://localhost:2400/api/auth/login", {
+      .post(`${backendUrl}/api/auth/login`, {
         email: email,
         password: password,
       })
@@ -48,7 +44,11 @@ export default function LoginScreen({ navigation }) {
         // console.log(response);
       })
       .catch((error) => {
-        Alert.alert("Email or password is incorrect");
+        if (error.message == "Network Error") {
+          Alert.alert(error.message);
+        } else {
+          Alert.alert("Email or password is incorrect");
+        }
       });
   };
   const handleForget = () => {};

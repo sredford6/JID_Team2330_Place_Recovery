@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet } from "react-native";
-import { ScreenContainer } from "react-native-screens";
 
 export default function LoginScreen({}) {
   return (
