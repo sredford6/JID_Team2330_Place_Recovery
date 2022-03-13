@@ -1,15 +1,7 @@
-
 import { StyleSheet, Button } from "react-native";
 
 import { ScrollView, Text, View, Dimensions } from "react-native";
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from "react-native-chart-kit";
+import { BarChart } from "react-native-chart-kit";
 
 export default function ProgressScreen() {
   function* hapYLabel() {
@@ -44,7 +36,7 @@ export default function ProgressScreen() {
           }}
           fromZero={true}
           showValuesOnTopOfBars={true}
-          width={Dimensions.get("window").width } // from react-native
+          width={Dimensions.get("window").width} // from react-native
           height={220}
           // yAxisInterval={2} // optional, defaults to 1
           // strokeWidth={10}
