@@ -49,6 +49,13 @@ export default function HomeScreen({
   const [currentHour, setCurrentHour] = useState<number>(-1);
   const [isAvailable, setIsAvailable] = useState<number>(-1);
 
+
+  useEffect(() => {
+    setIsAvailable(
+      inQuestionnaireOpenInterval(new Date(), daySchedule.notificationTime)
+    );
+  }, [isFocused]);
+
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -64,9 +71,6 @@ export default function HomeScreen({
     let schedule = generateDaySchedule(wakeUp, sleep);
     SetDaySchedule(schedule);
 
-    setIsAvailable(
-      inQuestionnaireOpenInterval(new Date(), daySchedule.notificationTime)
-    );
     // load email info and last q time
     (async () => {
       /**
