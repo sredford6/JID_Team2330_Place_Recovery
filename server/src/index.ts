@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import localtunnel from "localtunnel";
@@ -7,7 +7,7 @@ import authRoute from "routes/auth";
 import questionRoute from "routes/questionnaire";
 import authObj from "config/auth.json";
 
-const port = 2400;
+const port: number = parseInt(process.env.PORT || "", 10) || 2400;
 const dbURI = authObj.mongodb.uri;
 const dbOptions = {
   useNewUrlParser: true,
@@ -25,6 +25,10 @@ app.use(
 app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/question", questionRoute);
+
+app.get("/", (req: Request, res: Response) => {
+  res.send("Yup, it's working. You can close the tab now...");
+});
 
 mongoose.connect(dbURI, dbOptions);
 const db = mongoose.connection;
@@ -52,4 +56,6 @@ async function setupTunnel() {
 }
 
 startServer();
-setupTunnel();
+if (process.env.NODE_ENV !== "production") {
+  setupTunnel();
+}
