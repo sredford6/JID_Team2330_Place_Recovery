@@ -10,7 +10,7 @@ import {
   StackedBarChart,
 } from "react-native-chart-kit";
 
-export default function SettingsScreen() {
+export default function ProgressScreen() {
   function* hapYLabel() {
     yield* [0, 1, 2, 3, 4, 5];
   }
@@ -18,11 +18,11 @@ export default function SettingsScreen() {
   // why it works but it works (✿◡‿◡)
   const hapyLabelIterator = hapYLabel();
 
-  function* claimYLabel() {
+  function* calmYLabel() {
     yield* [0, 1, 2, 3, 4, 5];
   }
 
-  const clayLabelIterator = claimYLabel();
+  const calmLabelIterator = calmYLabel();
 
   function* sadYLabel() {
     yield* [0, 1, 2, 3, 4, 5];
@@ -89,7 +89,7 @@ export default function SettingsScreen() {
             decimalPlaces: 2, // optional, defaults to 2dp
             color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            formatYLabel: () => clayLabelIterator.next().value,
+            formatYLabel: () => calmLabelIterator.next().value,
           }}
           style={{
             marginVertical: 8,
