@@ -54,7 +54,7 @@ export type TimeBlock = {
 };
 
 export type DaySchedule = {
-  timeBlocks: [TimeBlock];
+  timeBlocks: Array<TimeBlock>;
   completedCount: number;
-  notificationTime: [number];
+  notificationTime: Array<number>;
 };
