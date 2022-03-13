@@ -7,7 +7,11 @@ import Answers from "models/answer.model";
 import User, { IUser } from "models/user.model";
 import { verify } from "middleware";
 
-import { validateAnswerArray, validateQuestionArray } from "helpers/validators";
+import {
+  validateAnswerArray,
+  validateLocation,
+  validateQuestionArray,
+} from "helpers/validators";
 const questionsPath = path.resolve(__dirname, "..", "public", "questions");
 
 router.post("/create", verify, async (req, res: Response) => {
@@ -41,12 +45,19 @@ router.post("/create", verify, async (req, res: Response) => {
 router.post("/answer", verify, async (req, res: Response) => {
   try {
     const user = await User.findOne({ email: req.currentUser.email });
-    const { questionnaire, answers } = req.body;
+    const { questionnaire, answers, location } = req.body;
     if (!validateAnswerArray(answers)) {
       throw {
         httpCode: 400,
         message: `answers format is incorrect.`,
         error: new Error(`answers format is incorrect.`),
+      };
+    }
+    if (location !== undefined && !validateLocation(location)) {
+      throw {
+        httpCode: 400,
+        message: `location format is incorrect.`,
+        error: new Error(`location format is incorrect.`),
       };
     }
 
@@ -55,6 +66,7 @@ router.post("/answer", verify, async (req, res: Response) => {
       datetime: currentDateTime.toISOString(),
       questionnaire,
       answers,
+      location,
     });
 
     user.answers.push(newAnswers);

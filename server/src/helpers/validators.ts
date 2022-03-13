@@ -1,4 +1,4 @@
-import { IAnswer } from "models/answer.model";
+import { IAnswer, ILocation } from "models/answer.model";
 import { ChoiceQuestion, Question } from "models/question.model";
 
 const emailRegexp =
@@ -67,6 +67,17 @@ function arrayOfType(arr: any[], type: string): boolean {
   return arr.every((i) => typeof i === type);
 }
 
+export function validateLocation(arg: any): arg is ILocation {
+  if (!arg) return false;
+  if (arg.longitude === undefined || typeof arg.longitude !== "number") {
+    return false;
+  }
+  if (arg.latitude === undefined || typeof arg.latitude !== "number") {
+    return false;
+  }
+  return true;
+}
+
 export function validateAnswer(arg: any): arg is IAnswer {
   if (!arg) return false;
   if (!arg.questionId || typeof arg.questionId !== "string") return false;
@@ -90,6 +101,7 @@ export function validateAnswer(arg: any): arg is IAnswer {
   ) {
     return false;
   }
+
   return true;
 }
 
