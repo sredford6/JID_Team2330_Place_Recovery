@@ -69,6 +69,8 @@ router.post("/signup", async (req: Request, res: Response) => {
       phoneNumber: req.body.phoneNumber,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
+      wakeTime: req.body.wakeTime,
+      sleepTime: req.body.sleepTime,
     });
     const user = await newUser.save();
     res.status(200).json({ token: generateToken(user) });

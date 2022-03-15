@@ -7,6 +7,8 @@ export interface IUser {
   phoneNumber: string;
   firstName: string;
   lastName: string;
+  wakeTime: Date;
+  sleepTime: Date;
   resetCode?: string;
   resetTries?: number;
   admin: boolean;
@@ -19,6 +21,8 @@ const UserSchema = new Schema<IUser>({
   phoneNumber: { type: String, required: true },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
+  wakeTime: { type: Date, required: true },
+  sleepTime: { type: Date, required: true },
   resetCode: { type: String, required: false },
   resetTries: { type: Number, required: false },
   admin: { type: Boolean, default: false },
