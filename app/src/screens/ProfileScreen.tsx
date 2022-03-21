@@ -41,7 +41,9 @@ export default function ProfileScreen({
                 //onPress={}
                 activeOpacity={0.85}
               >
-      <Text style={styles.label}> Name: <Text style={styles.info}>{userInfo.firstName} {userInfo.lastName}</Text></Text>
+               
+      <Text style={styles.label}> Name: <Text style={styles.info}>{userInfo.firstName} {userInfo.lastName}</Text> <Text style = {styles.editText}>[Edit]</Text></Text>
+      
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -49,7 +51,8 @@ export default function ProfileScreen({
                 //onPress={}
                 activeOpacity={0.85}
               >
-      <Text style={styles.label}> Email: <Text style={styles.info}>{userInfo.email}</Text></Text>
+               
+      <Text style={styles.label}> Email: <Text style={styles.info}>{userInfo.email}</Text><Text style = {styles.editText}>[Edit]</Text></Text>
       
       </TouchableOpacity>
 
@@ -78,7 +81,7 @@ export default function ProfileScreen({
                 //onPress={}
                 activeOpacity={0.85}
               >
-      <Text style={styles.label}> Gender</Text>
+      <Text style={styles.label}> Gender:</Text>
       
       </TouchableOpacity>
       
@@ -87,7 +90,7 @@ export default function ProfileScreen({
                 //onPress={}
                 activeOpacity={0.85}
               >
-      <Text style={styles.label}> Race/Ethnicity</Text>
+      <Text style={styles.label}> Race/Ethnicity:</Text>
       
       </TouchableOpacity>
       
@@ -135,15 +138,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 8,
-    marginTop: 10,
+    marginTop: 18,
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
   },
   buttonStyle: {
-    width: 310,
-    height: 50,
+    width: 320,
+    height: 58,
     paddingVertical: 8,
     backgroundColor: "#F5FFFA",
     paddingHorizontal: 15,
@@ -161,17 +164,27 @@ const styles = StyleSheet.create({
 
   label: {
     textAlign: 'left',
-    marginLeft: -3
+    marginLeft: -3,
+    flexWrap: 'wrap',
+    fontSize: 15
+
+    
   },
   info: {
     textAlign: 'right',
-    marginEnd: 0 
+    flexWrap: 'wrap',
+    flex: 1,
     
   },
   account: {
-    margin: 10,
-    fontWeight: 'bold'
+    margin: 18,
+    fontWeight: 'bold',
+    fontSize: 17
   },
+  editText: {
+    fontSize: 13,
+    color: "gray"
+  }
  
   
  
