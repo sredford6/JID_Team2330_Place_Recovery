@@ -94,7 +94,11 @@ export default function ProfileScreen({
       
       <TouchableOpacity
                 style={styles.buttonStyle}
-                //onPress={}
+                onPress={() => { 
+                  {
+                    navigation.navigate("DemographicsScreen");
+                  }
+                }}
                 activeOpacity={0.85}
               >
       <Text style={styles.label}> Additional Demographics</Text>
