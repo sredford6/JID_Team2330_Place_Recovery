@@ -52,7 +52,7 @@ export default function ProfileScreen({
                 activeOpacity={0.85}
               >
                
-      <Text style={styles.label}> Email: <Text style={styles.info}>{userInfo.email}</Text><Text style = {styles.editText}>[Edit]</Text></Text>
+      <Text style={styles.label}> Email: <Text style={styles.info}>{userInfo.email} </Text><Text style = {styles.editText}>[Edit]</Text></Text>
       
       </TouchableOpacity>
 
@@ -65,8 +65,6 @@ export default function ProfileScreen({
       
       </TouchableOpacity>
 
-     
-      
       <TouchableOpacity
                 style={styles.buttonStyle}
                 //onPress={}
@@ -189,5 +187,3 @@ const styles = StyleSheet.create({
   
  
 });
-
-// – arrow code
