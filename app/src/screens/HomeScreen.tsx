@@ -90,17 +90,18 @@ export default function HomeScreen({
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              if (
-                isAvailable != -1 &&
-                !daySchedule.timeBlocks[isAvailable].completed
-              ) {
+              // if (
+              //   isAvailable != -1 &&
+              //   !daySchedule.timeBlocks[isAvailable].completed
+              // ) 
+              {
                 navigation.navigate("Questionnaire");
               }
             }}
             activeOpacity={0.85}
           >
             <Text style={styles.buttonTextWhite}>
-              {isAvailable != -1 ? "Start" : "Not available yet"}
+              {isAvailable != -1 ? "Start" : "Start"}
             </Text>
           </TouchableOpacity>
           <Text>
