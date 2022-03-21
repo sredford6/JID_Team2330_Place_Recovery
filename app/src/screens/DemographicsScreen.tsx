@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Platform, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import {Button, Platform, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert, Dimensions } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import ButtonDesign from '../components/Button';
@@ -13,46 +13,98 @@ import { AuthContext } from "../navigation/context";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
 import { useRef } from 'react';
+import MultiSelect from 'react-native-multiple-select';
+
+import DropDownPicker from 'react-native-dropdown-picker';
 
 
-export default function DemographicsScreen({ navigation }) {
+
+export default function Demographics({ navigation }) {
     const [selectEducation, setSelectedEducation] = React.useState();
+   
     const [occupation, setOccupation] = React.useState();
     const [address, setAddress] = React.useState();
     const [city, setCity] = React.useState();
     const [state, setState] = React.useState();
     const [zip, setZip] = React.useState();
-    const pickerRef = useRef();
+   
+    const [opIllness, setOpenIllness] = React.useState(false);
+    const [illnessValue, setIllnessValue] = React.useState([]);
+    const [illness, setIllness] = React.useState([
+    {label: 'Depression', value: 'Depression'},
+    {label: 'Schizophrenia', value: 'Schizophrenia'},
+    {label: 'Bipolar Disorder', value: 'Bipolar Disorder'},
+    {label: 'Schizoaffective Disorder ', value: 'Schizoaffective Disorder '},
+    {label: 'Anxiety', value: 'Anxiety'},
+    {label: 'OCD', value: 'OCD'},
+    {label: 'PTSD', value: 'PTSD'},
+    {label: 'Other', value: 'Other'}
 
-    function open() {
-        pickerRef.current.focus();
-    }
+  ]);
+  const [educationOp, setOpenEducation] = React.useState(false);
+  const [educationValue, setEducationValue] = React.useState([]);
+  const [education, setEducation] = React.useState([
+  {label: 'Less than High School', value: 'Less than High School'},
+  {label: 'High School Graduate', value: 'High School Graduate'},
+  {label: 'Vocational/Trade/Technical School ', value: 'Vocational/Trade/Technical School '},
+  {label: 'Some College', value: 'Some College'},
+  {label: "Bachelor's Degree", value: "Bachelor's Degree"},
+  {label: 'Advanced Degree', value: 'Advanced Degree'},
 
-    function close() {
-        pickerRef.current.blur();
-    }
+]);
+
+  const [movedOp, setOpenMoved] = React.useState(false);
+  const [movedValue, setMovedValue] = React.useState([]);
+  const [moved, setMoved] = React.useState([
+  {label: '0', value: '0'},
+  {label: '1', value: '1'},
+  {label: '2', value: '2'},
+  {label: '3', value: '3'},
+  {label: "4", value: "4"},
+  {label: '5', value: '5'},
+  {label: '6', value: '6'},
+  {label: '7', value: '7'},
+  {label: '8', value: '8'},
+  {label: '9+', value: '9+'},
+
+]);
+
+    const [opPersonalIllness, setopenPersonalIllness] = React.useState(false);
+    const [personalIlValue, setPersonalIlValue] = React.useState([]);
+    const [personalIl, setPersonallIl] = React.useState([
+    {label: 'Depression', value: 'Depression'},
+    {label: 'Schizophrenia', value: 'Schizophrenia'},
+    {label: 'Bipolar Disorder', value: 'Bipolar Disorder'},
+    {label: 'Schizoaffective Disorder ', value: 'Schizoaffective Disorder '},
+    {label: 'Anxiety', value: 'Anxiety'},
+    {label: 'OCD', value: 'OCD'},
+    {label: 'PTSD', value: 'PTSD'},
+    {label: 'Other', value: 'Other'}
+
+  ]);
+   
+   
   
   return (
-    <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
+    <SafeAreaView style={{ flex: 1, justifyContent: "center", backgroundColor: "#FFFFFF99" }}>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
       >
         <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <Text>Education:</Text>
-        <Picker style ={{width: 400}}
-        ref={pickerRef}
-        selectedValue={selectEducation}
-        onValueChange={(selectedChoice, index) =>
-            setSelectedEducation(selectedChoice)
-        }>
-        <Picker.Item label="Less than high school" value="lths" />
-        <Picker.Item label="High school graduate" value="hsg" />
-        <Picker.Item label="Vocational/Trade/Technical School" value="vstts" />
-        <Picker.Item label="Some college" value="sc" />
-        <Picker.Item label="Bachelor’s degree" value="bs" />
-        <Picker.Item label="Advanced degree " value="ad" />
-        </Picker>
-        <Text>Occupation</Text>
+          <Text style = {styles.title}> Demographics </Text>
+
+        <Text style = {styles.label}>Education:</Text>
+
+        <DropDownPicker
+      open={educationOp}
+      setOpen={setOpenEducation}
+      value={educationValue}
+      setValue={setEducationValue}
+      items={education}
+      setItems={setEducation}
+    />
+        
+        <Text style = {styles.label}>Occupation:</Text>
         <TextInput
             style={styles.input}
             placeholder="Occupation"
@@ -63,7 +115,7 @@ export default function DemographicsScreen({ navigation }) {
             value={occupation}
             secureTextEntry={true}
           />
-        <Text>Address:</Text>
+        <Text style = {styles.label}>Address:</Text>
         <TextInput
             style={styles.input}
             placeholder="Address 1"
@@ -99,11 +151,46 @@ export default function DemographicsScreen({ navigation }) {
             placeholder="Zip code"
             autoCapitalize="none"
             autoCorrect={false}
-            maxLength={20}
+            maxLength={5}
             onChangeText={(inp) => setZip(inp)}
             value={zip}
             secureTextEntry={true}
           />
+          <Text style = {styles.label}>Number of times participant moved from ages 12-18 </Text>
+          <DropDownPicker
+      open={movedOp}
+      setOpen={setOpenMoved}
+      value={movedValue}
+      setValue={setMovedValue}
+      items={moved}
+      setItems={setMoved}
+    />
+      <Text style = {styles.label}>Family history of mental illness </Text>
+     <DropDownPicker
+      open={opIllness}
+      setOpen={setOpenIllness}
+      value={illnessValue}
+      setValue={setIllnessValue}
+      items={illness}
+      setItems={setIllness}
+      multiple={true}
+      min={0}
+    />
+    <Text style = {styles.label}>Personal history of mental illness </Text>
+    <DropDownPicker
+      open={opPersonalIllness}
+      setOpen={setopenPersonalIllness}
+      value={personalIlValue}
+      setValue={setPersonalIlValue}
+      items={personalIl}
+      setItems={setPersonallIl}
+      multiple={true}
+      min={0}
+    />
+     <ButtonDesign name="Submit" 
+     onPress={null} 
+     />
+       
 
         </KeyboardAvoidingView>
       </ScrollView>
@@ -118,6 +205,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    
   },
   password: {
     textAlign: 'center',
@@ -126,15 +214,15 @@ const styles = StyleSheet.create({
     color: '#072B4F',
   },
   title: {
-    fontSize: 30,
+    fontSize: 25,
     marginBottom: 15,
     fontWeight: 'bold',
     color: '#072B4F'
   },
   input: { 
       height: 45,
-      width: 290,
-      margin: 15,
+      width: Dimensions.get('window').width,
+      marginBottom: 5,
       paddingLeft: 10,
       borderWidth: 1,
       borderRadius: 10,
@@ -147,6 +235,7 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     marginRight: 40,
     color: '#072B4F', 
+    fontSize: 18,
   },
   textName: {
     textAlign: 'center',
@@ -172,4 +261,5 @@ const styles = StyleSheet.create({
     color: 'red', 
     fontSize: 18,
   },
+  
 });

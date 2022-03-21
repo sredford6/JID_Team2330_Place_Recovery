@@ -26,7 +26,7 @@ import {
 } from "../components/types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import Questionnaire from "../screens/QuestionnaireScreen";
-import DemographicsScreen from '../screens/DemographicsScreen';
+import Demographics from '../screens/DemographicsScreen';
 
 export default function HomeNavigation({
   colorScheme,
@@ -81,8 +81,8 @@ const ProfileStackNavigator = () => {
         }}
       />
       <ProfileStack.Screen
-        name="DemographicsScreen"
-        component={DemographicsScreen}
+        name="Demographics"
+        component={Demographics}
         options={{ headerShown: true }}
       />
     </ProfileStack.Navigator>

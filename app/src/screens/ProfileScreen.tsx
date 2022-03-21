@@ -96,7 +96,7 @@ export default function ProfileScreen({
                 style={styles.buttonStyle}
                 onPress={() => { 
                   {
-                    navigation.navigate("DemographicsScreen");
+                    navigation.navigate("Demographics");
                   }
                 }}
                 activeOpacity={0.85}
