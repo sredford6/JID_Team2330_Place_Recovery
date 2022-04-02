@@ -26,6 +26,8 @@ import {
 import { AuthContext } from "../navigation/context";
 
 import { ScrollView } from "react-native";
+import * as Location from "expo-location";
+import { goToSettings } from "../components/Helpers";
 
 export default function HomeScreen({
   navigation,
@@ -47,13 +49,28 @@ export default function HomeScreen({
   const [currentHour, setCurrentHour] = useState<number>(-1);
   const [isAvailable, setIsAvailable] = useState<number>(-1);
 
-  useEffect(() => {
-    let schedule = generateDaySchedule(wakeUp, sleep);
-    SetDaySchedule(schedule);
 
+  useEffect(() => {
     setIsAvailable(
       inQuestionnaireOpenInterval(new Date(), daySchedule.notificationTime)
     );
+  }, [isFocused]);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        goToSettings(
+          "Require location sharing",
+          "The app requires to access to your location when you are using the app. Please enable location permission in Settings."
+        );
+        return false;
+      }
+    })();
+
+    let schedule = generateDaySchedule(wakeUp, sleep);
+    SetDaySchedule(schedule);
+
     // load email info and last q time
     (async () => {
       /**

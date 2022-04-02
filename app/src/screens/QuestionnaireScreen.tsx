@@ -15,6 +15,11 @@ import { AuthContext } from "../navigation/context";
 
 import { backendUrl } from "../config/config.json";
 
+
+import * as Location from "expo-location";
+import { LocationGeocodedAddress, LocationObject } from "expo-location";
+import { convertTime, goToSettings } from "../components/Helpers";
+
 export default function Questionnaire({ navigation }) {
   const { useState } = React;
   const [questions, setQuestions] = useState();
@@ -31,7 +36,12 @@ export default function Questionnaire({ navigation }) {
     []
   );
 
+  const [location, setLocation] = useState<LocationObject>();
+  const [fetching, setFetching] = useState(false);
+
   const { userInfo } = useContext(AuthContext);
+
+  const [permission, setPermission] = useState<Boolean>(false);
 
   interface answer_type {
     choiceIndex: Number | Array<number>;
@@ -39,14 +49,30 @@ export default function Questionnaire({ navigation }) {
     questionId: String;
   }
 
+  const GetLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    setPermission(status == "granted");
+    if (status !== "granted") {
+      goToSettings(
+        "Require location sharing",
+        "The app requires to access to your location when you are using the app. Please enable location permission in Settings."
+      );
+      return false;
+    }
+    // TODO: should probably set timeout?
+    let location = await Location.getCurrentPositionAsync({});
+    let address = await Location.reverseGeocodeAsync(location.coords);
+    setLocation(location);
+    return true;
+  };
+
   const buttonFunction = (index: number) => {
     setButtonPressed((arr) =>
       arr.map((buttonPressed, i) =>
         i == index ? !buttonPressed : buttonPressed
-        
       )
     );
-    
+
     setButtonPressed((arr) =>
       arr.map((buttonPressed, i) =>
         i != prevIndex ? buttonPressed : !buttonPressed
@@ -54,18 +80,18 @@ export default function Questionnaire({ navigation }) {
     );
     setPrevIndex(index);
     console.log(index);
-   
-    console.log(nextButton)
-    if (index < 0 ) {
-      setNextButton(true)
+
+    console.log(nextButton);
+    if (index < 0) {
+      setNextButton(true);
     } else {
-      setNextButton(false)
+      setNextButton(false);
     }
   };
 
   const multipleButtonFunction = (index: number) => {
-    let count = 0
-    let checkBool = 0
+    let count = 0;
+    let checkBool = 0;
     setButtonPressed((arr) =>
       arr.map((buttonPressed, i) =>
         i == index ? !buttonPressed : buttonPressed
@@ -77,29 +103,25 @@ export default function Questionnaire({ navigation }) {
       } else {
         checkBool = index;
       }
-    })
-    
-    console.log(count)
-    
-    
-    console.log(index)
-    console.log(checkBool)
+    });
+
+    console.log(count);
+
+    console.log(index);
+    console.log(checkBool);
     //console.log(prevIndex);
     //console.log(nextButton)
     if (index < 0) {
-      setNextButton(true)
+      setNextButton(true);
     } else {
-      if ((count == 19 && (index == checkBool))) {
-        console.log('here')
-        setNextButton(true)
-        console.log(nextButton)
+      if (count == 19 && index == checkBool) {
+        console.log("here");
+        setNextButton(true);
+        console.log(nextButton);
       } else {
-        setNextButton(false)
-
+        setNextButton(false);
       }
-     
     }
-    
   };
 
   const loadQuiz = async () => {
@@ -129,7 +151,7 @@ export default function Questionnaire({ navigation }) {
   };
 
   const increase = () => {
-    setNextButton(true)
+    setNextButton(true);
     if (index < length - 1) {
       setIndex(index + 1);
     }
@@ -151,6 +173,7 @@ export default function Questionnaire({ navigation }) {
 
   useEffect(() => {
     loadQuiz();
+    GetLocation();
   }, []);
 
   const renderType0 = (i: number, customArray: null | Array<any> = null) => {
@@ -174,7 +197,6 @@ export default function Questionnaire({ navigation }) {
               : styles.optionButton,
           ]}
           activeOpacity={0.8}
-          
         >
           <Text style={styles.buttonText}>{option}</Text>
         </TouchableOpacity>
@@ -231,19 +253,18 @@ export default function Questionnaire({ navigation }) {
   };
   const renderType4 = (i: number) => {
     return (
-        <TextInput
-          style={styles.input}
-          //placeholder="Answer here"
-          onChangeText={(freeText) => {
-            let temp_answers = user_answers;
-            temp_answers[i].answer = freeText;
-            //temp_answers[i].choiceIndex = questions[i]["choices"].length;
-            setUserAnswers(temp_answers);
+      <TextInput
+        style={styles.input}
+        //placeholder="Answer here"
+        onChangeText={(freeText) => {
+          let temp_answers = user_answers;
+          temp_answers[i].answer = freeText;
+          //temp_answers[i].choiceIndex = questions[i]["choices"].length;
+          setUserAnswers(temp_answers);
 
-            //console.log(user_answers);
-          }}
-        />
-      
+          //console.log(user_answers);
+        }}
+      />
     );
   };
 
@@ -282,41 +303,56 @@ export default function Questionnaire({ navigation }) {
 
   const handleSubmit = async () => {
     // TODO handle submit to endpoints
-    // try {
-    //   const token: string = (await getItemAsync("user_token"))!;
-    //   const res = await axios.post(
-    //     `${backendUrl}/api/question/answer`,
-    //     {
-    //       questionnaire,
-    //       answers: user_answers,
-    //     },
-    //     {
-    //       headers: {
-    //         Authorization: token,
-    //       },
-    //     }
-    //   );
-    //   console.log(res.data);
-    // } catch (error: any) {
-    //   console.error(error);
-    // }
-    console.log("submit");
 
+    if (!location) {
+      await GetLocation().then((res) => {
+        if (!res) {
+          console.log("fail to fetch location");
+          // set deafult coordiantes
+        }
+      });
+    }
+
+    try {
+      const token: string = (await getItemAsync("user_token"))!;
+      const res = await axios.post(
+        `${backendUrl}/api/question/answer`,
+        {
+          location: {
+            longitude: location?.coords ? location?.coords.longitude : 0,
+            latitude: location?.coords ? location?.coords.latitude : 0,
+          },
+          questionnaire,
+          answers: user_answers,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      console.log(res.data);
+    } catch (error: any) {
+      console.error(error);
+    }
+    console.log("submit");
+    console.log(location);
     /**
      * TODO: The following part might also need to be sent to backend.
      */
-    let t = new Date().getTime();
-    await storeDataString(userInfo.email + "_lastQTime", t.toString());
+    // let t = new Date().getTime();
+    // await storeDataString(userInfo.email + "_lastQTime", t.toString());
 
-    let lastQCount = await retrieveDataString(userInfo.email + "_takenQCount");
-    if (lastQCount) {
-      let updatedQCount = JSON.parse(lastQCount);
-      updatedQCount.count = Math.min(updatedQCount.count + 1, 3);
-      await storeDataString(
-        userInfo.email + "_takenQCount",
-        JSON.stringify(updatedQCount)
-      );
-    }
+    // let lastQCount = await retrieveDataString(userInfo.email + "_takenQCount");
+    // if (lastQCount) {
+    //   let updatedQCount = JSON.parse(lastQCount);
+    //   updatedQCount.count = Math.min(updatedQCount.count + 1, 3);
+    //   await storeDataString(
+    //     userInfo.email + "_takenQCount",
+    //     JSON.stringify(updatedQCount)
+    //   );
+    // }
+
     navigation.navigate("Home");
   };
 
@@ -341,7 +377,11 @@ export default function Questionnaire({ navigation }) {
               <Text style={styles.buttonText}>PREVIOUS</Text>
             </TouchableOpacity> */}
             {index == length - 1 ? null : (
-              <TouchableOpacity disabled = {nextButton} style={nextButton ? styles.disabledButton : styles.button} onPress={increase}>
+              <TouchableOpacity
+                disabled={nextButton}
+                style={nextButton ? styles.disabledButton : styles.button}
+                onPress={increase}
+              >
                 <Text style={styles.buttonText}>NEXT</Text>
               </TouchableOpacity>
             )}
