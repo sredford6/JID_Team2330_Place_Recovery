@@ -19,7 +19,7 @@ The project is a mobile application for mental health and risk stratification ba
 
 ### Known Issues
 
-- DropDown Picker shows the number of items that were selected by the user when indicating the personal and family history of mental illness as opposed to the names of the items that were selected. 
+- DropDownPicker shows the number of items that were selected by the user when indicating the personal and family history of mental illness as opposed to the names of the items that were selected. 
 
 ## Version 0.3.0 (Sprint 3)
 ### Features
