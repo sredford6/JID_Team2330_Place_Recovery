@@ -7,6 +7,19 @@ The project is a mobile application for mental health and risk stratification ba
   
 # Release Notes
 
+## Version 0.4.0 (Sprint 4)
+### Features
+
+- Implemented a profile screen that is meant to display the user's personal information and allow them to access the additional demographics form
+- Implemented the additional demographics form, which can be accessed through the profile screen. The user can choose to additionally provide such information as their education level, occupation, personal history of mental illness etc.
+
+
+### Fixed Bugs
+
+
+### Known Issues
+
+- DropDown Picker shows the number of items that were selected by the user when indicating the personal and family history of mental illness as opposed to the names of the items that were selected. 
 
 ## Version 0.3.0 (Sprint 3)
 ### Features
