@@ -252,7 +252,7 @@ export default function RegistrationScreen({ navigation }) {
           mode={'date'}
           is24Hour={false}
           display="default"
-          onChange={changeTime}
+          onChange={changeBirthday}
         />
 
           <Text style = {styles.label}>Gender</Text>
