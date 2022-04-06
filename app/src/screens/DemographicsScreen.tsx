@@ -118,7 +118,7 @@ export default function Demographics({ navigation }) {
         <Text style = {styles.label}>Address:</Text>
         <TextInput
             style={styles.input}
-            placeholder="Address 1"
+            placeholder="Address Line 1"
             autoCapitalize="none"
             autoCorrect={false}
             maxLength={20}
@@ -152,6 +152,7 @@ export default function Demographics({ navigation }) {
             autoCapitalize="none"
             autoCorrect={false}
             maxLength={5}
+            keyboardType="numeric"
             onChangeText={(inp) => setZip(inp)}
             value={zip}
             secureTextEntry={true}
