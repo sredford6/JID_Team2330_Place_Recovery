@@ -61,7 +61,7 @@ const HomeStackNavigator = () => {
       <HomeStack.Screen
         name="Questionnaire"
         component={Questionnaire}
-        options={{ headerShown: true }}
+        options={{ headerShown: true, gestureEnabled: false }}
       />
     </HomeStack.Navigator>
   );
