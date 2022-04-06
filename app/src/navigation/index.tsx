@@ -26,6 +26,7 @@ import {
 } from "../components/types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import Questionnaire from "../screens/QuestionnaireScreen";
+import Demographics from '../screens/DemographicsScreen';
 
 export default function HomeNavigation({
   colorScheme,
@@ -42,6 +43,7 @@ export default function HomeNavigation({
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const HomeStack = createNativeStackNavigator();
+const ProfileStack = createNativeStackNavigator();
 
 const HomeStackNavigator = () => {
   return (
@@ -62,6 +64,28 @@ const HomeStackNavigator = () => {
         options={{ headerShown: true }}
       />
     </HomeStack.Navigator>
+  );
+};
+
+const ProfileStackNavigator = () => {
+  return (
+    <ProfileStack.Navigator>
+      <ProfileStack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: "#e3fbe3",
+          },
+        }}
+      />
+      <ProfileStack.Screen
+        name="Demographics"
+        component={Demographics}
+        options={{ headerShown: true }}
+      />
+    </ProfileStack.Navigator>
   );
 };
 
@@ -135,12 +159,14 @@ export function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileStackNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
+          headerShown: false,
         }}
+       
       />
     </BottomTab.Navigator>
   );
