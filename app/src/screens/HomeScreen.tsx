@@ -1,82 +1,187 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Alert,
   StyleSheet,
-  TouchableHighlight,
-  TextInput,
   KeyboardAvoidingView,
-  ImageBackground,
+  TextInputComponent,
 } from "react-native";
-import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import LocationScreen from './LocationScreen';
-import axios from "axios";
+import { Text, View } from "../components/Themed";
+import {
+  RootTabScreenProps,
+  CountOfTakenQofDay,
+  DaySchedule,
+} from "../components/types";
+import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
+import { useIsFocused } from "@react-navigation/native";
+
+import {
+  convertTime,
+  retrieveDataString,
+  storeDataString,
+  timeDifference,
+  formatDate,
+  generateDaySchedule,
+  inQuestionnaireOpenInterval,
+} from "../components/Helpers";
+import { AuthContext } from "../navigation/context";
+
 import { ScrollView } from "react-native";
-import QuestionnaireScreen from "./QuestionnaireScreen";
-import QuizScreen from "./QuizScreen";
+import * as Location from "expo-location";
+import { goToSettings } from "../components/Helpers";
+
+export default function HomeScreen({
+  navigation,
+}: RootTabScreenProps<"HomeStack">) {
+  const { userInfo } = useContext(AuthContext);
+
+  const isFocused = useIsFocused();
+
+  const [daySchedule, SetDaySchedule] = useState<DaySchedule>(
+    generateDaySchedule(8, 22)
+  );
+
+  /**
+   * pseudo sleep schedule for development
+   * hours in 24-hour clock
+   */
+  let wakeUp = 8;
+  let sleep = 23;
+  const [currentHour, setCurrentHour] = useState<number>(-1);
+  const [isAvailable, setIsAvailable] = useState<number>(-1);
 
 
-export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
-  
+  useEffect(() => {
+    setIsAvailable(
+      inQuestionnaireOpenInterval(new Date(), daySchedule.notificationTime)
+    );
+  }, [isFocused]);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        goToSettings(
+          "Require location sharing",
+          "The app requires to access to your location when you are using the app. Please enable location permission in Settings."
+        );
+        return false;
+      }
+    })();
+
+    let schedule = generateDaySchedule(wakeUp, sleep);
+    SetDaySchedule(schedule);
+
+    // load email info and last q time
+    (async () => {
+      /**
+       * TODO: These information may should be fetech from backend.
+       */
+      // const todaySchedule = await
+      // const lastTakenQCount = await retrieveDataString(
+      //   userInfo.email + "_takenQCount"
+      // );
+      // let date = new Date();
+      // if (
+      //   !lastTakenQCount ||
+      //   JSON.parse(lastTakenQCount).date != formatDate(date)
+      // ) {
+      //   let newCount = { date: formatDate(date), count: 0 };
+      //   setTakenQCount(newCount);
+      //   storeDataString(
+      //     userInfo.email + "_takenQCount",
+      //     JSON.stringify(newCount)
+      //   );
+      // } else {
+      //   setTakenQCount(JSON.parse(lastTakenQCount));
+      // }
+    })();
+  }, []);
+
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
     >
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <View style={[styles.frameContainer, styles.shadowProp]}>
-          <Text style={styles.headTextLeft}>Daily Questionnaire 1/3</Text>
-          <TouchableOpacity
-            // disabled={true}
-            style={styles.button}
-            onPress={() => navigation.navigate("Questionnaire")}
-            activeOpacity={0.85}
-          >
-            <Text style={styles.buttonTextWhite}>Start</Text>
-          </TouchableOpacity>
-          <Text style={styles.blackText}>Available until 12:00 PM</Text>
-        </View>
-
-        <Text></Text>
-
-        <View style={[styles.frameContainer, styles.shadowProp]}>
-          <Text style={styles.headTextLeft}>Daily Questionnaire 2/3</Text>
+          <Text style={styles.headTextLeft}>Daily Questionnaire</Text>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("QuizScreen")}
+            onPress={() => {
+              // if (
+              //   isAvailable != -1 &&
+              //   !daySchedule.timeBlocks[isAvailable].completed
+              // ) 
+              {
+                navigation.navigate("Questionnaire");
+              }
+            }}
             activeOpacity={0.85}
           >
-            <Text style={styles.buttonTextWhite}>Start</Text>
+            <Text style={styles.buttonTextWhite}>
+              {isAvailable != -1 ? "Start" : "Start"}
+            </Text>
           </TouchableOpacity>
-          <Text style={styles.blackText}>Available until 6:00 PM</Text>
-        </View>
+          <Text>
+            Current Time (testing): {currentHour}, isAvailable: {isAvailable}
+          </Text>
 
-        <Text></Text>
-
-        <View style={[styles.frameContainer, styles.shadowProp]}>
-          <Text style={styles.headTextLeft}>Daily Questionnaire 3/3</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate("Questionnaire")}
-            activeOpacity={0.85}
+          <Text>
+            Morning Block: {daySchedule.timeBlocks[0].begin} -
+            {daySchedule.timeBlocks[0].end}, available at{" "}
+            {daySchedule.notificationTime[0]} {"\n"}
+            Midday Block: {daySchedule.timeBlocks[1].begin} -{" "}
+            {daySchedule.timeBlocks[1].end}, available at{" "}
+            {daySchedule.notificationTime[1]} {"\n"}
+            Evening Block: {daySchedule.timeBlocks[2].begin} - {""}
+            {daySchedule.timeBlocks[2].end}, available at{" "}
+            {daySchedule.notificationTime[2]} {"\n"}
+          </Text>
+          <Text
+            onPress={
+              /**
+               * ONLY for development puroposes.
+               */
+              async () => {
+                // setLastQTime(0);
+                // await storeDataString(userInfo.email + "_lastQTime", "0");
+                // let newQcount = {
+                //   date: formatDate(new Date()),
+                //   count: 0,
+                // };
+                // setTakenQCount(newQcount);
+                // await storeDataString(
+                //   userInfo.email + "_takenQCount",
+                //   JSON.stringify(newQcount)
+                // );
+              }
+            }
           >
-            <Text style={styles.buttonTextWhite}>Start</Text>
-          </TouchableOpacity>
-          <Text style={styles.blackText}>Available until 12:00 AM</Text>
+            TEST: remove last taken date and count
+          </Text>
         </View>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Current Time (0-24 integer,for testing)"
+          onChangeText={(h) => {
+            setCurrentHour(parseInt(h));
+            setIsAvailable(
+              inQuestionnaireOpenInterval(
+                parseInt(h),
+                daySchedule.notificationTime
+              )
+            );
+          }}
+        ></TextInput>
       </KeyboardAvoidingView>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   frameContainer: {
     width: "88%",
@@ -98,24 +203,24 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   leftContainer: {
-    alignItems: 'flex-start',
-    alignContent: 'space-between',
+    alignItems: "flex-start",
+    alignContent: "space-between",
   },
   blackText: {
     fontSize: 14,
-    color: "#000000"
+    color: "#000000",
   },
   headTextLeft: {
-    textAlign: 'left',
+    textAlign: "left",
     fontSize: 18,
     color: "#000000",
     //paddingLeft: 8,
   },
   headTextRight: {
-    textAlign: 'right',
+    textAlign: "right",
     fontSize: 18,
     //paddingRight: 8,
   },
@@ -139,6 +244,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-
+  textInput: {
+    width: "95%",
+    color: "#072B4F",
+    fontSize: 12,
+    marginTop: 5,
+    paddingVertical: 10,
+    borderRadius: 10,
+    borderBottomColor: "white",
+  },
 });
-

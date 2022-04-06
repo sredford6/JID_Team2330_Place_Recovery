@@ -1,25 +1,18 @@
-import { StyleSheet, Button } from 'react-native';
+import { StyleSheet, Button, ScrollView } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
+import { RootTabScreenProps } from "../components/types";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../navigation/context";
 import React, { useEffect, useState } from "react";
-import IsTestMode from "../constants/TestMode";
-
-import * as SecureStore from "expo-secure-store";
 
 export default function ProfileScreen({
   navigation,
 }: RootTabScreenProps<"TabOne">) {
-  let testmode = IsTestMode();
-  const { signOut } = React.useContext(AuthContext);
+  const { authFunctions, userInfo } = React.useContext(AuthContext);
 
-  const [firstName, setFirstName] = useState<string | null>("");
-  const [lastName, setLastName] = useState<string | null>("");
-  const [email, setEmail] = useState<string | null>("");
-
+  const { signOut } = authFunctions;
   const handleSignOut = () => {
     // if (testmode) {
     //   signOut();
@@ -30,26 +23,89 @@ export default function ProfileScreen({
   };
 
   useEffect(() => {
-    async function setProfile() {
-      const firstName = await SecureStore.getItemAsync("first_name");
-      const lastName = await SecureStore.getItemAsync("last_name");
-      const email = await SecureStore.getItemAsync("email");
-      setFirstName(firstName);
-      setLastName(lastName);
-      setEmail(email);
-    }
-    setProfile();
+    // load user info
   }, []);
 
   // console.log(firstName);
   return (
+    <ScrollView
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+      >
     <View style={styles.container}>
-      <Text>Profile screen</Text>
-      <Text>
-        Name: {firstName} {lastName}
-        {"\n Email: "}
-        {email}
-      </Text>
+      
+  
+       <Text style = {styles.account}>Account Information</Text>
+       
+       <TouchableOpacity
+                style={styles.buttonStyle}
+                //onPress={}
+                activeOpacity={0.85}
+              >
+               
+      <Text style={styles.label}> Name: <Text style={styles.info}>{userInfo.firstName} {userInfo.lastName}</Text> <Text style = {styles.editText}>[Edit]</Text></Text>
+      
+      </TouchableOpacity>
+
+      <TouchableOpacity
+                style={styles.buttonStyle}
+                //onPress={}
+                activeOpacity={0.85}
+              >
+               
+      <Text style={styles.label}> Email: <Text style={styles.info}>{userInfo.email} </Text><Text style = {styles.editText}>[Edit]</Text></Text>
+      
+      </TouchableOpacity>
+
+      <TouchableOpacity
+                style={styles.buttonStyle}
+                //onPress={}
+                activeOpacity={0.85}
+              >
+      <Text style={styles.label}> Phone Number:</Text>
+      
+      </TouchableOpacity>
+
+      <TouchableOpacity
+                style={styles.buttonStyle}
+                //onPress={}
+                activeOpacity={0.85}
+              >
+      <Text style={styles.label}> Address:</Text>
+      
+      </TouchableOpacity>
+      
+      <TouchableOpacity
+                style={styles.buttonStyle}
+                //onPress={}
+                activeOpacity={0.85}
+              >
+      <Text style={styles.label}> Gender:</Text>
+      
+      </TouchableOpacity>
+      
+      <TouchableOpacity
+                style={styles.buttonStyle}
+                //onPress={}
+                activeOpacity={0.85}
+              >
+      <Text style={styles.label}> Race/Ethnicity:</Text>
+      
+      </TouchableOpacity>
+      
+      <TouchableOpacity
+                style={styles.buttonStyle}
+                onPress={() => { 
+                  {
+                    navigation.navigate("Demographics");
+                  }
+                }}
+                activeOpacity={0.85}
+              >
+      <Text style={styles.label}> Additional Demographics</Text>
+      
+      </TouchableOpacity>
+      
+      
       <TouchableOpacity
         style={styles.button}
         activeOpacity={0.85}
@@ -58,6 +114,8 @@ export default function ProfileScreen({
         <Text style={styles.buttonTextWhite}>Log out</Text>
       </TouchableOpacity>
     </View>
+    </ScrollView>
+    
   );
 }
 
@@ -65,7 +123,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#FFFFFF99",
+    //justifyContent: "center",
   },
   buttonTextWhite: {
     textAlign: "center",
@@ -81,10 +140,54 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 8,
-    marginTop: 5,
+    marginTop: 18,
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
   },
+  buttonStyle: {
+    width: 320,
+    height: 58,
+    paddingVertical: 8,
+    backgroundColor: "#F5FFFA",
+    paddingHorizontal: 15,
+    borderRadius: 4,
+    justifyContent: "center",
+    borderColor: '#184E77',
+    borderWidth: 1
+
+  },
+  buttonComponent: {
+    justifyContent: "flex-end",
+    flexDirection: "row",
+
+  },
+
+  label: {
+    textAlign: 'left',
+    marginLeft: -3,
+    flexWrap: 'wrap',
+    fontSize: 15
+
+    
+  },
+  info: {
+    textAlign: 'right',
+    flexWrap: 'wrap',
+    flex: 1,
+    
+  },
+  account: {
+    margin: 18,
+    fontWeight: 'bold',
+    fontSize: 17
+  },
+  editText: {
+    fontSize: 13,
+    color: "gray"
+  }
+ 
+  
+ 
 });

@@ -16,19 +16,24 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LocationScreen from '../screens/LocationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import SettingsScreen from '../screens/SettingsScreen';
-import QuestionnaireScreen from '../screens/QuestionnaireScreen';
-import OpeningScreen from '../screens/OpeningScreen';
-import RegistrationScreen from '../screens/RegistrationScreen';
-import { HomeStackParamList, RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
-import LinkingConfiguration from './LinkingConfiguration';
-import QuizScreen from '../screens/QuizScreen';
+import SettingsScreen from "../screens/ProgressScreen";
+import OpeningScreen from "../screens/OpeningScreen";
+import RegistrationScreen from "../screens/RegistrationScreen";
+import {
+  RootStackParamList,
+  RootTabParamList,
+  RootTabScreenProps,
+} from "../components/types";
+import LinkingConfiguration from "./LinkingConfiguration";
+import Questionnaire from "../screens/QuestionnaireScreen";
+import Demographics from '../screens/DemographicsScreen';
 
-export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
-  return (
-      <RootNavigator />
-   
-  );
+export default function HomeNavigation({
+  colorScheme,
+}: {
+  colorScheme: ColorSchemeName;
+}) {
+  return <RootNavigator />;
 }
 
 /**
@@ -37,13 +42,66 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const HomeStack = createNativeStackNavigator();
+const ProfileStack = createNativeStackNavigator();
+
+const HomeStackNavigator = () => {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: "#e3fbe3",
+          },
+        }}
+      />
+      <HomeStack.Screen
+        name="Questionnaire"
+        component={Questionnaire}
+        options={{ headerShown: true }}
+      />
+    </HomeStack.Navigator>
+  );
+};
+
+const ProfileStackNavigator = () => {
+  return (
+    <ProfileStack.Navigator>
+      <ProfileStack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: "#e3fbe3",
+          },
+        }}
+      />
+      <ProfileStack.Screen
+        name="Demographics"
+        component={Demographics}
+        options={{ headerShown: true }}
+      />
+    </ProfileStack.Navigator>
+  );
+};
+
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} />
-      <Stack.Screen name="QuizScreen" component={QuizScreen} />
+      <Stack.Screen
+        name="Root"
+        component={BottomTabNavigator}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="NotFound"
+        component={NotFoundScreen}
+        options={{ title: "Oops!" }}
+      />
     </Stack.Navigator>
   );
 }
@@ -59,19 +117,22 @@ export function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-    initialRouteName="Home"
-    screenOptions={{
-      headerStyle: {
-        backgroundColor: '#e3fbe3'
-      },
-    }}>
+      initialRouteName="HomeStack"
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#e3fbe3",
+        },
+      }}
+    >
       <BottomTab.Screen
-        name="Home"
-        component={HomeScreen}
+        name="HomeStack"
+        component={HomeStackNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
+          title: "Home",
+          headerShown: false,
         }}
       />
       <BottomTab.Screen
@@ -98,12 +159,14 @@ export function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileStackNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
+          headerShown: false,
         }}
+       
       />
     </BottomTab.Navigator>
   );

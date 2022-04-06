@@ -1,22 +1,467 @@
-import { StyleSheet, Button } from 'react-native';
+import {
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+} from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { getItemAsync } from "expo-secure-store";
 
-import { Text, View } from '../components/Themed';
-import { RootStackScreenProps } from '../types';
-import { NavigationContainer } from '@react-navigation/native';
-import {survey} from '../questions.json';
-import Question from '../components/Question';
+import { TextInput } from "react-native-gesture-handler";
+import { retrieveDataString, storeDataString } from "../components/Helpers";
+import { AuthContext } from "../navigation/context";
 
-export default function QuestionnaireScreen({ navigation }: RootStackScreenProps<'Questionnaire'>) {
+import { backendUrl } from "../config/config.json";
+
+
+import * as Location from "expo-location";
+import { LocationGeocodedAddress, LocationObject } from "expo-location";
+import { convertTime, goToSettings } from "../components/Helpers";
+
+export default function Questionnaire({ navigation }) {
+  const { useState } = React;
+  const [questions, setQuestions] = useState();
+  const [length, setLength] = useState(0);
+  const [index, setIndex] = useState(-1);
+  const [prevIndex, setPrevIndex] = useState(-1);
+  const [nextButton, setNextButton] = useState(true);
+  const [buttonPressed, setButtonPressed] = useState(
+    Array.from({ length: 20 }, (i) => false)
+  );
+  const questionnaire = "sampleq1";
+
+  const [user_answers, setUserAnswers]: [answer_type[], Function] = useState(
+    []
+  );
+
+  const [location, setLocation] = useState<LocationObject>();
+  const [fetching, setFetching] = useState(false);
+
+  const { userInfo } = useContext(AuthContext);
+
+  const [permission, setPermission] = useState<Boolean>(false);
+
+  interface answer_type {
+    choiceIndex: Number | Array<number>;
+    answer: String | number | Array<String> | Array<number>;
+    questionId: String;
+  }
+
+  const GetLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    setPermission(status == "granted");
+    if (status !== "granted") {
+      goToSettings(
+        "Require location sharing",
+        "The app requires to access to your location when you are using the app. Please enable location permission in Settings."
+      );
+      return false;
+    }
+    // TODO: should probably set timeout?
+    let location = await Location.getCurrentPositionAsync({});
+    let address = await Location.reverseGeocodeAsync(location.coords);
+    setLocation(location);
+    return true;
+  };
+
+  const buttonFunction = (index: number) => {
+    setButtonPressed((arr) =>
+      arr.map((buttonPressed, i) =>
+        i == index ? !buttonPressed : buttonPressed
+      )
+    );
+
+    setButtonPressed((arr) =>
+      arr.map((buttonPressed, i) =>
+        i != prevIndex ? buttonPressed : !buttonPressed
+      )
+    );
+    setPrevIndex(index);
+    console.log(index);
+
+    console.log(nextButton);
+    if (index < 0) {
+      setNextButton(true);
+    } else {
+      setNextButton(false);
+    }
+  };
+
+  const multipleButtonFunction = (index: number) => {
+    let count = 0;
+    let checkBool = 0;
+    setButtonPressed((arr) =>
+      arr.map((buttonPressed, i) =>
+        i == index ? !buttonPressed : buttonPressed
+      )
+    );
+    buttonPressed.map((prop, index) => {
+      if (buttonPressed[index] == false) {
+        count++;
+      } else {
+        checkBool = index;
+      }
+    });
+
+    console.log(count);
+
+    console.log(index);
+    console.log(checkBool);
+    //console.log(prevIndex);
+    //console.log(nextButton)
+    if (index < 0) {
+      setNextButton(true);
+    } else {
+      if (count == 19 && index == checkBool) {
+        console.log("here");
+        setNextButton(true);
+        console.log(nextButton);
+      } else {
+        setNextButton(false);
+      }
+    }
+  };
+
+  const loadQuiz = async () => {
+    try {
+      await axios
+        .get(`${backendUrl}/api/question/${questionnaire}.json`)
+        .then((res) => {
+          const sampleQuestions = res.data;
+          setLength(sampleQuestions.length);
+          setIndex(0);
+          setQuestions(sampleQuestions);
+          let arr = [];
+          for (let i = 0; i < sampleQuestions.length; i++) {
+            let mc = sampleQuestions[i]["type"] == 3 ? true : false;
+            let value: answer_type = {
+              choiceIndex: mc ? [] : -1,
+              answer: mc ? [] : "",
+              questionId: sampleQuestions[i]["id"],
+            };
+            arr.push(value);
+          }
+          setUserAnswers(arr);
+        });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const increase = () => {
+    setNextButton(true);
+    if (index < length - 1) {
+      setIndex(index + 1);
+    }
+    setPrevIndex(-1);
+    setButtonPressed((arr) =>
+      arr.map((buttonPressed, i) => (buttonPressed = false))
+    );
+  };
+
+  const decrease = () => {
+    if (index > 0) {
+      setIndex(index - 1);
+    }
+    setPrevIndex(-1);
+    setButtonPressed((arr) =>
+      arr.map((buttonPressed, i) => (buttonPressed = false))
+    );
+  };
+
+  useEffect(() => {
+    loadQuiz();
+    GetLocation();
+  }, []);
+
+  const renderType0 = (i: number, customArray: null | Array<any> = null) => {
+    return (customArray ? customArray : questions[i]["choices"]).map(
+      (option, idx) => (
+        <TouchableOpacity
+          key={idx}
+          onPress={() => {
+            buttonFunction(idx);
+            // https://stackoverflow.com/questions/55987953/how-do-i-update-states-onchange-in-an-array-of-object-in-react-hooks
+            let temp_answers = user_answers;
+            temp_answers[i].answer = option;
+            temp_answers[i].choiceIndex = idx;
+            setUserAnswers(temp_answers);
+            //console.log(user_answers);
+          }}
+          style={[
+            styles.optionButton,
+            buttonPressed[idx] == true
+              ? { backgroundColor: "#184E77" }
+              : styles.optionButton,
+          ]}
+          activeOpacity={0.8}
+        >
+          <Text style={styles.buttonText}>{option}</Text>
+        </TouchableOpacity>
+      )
+    );
+  };
+
+  const renderType1 = (i: number) => {
+    let scales = [...Array(5).keys()].map((i) => i + 1);
+    return renderType0(i, scales);
+    // return <Sliders />;
+  };
+  const renderType2 = (i: number) => {
+    return (
+      <View>
+        {renderType0(i)}
+        <TextInput
+          style={styles.input}
+          placeholder="other:"
+          onChangeText={(freeText) => {
+            let temp_answers = user_answers;
+            temp_answers[i].answer = freeText;
+            temp_answers[i].choiceIndex = questions[i]["choices"].length;
+            setUserAnswers(temp_answers);
+
+            //console.log(user_answers);
+          }}
+        />
+      </View>
+    );
+  };
+  const renderType3 = (i: number) => {
+    return questions[i]["choices"].map((option, idx) => (
+      <TouchableOpacity
+        key={idx}
+        style={[
+          styles.optionButton,
+          buttonPressed[idx] == true
+            ? { backgroundColor: "#184E77" }
+            : styles.optionButton,
+        ]}
+        onPress={() => {
+          let temp_answers = user_answers;
+          temp_answers[i].answer.push(option);
+          temp_answers[i].choiceIndex.push(idx);
+          setUserAnswers(temp_answers);
+          //console.log(user_answers);
+          multipleButtonFunction(idx);
+        }}
+      >
+        <Text style={styles.buttonText}>{option}</Text>
+      </TouchableOpacity>
+    ));
+  };
+  const renderType4 = (i: number) => {
+    return (
+      <TextInput
+        style={styles.input}
+        //placeholder="Answer here"
+        onChangeText={(freeText) => {
+          let temp_answers = user_answers;
+          temp_answers[i].answer = freeText;
+          //temp_answers[i].choiceIndex = questions[i]["choices"].length;
+          setUserAnswers(temp_answers);
+
+          //console.log(user_answers);
+        }}
+      />
+    );
+  };
+
+  const renderQuestionList = (i: number) => {
+    let type = questions[i]["type"];
+    switch (type) {
+      case 0:
+        // console.log("type 0"); // multiple choice with single answer
+        return renderType0(i);
+      case 1:
+        // console.log("type 1"); // scale question, from 1-5, continuous value, sliders
+        return renderType1(i);
+      case 2:
+        // console.log("type 2"); // multiple choice with single answer that has additional free text box as last option
+        return renderType2(i);
+      case 3:
+        // console.log("type 3"); // multiple choices, multiple select
+        return renderType3(i);
+      case 4:
+        // single text entry
+        return renderType4(i);
+      default:
+        console.log("unable to parse type");
+    }
+
+    return null;
+  };
+
+  const renderSubmit = () => {
+    return (
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <Text style={styles.buttonText}>Submit</Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const handleSubmit = async () => {
+    // TODO handle submit to endpoints
+
+    if (!location) {
+      await GetLocation().then((res) => {
+        if (!res) {
+          console.log("fail to fetch location");
+          // set deafult coordiantes
+        }
+      });
+    }
+
+    try {
+      const token: string = (await getItemAsync("user_token"))!;
+      const res = await axios.post(
+        `${backendUrl}/api/question/answer`,
+        {
+          location: {
+            longitude: location?.coords ? location?.coords.longitude : 0,
+            latitude: location?.coords ? location?.coords.latitude : 0,
+          },
+          questionnaire,
+          answers: user_answers,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      console.log(res.data);
+    } catch (error: any) {
+      console.error(error);
+    }
+    console.log("submit");
+    console.log(location);
+    /**
+     * TODO: The following part might also need to be sent to backend.
+     */
+    // let t = new Date().getTime();
+    // await storeDataString(userInfo.email + "_lastQTime", t.toString());
+
+    // let lastQCount = await retrieveDataString(userInfo.email + "_takenQCount");
+    // if (lastQCount) {
+    //   let updatedQCount = JSON.parse(lastQCount);
+    //   updatedQCount.count = Math.min(updatedQCount.count + 1, 3);
+    //   await storeDataString(
+    //     userInfo.email + "_takenQCount",
+    //     JSON.stringify(updatedQCount)
+    //   );
+    // }
+
+    navigation.navigate("Home");
+  };
+
   return (
-    <Question/>
+    <View style={styles.container}>
+      {/* If "question" is not null, execute this part of code */}
+      {/* Those are buttons and questions */}
+      {questions && (
+        <View style={styles.parent}>
+          <View style={styles.top}>
+            <Text style={styles.question}>
+              Q{index + 1}. {questions[index]["question"]}
+            </Text>
+          </View>
+
+          <ScrollView>
+            <View>{renderQuestionList(index)}</View>
+          </ScrollView>
+
+          <View style={styles.bottom}>
+            {/* <TouchableOpacity style={styles.button} onPress={decrease}>
+              <Text style={styles.buttonText}>PREVIOUS</Text>
+            </TouchableOpacity> */}
+            {index == length - 1 ? null : (
+              <TouchableOpacity
+                disabled={nextButton}
+                style={nextButton ? styles.disabledButton : styles.button}
+                onPress={increase}
+              >
+                <Text style={styles.buttonText}>NEXT</Text>
+              </TouchableOpacity>
+            )}
+            {index == length - 1 ? renderSubmit() : null}
+          </View>
+        </View>
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: "#fff",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-  });
+  container: {
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    flex: 1,
+  },
+  top: {
+    marginVertical: 16,
+  },
+  options: {
+    marginVertical: 16,
+    flex: 1,
+  },
+  bottom: {
+    marginBottom: 5,
+    paddingVertical: 5,
+    justifyContent: "flex-end",
+    flexDirection: "row",
+  },
+  button: {
+    backgroundColor: "#184E77",
+    padding: 12,
+    paddingHorizontal: 16,
+    borderRadius: 16,
+    alignItems: "center",
+    marginBottom: 30,
+    width: 100,
+    height: 45,
+  },
+  disabledButton: {
+    backgroundColor: "#184E77",
+    padding: 12,
+    paddingHorizontal: 16,
+    borderRadius: 16,
+    alignItems: "center",
+    marginBottom: 30,
+    opacity: 0.2,
+    width: 100,
+    height: 45,
+  },
+  buttonText: {
+    fontSize: 15,
+    color: "white",
+  },
+  question: {
+    fontSize: 20,
+  },
+  option: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "white",
+  },
+  optionButton: {
+    width: "100%",
+    height: 50,
+    paddingVertical: 8,
+    marginVertical: 8,
+    backgroundColor: "#34A0A4",
+    paddingHorizontal: 15,
+    borderRadius: 8,
+    justifyContent: "center",
+  },
+  parent: {
+    height: "100%",
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+});
