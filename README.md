@@ -12,14 +12,18 @@ The project is a mobile application for mental health and risk stratification ba
 
 - Implemented a profile screen that is meant to display the user's personal information and allow them to access the additional demographics form
 - Implemented the additional demographics form, which can be accessed through the profile screen. The user can choose to additionally provide such information as their education level, occupation, personal history of mental illness etc.
-
+- Can generate notification timeblocks based on sleep schedule.
+- 
 
 ### Fixed Bugs
-
+- Fixed the flex of home screen.
 
 ### Known Issues
-
 - DropDownPicker shows the number of items that were selected by the user when indicating the personal and family history of mental illness as opposed to the names of the items that were selected. 
+- Connections to server seems to be unstable. 
+- Notification is only local. We may want remote notification as well. 
+- Free text in Questionnaire is not highlighted.
+- From last sprint: need to fix the issue ``Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function. at screens/QuestionnaireScreen.tsx:52:22 in GetLocation``(showed up when going back to home screen with unfinished questionnaire).
 
 ## Version 0.3.0 (Sprint 3)
 ### Features

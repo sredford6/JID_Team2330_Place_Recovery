@@ -4,6 +4,8 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   TextInputComponent,
+  TextInput,
+  TouchableOpacity,
 } from "react-native";
 import { Text, View } from "../components/Themed";
 import {
@@ -11,7 +13,6 @@ import {
   CountOfTakenQofDay,
   DaySchedule,
 } from "../components/types";
-import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { useIsFocused } from "@react-navigation/native";
 
 import {
