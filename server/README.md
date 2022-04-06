@@ -6,9 +6,9 @@
 - Need node 16
 
 ### Steps
-1. `cd` into the *server_ts* folder
+1. `cd` into the *server* folder
 2. run `npm install`
-3. run `npm run decrypt ____` replacing ____ with the password
+3. run `npm run decrypt ____` replacing `____` with the password
 5. run `npm start`
 6. ????
 7. profit
