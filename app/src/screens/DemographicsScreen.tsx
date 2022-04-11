@@ -42,9 +42,9 @@ export default function Demographics({ navigation }) {
     
     const familyIllness: string[] = []
 
-    const addIllness = (arr, condition, illName) => {
+    const addIllness = (arrayName, condition, illName) => {
       if (condition) {
-        arr.push(illName);
+        arrayName.push(illName);
       }
     }
 
@@ -124,7 +124,7 @@ export default function Demographics({ navigation }) {
             maxLength={20}
             onChangeText={(inp) => setOccupation(inp)}
             value={occupation}
-            secureTextEntry={true}
+            
           />
         <Text style = {styles.label}>Address of place in which you spent longest during childhood :</Text>
         <TextInput
@@ -135,7 +135,7 @@ export default function Demographics({ navigation }) {
             maxLength={20}
             onChangeText={(inp) => setAddress(inp)}
             value={address}
-            secureTextEntry={true}
+            
           />
           <TextInput
             style={styles.input}
@@ -145,7 +145,7 @@ export default function Demographics({ navigation }) {
             maxLength={20}
             onChangeText={(inp) => setCity(inp)}
             value={city}
-            secureTextEntry={true}
+           
           />
           <TextInput
             style={styles.input}
@@ -155,7 +155,7 @@ export default function Demographics({ navigation }) {
             maxLength={20}
             onChangeText={(inp) => setState(inp)}
             value={state}
-            secureTextEntry={true}
+          
           />
           <TextInput
             style={styles.input}
@@ -166,7 +166,7 @@ export default function Demographics({ navigation }) {
             keyboardType="numeric"
             onChangeText={(inp) => setZip(inp)}
             value={zip}
-            secureTextEntry={true}
+            
           />
           <Text style = {styles.label}>Number of times you moved from ages 12-18 </Text>
           <Picker style ={{width: 400, height: 200, marginTop: -51}}
@@ -237,7 +237,7 @@ export default function Demographics({ navigation }) {
             maxLength={20}
             onChangeText={(inp) => setOtherText(inp)}
             value={otherText}
-            secureTextEntry={true}
+            
           />
 
 
@@ -296,7 +296,7 @@ export default function Demographics({ navigation }) {
           maxLength={20}
           onChangeText={(inp) => setOtherTextP(inp)}
           value={otherTextP}
-          secureTextEntry={true}
+         
         />
 
 
