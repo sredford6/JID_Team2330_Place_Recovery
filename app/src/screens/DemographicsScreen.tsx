@@ -39,33 +39,24 @@ export default function Demographics({ navigation }) {
     const [PTSD, setPTSD] = React.useState(false)
     const [Other, setOther] = React.useState(false)
 
-    let familyIllness: Array<String> = [];
+    
+    const familyIllness: string[] = []
+
+    const addIllness = (arr, condition, illName) => {
+      if (condition) {
+        arr.push(illName);
+      }
+    }
 
     const check = () => {
-      if (Depression) {
-        familyIllness.push('Depression')
-      }
-      if (Schizophrenia) {
-        familyIllness.push('Schizophrenia')
-      }
-      if (BipolarDisorder) {
-        familyIllness.push('Bipolar Disorder')
-      }
-      if (SchizoaffectiveDisorder) {
-        familyIllness.push('Schizoaffective Disorder')
-      }
-      if (Anxiety) {
-        familyIllness.push('Anxiety')
-      }
-      if (OCD) {
-        familyIllness.push('OCD')
-      }
-      if (PTSD) {
-        familyIllness.push('PTSD')
-      }
-      if (Other) {
-        familyIllness.push('other')
-      }
+      addIllness(familyIllness, Depression, 'Depression')
+      addIllness(familyIllness, Schizophrenia, 'Schizophrenia')
+      addIllness(familyIllness, BipolarDisorder, 'Bipolar Disorder')
+      addIllness(familyIllness, SchizoaffectiveDisorder, 'Schizoaffective Disorder')
+      addIllness(familyIllness, Anxiety, 'Anxiety')
+      addIllness(familyIllness, OCD, 'OCD')
+      addIllness(familyIllness, PTSD, 'PTSD')
+      addIllness(familyIllness, Other, 'Other')
     }
 
     const [otherText, setOtherText] = React.useState()
@@ -79,33 +70,19 @@ export default function Demographics({ navigation }) {
     const [PTSDP, setPTSDP] = React.useState(false)
     const [OtherP, setOtherP] = React.useState(false)
 
-    let personalIllness: Array<String> = [];
+    const personalIllness: string[] = [];
 
     const checkP = () => {
-      if (DepressionP) {
-        personalIllness.push('Depression')
-      }
-      if (SchizophreniaP) {
-        personalIllness.push('Schizophrenia')
-      }
-      if (BipolarDisorderP) {
-        personalIllness.push('Bipolar Disorder')
-      }
-      if (SchizoaffectiveDisorderP) {
-        personalIllness.push('Schizoaffective Disorder')
-      }
-      if (AnxietyP) {
-        personalIllness.push('Anxiety')
-      }
-      if (OCDP) {
-        personalIllness.push('OCD')
-      }
-      if (PTSDP) {
-        personalIllness.push('PTSD')
-      }
-      if (OtherP) {
-        personalIllness.push('other')
-      }
+      addIllness(personalIllness, DepressionP, 'Depression')
+      addIllness(personalIllness, SchizophreniaP, 'Schizophrenia')
+      addIllness(personalIllness, BipolarDisorderP, 'Bipolar Disorder')
+      addIllness(personalIllness, SchizoaffectiveDisorderP, 'Schizoaffective Disorder')
+      addIllness(personalIllness, AnxietyP, 'Anxiety')
+      addIllness(personalIllness, OCDP, 'OCD')
+      addIllness(personalIllness, PTSDP, 'PTSD')
+      addIllness(personalIllness, OtherP, 'Other')
+      
+      
     }
 
     const [otherTextP, setOtherTextP] = React.useState()
@@ -149,7 +126,7 @@ export default function Demographics({ navigation }) {
             value={occupation}
             secureTextEntry={true}
           />
-        <Text style = {styles.label}>Address:</Text>
+        <Text style = {styles.label}>Address of place in which you spent longest during childhood :</Text>
         <TextInput
             style={styles.input}
             placeholder="Address Line 1"
@@ -191,7 +168,7 @@ export default function Demographics({ navigation }) {
             value={zip}
             secureTextEntry={true}
           />
-          <Text style = {styles.label}>Number of times participant moved from ages 12-18 </Text>
+          <Text style = {styles.label}>Number of times you moved from ages 12-18 </Text>
           <Picker style ={{width: 400, height: 200, marginTop: -51}}
         selectedValue={moved}
         
@@ -220,7 +197,6 @@ export default function Demographics({ navigation }) {
      title = "Schizophrenia"
      checked = {Schizophrenia}
      onPress = {() => setSchizophrenia(!Schizophrenia)}/>
-
 
     <CheckBox  
      title = "Bipolar Disorder"
@@ -328,6 +304,8 @@ export default function Demographics({ navigation }) {
      onPress={() => {
         check()
         checkP()
+        console.log(familyIllness)
+        console.log(personalIllness)
        
      }
        } 
