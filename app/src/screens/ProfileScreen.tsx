@@ -42,7 +42,7 @@ export default function ProfileScreen({
                 activeOpacity={0.85}
               >
                
-      <Text style={styles.label}> Name: <Text style={styles.info}>{userInfo.firstName} {userInfo.lastName}</Text> <Text style = {styles.editText}>[Edit]</Text></Text>
+      <Text style={styles.label}> Name: <Text style={styles.info}>{userInfo.firstName} {userInfo.lastName}</Text> </Text>
       
       </TouchableOpacity>
 
@@ -52,43 +52,43 @@ export default function ProfileScreen({
                 activeOpacity={0.85}
               >
                
-      <Text style={styles.label}> Email: <Text style={styles.info}>{userInfo.email} </Text><Text style = {styles.editText}>[Edit]</Text></Text>
+      <Text style={styles.label}> Email: <Text style={styles.info}>{userInfo.email} </Text></Text>
       
       </TouchableOpacity>
 
       <TouchableOpacity
                 style={styles.buttonStyle}
-                //onPress={}
+                onPress={() => navigation.navigate("Edit Phone Number")}
                 activeOpacity={0.85}
               >
-      <Text style={styles.label}> Phone Number:</Text>
+      <Text style={styles.label}> Phone Number:<Text style = {styles.editText}>[Edit]</Text></Text>
       
       </TouchableOpacity>
 
       <TouchableOpacity
                 style={styles.buttonStyle}
-                //onPress={}
+                onPress={() => navigation.navigate("Edit Address")}
                 activeOpacity={0.85}
               >
-      <Text style={styles.label}> Address:</Text>
+      <Text style={styles.label}> Address:<Text style = {styles.editText}>[Edit]</Text></Text>
       
       </TouchableOpacity>
       
       <TouchableOpacity
                 style={styles.buttonStyle}
-                //onPress={}
+                onPress={() => navigation.navigate("Gender")}
                 activeOpacity={0.85}
               >
-      <Text style={styles.label}> Gender:</Text>
+      <Text style={styles.label}> Gender:<Text style = {styles.editText}>[Edit]</Text></Text>
       
       </TouchableOpacity>
       
       <TouchableOpacity
                 style={styles.buttonStyle}
-                //onPress={}
+                onPress={() => navigation.navigate("Ethnicity")}
                 activeOpacity={0.85}
               >
-      <Text style={styles.label}> Race/Ethnicity:</Text>
+      <Text style={styles.label}> Race/Ethnicity:<Text style = {styles.editText}>[Edit]</Text></Text>
       
       </TouchableOpacity>
       

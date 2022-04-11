@@ -27,6 +27,10 @@ import {
 import LinkingConfiguration from "./LinkingConfiguration";
 import Questionnaire from "../screens/QuestionnaireScreen";
 import Demographics from '../screens/DemographicsScreen';
+import EditPhoneNumberScreen from '../screens/EditPhoneNumber';
+import EditAddressScreen from '../screens/EditAddressScreen';
+import EditGenderScreen from '../screens/EditGenderScreen';
+import EditEthnicityScreen from '../screens/EditEthnicityScreen';
 
 export default function HomeNavigation({
   colorScheme,
@@ -83,6 +87,26 @@ const ProfileStackNavigator = () => {
       <ProfileStack.Screen
         name="Demographics"
         component={Demographics}
+        options={{ headerShown: true }}
+      />
+       <ProfileStack.Screen
+        name="Edit Phone Number"
+        component={EditPhoneNumberScreen}
+        options={{ headerShown: true }}
+      />
+       <ProfileStack.Screen
+        name="Edit Address"
+        component={EditAddressScreen}
+        options={{ headerShown: true }}
+      />
+      <ProfileStack.Screen
+        name="Gender"
+        component={EditGenderScreen}
+        options={{ headerShown: true }}
+      />
+      <ProfileStack.Screen
+        name="Ethnicity"
+        component={EditEthnicityScreen}
         options={{ headerShown: true }}
       />
     </ProfileStack.Navigator>

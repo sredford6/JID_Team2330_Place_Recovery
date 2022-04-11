@@ -13,80 +13,109 @@ import { AuthContext } from "../navigation/context";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
 import { useRef } from 'react';
-import MultiSelect from 'react-native-multiple-select';
+import MultipleChoice from 'react-native-multiple-choice';
 
 import DropDownPicker from 'react-native-dropdown-picker';
+import {CheckBox} from "react-native-elements"
 
 
 
 export default function Demographics({ navigation }) {
-    const [selectEducation, setSelectedEducation] = React.useState();
-   
+
+    const [education, setEducation] = React.useState('');
+    const [moved, setMoved] = React.useState('');
     const [occupation, setOccupation] = React.useState();
     const [address, setAddress] = React.useState();
     const [city, setCity] = React.useState();
     const [state, setState] = React.useState();
     const [zip, setZip] = React.useState();
-   
-    const [opIllness, setOpenIllness] = React.useState(false);
-    const [illnessValue, setIllnessValue] = React.useState([]);
-    const [illness, setIllness] = React.useState([
-    {label: 'Depression', value: 'Depression'},
-    {label: 'Schizophrenia', value: 'Schizophrenia'},
-    {label: 'Bipolar Disorder', value: 'Bipolar Disorder'},
-    {label: 'Schizoaffective Disorder ', value: 'Schizoaffective Disorder '},
-    {label: 'Anxiety', value: 'Anxiety'},
-    {label: 'OCD', value: 'OCD'},
-    {label: 'PTSD', value: 'PTSD'},
-    {label: 'Other', value: 'Other'}
 
-  ]);
-  const [educationOp, setOpenEducation] = React.useState(false);
-  const [educationValue, setEducationValue] = React.useState([]);
-  const [education, setEducation] = React.useState([
-  {label: 'Less than High School', value: 'Less than High School'},
-  {label: 'High School Graduate', value: 'High School Graduate'},
-  {label: 'Vocational/Trade/Technical School ', value: 'Vocational/Trade/Technical School '},
-  {label: 'Some College', value: 'Some College'},
-  {label: "Bachelor's Degree", value: "Bachelor's Degree"},
-  {label: 'Advanced Degree', value: 'Advanced Degree'},
+    const [Depression, setDepression] = React.useState(false)
+    const [Schizophrenia, setSchizophrenia] = React.useState(false)
+    const [BipolarDisorder, setBipolarDisorder] = React.useState(false)
+    const [SchizoaffectiveDisorder, setSchizoaffectiveDisorder] = React.useState(false)
+    const [Anxiety, setAnxiety] = React.useState(false)
+    const [OCD, setOCD] = React.useState(false)
+    const [PTSD, setPTSD] = React.useState(false)
+    const [Other, setOther] = React.useState(false)
 
-]);
+    let familyIllness: Array<String> = [];
 
-  const [movedOp, setOpenMoved] = React.useState(false);
-  const [movedValue, setMovedValue] = React.useState([]);
-  const [moved, setMoved] = React.useState([
-  {label: '0', value: '0'},
-  {label: '1', value: '1'},
-  {label: '2', value: '2'},
-  {label: '3', value: '3'},
-  {label: "4", value: "4"},
-  {label: '5', value: '5'},
-  {label: '6', value: '6'},
-  {label: '7', value: '7'},
-  {label: '8', value: '8'},
-  {label: '9+', value: '9+'},
+    const check = () => {
+      if (Depression) {
+        familyIllness.push('Depression')
+      }
+      if (Schizophrenia) {
+        familyIllness.push('Schizophrenia')
+      }
+      if (BipolarDisorder) {
+        familyIllness.push('Bipolar Disorder')
+      }
+      if (SchizoaffectiveDisorder) {
+        familyIllness.push('Schizoaffective Disorder')
+      }
+      if (Anxiety) {
+        familyIllness.push('Anxiety')
+      }
+      if (OCD) {
+        familyIllness.push('OCD')
+      }
+      if (PTSD) {
+        familyIllness.push('PTSD')
+      }
+      if (Other) {
+        familyIllness.push('other')
+      }
+    }
 
-]);
+    const [otherText, setOtherText] = React.useState()
+  
+    const [DepressionP, setDepressionP] = React.useState(false)
+    const [SchizophreniaP, setSchizophreniaP] = React.useState(false)
+    const [BipolarDisorderP, setBipolarDisorderP] = React.useState(false)
+    const [SchizoaffectiveDisorderP, setSchizoaffectiveDisorderP] = React.useState(false)
+    const [AnxietyP, setAnxietyP] = React.useState(false)
+    const [OCDP, setOCDP] = React.useState(false)
+    const [PTSDP, setPTSDP] = React.useState(false)
+    const [OtherP, setOtherP] = React.useState(false)
 
-    const [opPersonalIllness, setopenPersonalIllness] = React.useState(false);
-    const [personalIlValue, setPersonalIlValue] = React.useState([]);
-    const [personalIl, setPersonallIl] = React.useState([
-    {label: 'Depression', value: 'Depression'},
-    {label: 'Schizophrenia', value: 'Schizophrenia'},
-    {label: 'Bipolar Disorder', value: 'Bipolar Disorder'},
-    {label: 'Schizoaffective Disorder ', value: 'Schizoaffective Disorder '},
-    {label: 'Anxiety', value: 'Anxiety'},
-    {label: 'OCD', value: 'OCD'},
-    {label: 'PTSD', value: 'PTSD'},
-    {label: 'Other', value: 'Other'}
+    let personalIllness: Array<String> = [];
 
-  ]);
+    const checkP = () => {
+      if (DepressionP) {
+        personalIllness.push('Depression')
+      }
+      if (SchizophreniaP) {
+        personalIllness.push('Schizophrenia')
+      }
+      if (BipolarDisorderP) {
+        personalIllness.push('Bipolar Disorder')
+      }
+      if (SchizoaffectiveDisorderP) {
+        personalIllness.push('Schizoaffective Disorder')
+      }
+      if (AnxietyP) {
+        personalIllness.push('Anxiety')
+      }
+      if (OCDP) {
+        personalIllness.push('OCD')
+      }
+      if (PTSDP) {
+        personalIllness.push('PTSD')
+      }
+      if (OtherP) {
+        personalIllness.push('other')
+      }
+    }
+
+    const [otherTextP, setOtherTextP] = React.useState()
+
    
    
   
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "center", backgroundColor: "#FFFFFF99" }}>
+      
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
       >
@@ -95,14 +124,19 @@ export default function Demographics({ navigation }) {
 
         <Text style = {styles.label}>Education:</Text>
 
-        <DropDownPicker
-      open={educationOp}
-      setOpen={setOpenEducation}
-      value={educationValue}
-      setValue={setEducationValue}
-      items={education}
-      setItems={setEducation}
-    />
+        <Picker style ={{width: 400, height: 200, marginTop: -51}}
+        selectedValue={education}
+        
+    onValueChange={(ed, itemIndex) =>
+      setEducation(ed)
+  }>
+    <Picker.Item label="Less than High School" value="Less than High School" />
+    <Picker.Item label="High School Graduate" value="High School Graduate'" />
+    <Picker.Item label="Vocational/Trade/Technical School" value="Vocational/Trade/Technical School" />
+    <Picker.Item label="Some College" value="Some College'" />
+    <Picker.Item label="Bachelor's Degree" value="Bachelor's Degree" />
+    <Picker.Item label="Advanced Degree'" value="Advanced Degree'" />
+    </Picker>
         
         <Text style = {styles.label}>Occupation:</Text>
         <TextInput
@@ -158,38 +192,145 @@ export default function Demographics({ navigation }) {
             secureTextEntry={true}
           />
           <Text style = {styles.label}>Number of times participant moved from ages 12-18 </Text>
-          <DropDownPicker
-      open={movedOp}
-      setOpen={setOpenMoved}
-      value={movedValue}
-      setValue={setMovedValue}
-      items={moved}
-      setItems={setMoved}
-    />
+          <Picker style ={{width: 400, height: 200, marginTop: -51}}
+        selectedValue={moved}
+        
+    onValueChange={(num, itemIndex) =>
+      setMoved(num)
+    }>
+    <Picker.Item label="0" value="0" />
+    <Picker.Item label="1" value="1" />
+    <Picker.Item label="2" value="2" />
+    <Picker.Item label="3" value="3" />
+    <Picker.Item label="4" value="4" />
+    <Picker.Item label="5" value="5" />
+    <Picker.Item label="6" value="6" />
+    <Picker.Item label="7" value="7" />
+    <Picker.Item label="8" value="8" />
+    <Picker.Item label="9+" value="9+" />
+    </Picker>
       <Text style = {styles.label}>Family history of mental illness </Text>
-     <DropDownPicker
-      open={opIllness}
-      setOpen={setOpenIllness}
-      value={illnessValue}
-      setValue={setIllnessValue}
-      items={illness}
-      setItems={setIllness}
-      multiple={true}
-      min={0}
-    />
+
+     <CheckBox 
+     title = "Depression"
+     checked = {Depression}
+     onPress = {() => setDepression(!Depression)}/>
+
+    <CheckBox
+     title = "Schizophrenia"
+     checked = {Schizophrenia}
+     onPress = {() => setSchizophrenia(!Schizophrenia)}/>
+
+
+    <CheckBox  
+     title = "Bipolar Disorder"
+     checked = {BipolarDisorder}
+     onPress = {() => setBipolarDisorder(!BipolarDisorder)}/>
+
+    <CheckBox 
+     title = "Schizoaffective Disorder"
+     checked = {SchizoaffectiveDisorder}
+     onPress = {() => setSchizoaffectiveDisorder(!SchizoaffectiveDisorder)}/>
+
+    <CheckBox 
+     title = "Anxiety"
+     checked = {Anxiety}
+     onPress = {() => setAnxiety(!Anxiety)}/>
+
+    <CheckBox 
+     title = "OCD"
+     checked = {OCD}
+     onPress = {() => setOCD(!OCD)}/>
+
+    <CheckBox 
+     title = "PTSD"
+     checked = {PTSD}
+     onPress = {() => setPTSD(!PTSD)}/>
+
+    <CheckBox 
+     title = "Other"
+     checked = {Other}
+     onPress = {() => setOther(!Other)}/>
+
+     <Text style = {styles.label}>If other:</Text>
+    <TextInput
+            style={styles.input}
+            placeholder="Other"
+            autoCapitalize="none"
+            autoCorrect={false}
+            maxLength={20}
+            onChangeText={(inp) => setOtherText(inp)}
+            value={otherText}
+            secureTextEntry={true}
+          />
+
+
+
+
+
     <Text style = {styles.label}>Personal history of mental illness </Text>
-    <DropDownPicker
-      open={opPersonalIllness}
-      setOpen={setopenPersonalIllness}
-      value={personalIlValue}
-      setValue={setPersonalIlValue}
-      items={personalIl}
-      setItems={setPersonallIl}
-      multiple={true}
-      min={0}
-    />
+
+    <CheckBox 
+    title = "Depression"
+    checked = {DepressionP}
+    onPress = {() => setDepressionP(!DepressionP)}/>
+
+    <CheckBox
+    title = "Schizophrenia"
+    checked = {SchizophreniaP}
+    onPress = {() => setSchizophreniaP(!SchizophreniaP)}/>
+
+
+    <CheckBox  
+    title = "Bipolar Disorder"
+    checked = {BipolarDisorderP}
+    onPress = {() => setBipolarDisorderP(!BipolarDisorderP)}/>
+
+    <CheckBox 
+    title = "Schizoaffective Disorder"
+    checked = {SchizoaffectiveDisorderP}
+    onPress = {() => setSchizoaffectiveDisorderP(!SchizoaffectiveDisorderP)}/>
+
+    <CheckBox 
+    title = "Anxiety"
+    checked = {AnxietyP}
+    onPress = {() => setAnxietyP(!AnxietyP)}/>
+
+    <CheckBox 
+    title = "OCD"
+    checked = {OCDP}
+    onPress = {() => setOCDP(!OCDP)}/>
+
+    <CheckBox 
+    title = "PTSD"
+    checked = {PTSDP}
+    onPress = {() => setPTSDP(!PTSDP)}/>
+
+    <CheckBox 
+    title = "Other"
+    checked = {OtherP}
+    onPress = {() => setOtherP(!OtherP)}/>
+
+    <Text style = {styles.label}>If other:</Text>
+    <TextInput
+          style={styles.input}
+          placeholder="Other"
+          autoCapitalize="none"
+          autoCorrect={false}
+          maxLength={20}
+          onChangeText={(inp) => setOtherTextP(inp)}
+          value={otherTextP}
+          secureTextEntry={true}
+        />
+
+
      <ButtonDesign name="Submit" 
-     onPress={null} 
+     onPress={() => {
+        check()
+        checkP()
+       
+     }
+       } 
      />
        
 
@@ -216,7 +357,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 25,
-    marginBottom: 15,
+    marginBottom: 20,
     fontWeight: 'bold',
     color: '#072B4F'
   },
@@ -235,8 +376,9 @@ const styles = StyleSheet.create({
     margin: 20,
     marginLeft: 40,
     marginRight: 40,
+  
     color: '#072B4F', 
-    fontSize: 18,
+    fontSize: 22,
   },
   textName: {
     textAlign: 'center',
