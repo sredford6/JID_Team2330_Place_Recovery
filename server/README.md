@@ -27,6 +27,34 @@
         - firstName
         - lastName
         - phoneNumber
+        - address
+        - city
+        - state
+        - zip
+        - gender
+        - race
+        - birthday
+        - wakeTime
+        - sleepTime
+- Update [PUT]: /api/auth/update
+    - Body (all optional)
+        - email
+        - firstName
+        - lastName
+        - phoneNumber
+        - address
+        - city
+        - state
+        - zip
+        - gender
+        - race
+        - birthday
+        - wakeTime
+        - sleepTime
+        - occupation
+        - education
+        - numberOfMoves
+        - personalHistoryIllness
 - User [GET]: /api/auth/user
     - Header
         - authorization

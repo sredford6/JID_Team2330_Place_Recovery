@@ -3,7 +3,6 @@ import { IAnswers, AnswersSchema } from "models/answer.model";
 
 export interface IUser {
   email: string;
-  password: string;
   phoneNumber: string;
   firstName: string;
   lastName: string;
@@ -13,9 +12,16 @@ export interface IUser {
   zip: string;
   gender: string;
   race: string;
+  education?: string;
+  occupation?: string;
+  numberOfMoves?: string;
+  personalHistoryIllness?: string[];
+  familyHistoryIllness?: string[];
   birthday: Date;
   wakeTime: Date;
   sleepTime: Date;
+
+  password: string;
   resetCode?: string;
   resetTries?: number;
   admin: boolean;
@@ -34,6 +40,11 @@ const UserSchema = new Schema<IUser>({
   zip: { type: String, required: true },
   gender: { type: String, required: true },
   race: { type: String, required: true },
+  education: { type: String },
+  occupation: { type: String },
+  numberOfMoves: { type: String },
+  personalHistoryIllness: { type: [String] },
+  familyHistoryIllness: { type: [String] },
   birthday: { type: Date, required: true },
   wakeTime: { type: Date, required: true },
   sleepTime: { type: Date, required: true },

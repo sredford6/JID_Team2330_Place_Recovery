@@ -86,6 +86,28 @@ router.post("/signup", async (req: Request, res: Response) => {
   }
 });
 
+router.put("/update", verify, async (req: Request, res: Response) => {
+  try {
+    if (
+      "password" in req.body ||
+      "resetCode" in req.body ||
+      "resetTries" in req.body ||
+      "admin" in req.body ||
+      "answers" in req.body
+    ) {
+      throw {
+        code: 403,
+        message: `field not allowed to be updated`,
+        error: new Error(`field not allowed to be updated`),
+      };
+    }
+    await User.updateOne({ email: req.currentUser.email }, { $set: req.body });
+    res.status(200).json({ updatedUser: true });
+  } catch (error: any) {
+    res.status(error.code || 500).json(error);
+  }
+});
+
 router.get("/get-reset", async (req: Request, res: Response) => {
   try {
     const { email } = req.query;
