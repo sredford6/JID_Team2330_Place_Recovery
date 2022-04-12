@@ -69,6 +69,13 @@ router.post("/signup", async (req: Request, res: Response) => {
       phoneNumber: req.body.phoneNumber,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
+      address: req.body.address,
+      city: req.body.city,
+      state: req.body.state,
+      zip: req.body.zip,
+      gender: req.body.gender,
+      race: req.body.race,
+      birthday: req.body.birthday,
       wakeTime: req.body.wakeTime,
       sleepTime: req.body.sleepTime,
     });
