@@ -6,9 +6,9 @@
 - Need node 16
 
 ### Steps
-1. `cd` into the *server_ts* folder
+1. `cd` into the *server* folder
 2. run `npm install`
-3. run `npm run decrypt ____` replacing ____ with the password
+3. run `npm run decrypt ____` replacing `____` with the password
 5. run `npm start`
 6. ????
 7. profit
@@ -27,6 +27,34 @@
         - firstName
         - lastName
         - phoneNumber
+        - address
+        - city
+        - state
+        - zip
+        - gender
+        - race
+        - birthday
+        - wakeTime
+        - sleepTime
+- Update [PUT]: /api/auth/update
+    - Body (all optional)
+        - email
+        - firstName
+        - lastName
+        - phoneNumber
+        - address
+        - city
+        - state
+        - zip
+        - gender
+        - race
+        - birthday
+        - wakeTime
+        - sleepTime
+        - occupation
+        - education
+        - numberOfMoves
+        - personalHistoryIllness
 - User [GET]: /api/auth/user
     - Header
         - authorization
@@ -49,12 +77,14 @@
         - questions
 - Question Retrieval [GET]: /api/question/:question
     - Just put the name of the question file as part of the URL
-- Token Test [GET]: /api/question/answer
+- Token Test [GET]: /api/question/answer/:timeframe?
     - Header
         - authorization
     - Body
         - questionnaire
         - answers
+    - Params
+        - timeframe: ["thisweek"]
 
 ## Endpoints to add
 
