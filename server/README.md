@@ -77,12 +77,14 @@
         - questions
 - Question Retrieval [GET]: /api/question/:question
     - Just put the name of the question file as part of the URL
-- Token Test [GET]: /api/question/answer
+- Token Test [GET]: /api/question/answer/:timeframe?
     - Header
         - authorization
     - Body
         - questionnaire
         - answers
+    - Params
+        - timeframe: ["thisweek"]
 
 ## Endpoints to add
 
