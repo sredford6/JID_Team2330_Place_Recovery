@@ -83,3 +83,52 @@
     - Body
         - questionnaire
         - answers
+
+## Endpoints to add
+
+### Profile
+
+- [GET]requests
+  - Phone Number
+  - Address
+  - Gender
+  - Race/Ethnicity
+
+- [POST] requests updating profile information
+   - Phone Number
+   - Address 1
+   - City
+   - State
+   - Zip Code
+   - Gender 
+   - Race/Ethnicity
+
+### Demographics Form
+
+- [POST] 
+  - Education
+  - Occupation
+  - Address where the user lived the longest(Address 1)
+  - City
+  - State
+  - Zip code 
+  - Number of times a participant moved
+  - Family History of mental illness - array
+  - Other
+  - Personal History of mental illness - array
+  - Other
+### Auth
+- Signup [POST]: /api/auth/signup
+    - Body
+        - email
+        - password
+        - firstName
+        - lastName
+        - phoneNumber
+        - address line 1
+        - city
+        - state
+        - zip code
+        - date of birth
+        - gender
+        - race/ethnicity
