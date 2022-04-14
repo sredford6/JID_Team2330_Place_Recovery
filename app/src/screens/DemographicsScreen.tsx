@@ -17,13 +17,14 @@ import MultipleChoice from 'react-native-multiple-choice';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 import {CheckBox} from "react-native-elements"
+import { getItemAsync } from 'expo-secure-store';
 
 
 
 export default function Demographics({ navigation }) {
 
     const [education, setEducation] = React.useState('');
-    const [moved, setMoved] = React.useState('');
+    const [numberOfMoves, setMoved] = React.useState('');
     const [occupation, setOccupation] = React.useState();
     const [address, setAddress] = React.useState();
     const [city, setCity] = React.useState();
@@ -48,6 +49,36 @@ export default function Demographics({ navigation }) {
       }
     }
 
+    const submitDemographics = async (occupation, education, numberOfMoves, personalHistoryIllness) => {
+      const token: string = (await getItemAsync("user_token"))!;
+      axios
+        .put(`${backendUrl}/api/auth/update`, 
+        {
+          occupation,
+          education,
+          numberOfMoves, 
+          personalHistoryIllness
+        },
+        {
+          headers: {
+            Authorization: token,
+          }
+        })
+        .then((response) => {
+          console.log(response.data);
+          const { message } = response.data;
+          const { status, data } = response;
+          console.log(status);
+          Alert.alert("the demographics form was successfully submitted")
+         
+          navigation.navigate("Profile");
+        })
+        .catch((error) => {
+          console.log(error.message)
+          console.log(error.data)
+        });
+    };
+
     const check = () => {
       addIllness(familyIllness, Depression, 'Depression')
       addIllness(familyIllness, Schizophrenia, 'Schizophrenia')
@@ -70,17 +101,17 @@ export default function Demographics({ navigation }) {
     const [PTSDP, setPTSDP] = React.useState(false)
     const [OtherP, setOtherP] = React.useState(false)
 
-    const personalIllness: string[] = [];
+    const personalHistoryIllness: string[] = [];
 
     const checkP = () => {
-      addIllness(personalIllness, DepressionP, 'Depression')
-      addIllness(personalIllness, SchizophreniaP, 'Schizophrenia')
-      addIllness(personalIllness, BipolarDisorderP, 'Bipolar Disorder')
-      addIllness(personalIllness, SchizoaffectiveDisorderP, 'Schizoaffective Disorder')
-      addIllness(personalIllness, AnxietyP, 'Anxiety')
-      addIllness(personalIllness, OCDP, 'OCD')
-      addIllness(personalIllness, PTSDP, 'PTSD')
-      addIllness(personalIllness, OtherP, 'Other')
+      addIllness(personalHistoryIllness, DepressionP, 'Depression')
+      addIllness(personalHistoryIllness, SchizophreniaP, 'Schizophrenia')
+      addIllness(personalHistoryIllness, BipolarDisorderP, 'Bipolar Disorder')
+      addIllness(personalHistoryIllness, SchizoaffectiveDisorderP, 'Schizoaffective Disorder')
+      addIllness(personalHistoryIllness, AnxietyP, 'Anxiety')
+      addIllness(personalHistoryIllness, OCDP, 'OCD')
+      addIllness(personalHistoryIllness, PTSDP, 'PTSD')
+      addIllness(personalHistoryIllness, OtherP, 'Other')
       
       
     }
@@ -170,7 +201,7 @@ export default function Demographics({ navigation }) {
           />
           <Text style = {styles.label}>Number of times you moved from ages 12-18 </Text>
           <Picker style ={{width: 400, height: 200, marginTop: -51}}
-        selectedValue={moved}
+        selectedValue={numberOfMoves}
         
     onValueChange={(num, itemIndex) =>
       setMoved(num)
@@ -304,9 +335,9 @@ export default function Demographics({ navigation }) {
      onPress={() => {
         check()
         checkP()
-        console.log(familyIllness)
-        console.log(personalIllness)
-       
+        submitDemographics(occupation, education,numberOfMoves,personalHistoryIllness)
+        
+  
      }
        } 
      />

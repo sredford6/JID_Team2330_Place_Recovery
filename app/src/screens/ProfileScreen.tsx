@@ -6,6 +6,8 @@ import { RootTabScreenProps } from "../components/types";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../navigation/context";
 import React, { useEffect, useState } from "react";
+import axios from 'axios';
+import {backendUrl} from "../config/config.json";
 
 export default function ProfileScreen({
   navigation,
@@ -22,6 +24,11 @@ export default function ProfileScreen({
     signOut();
   };
 
+  const displayData = () => {
+    axios.get(`${backendUrl}/api/auth/user`).then((response) => {
+      console.log(response.data);
+    });
+  }
   useEffect(() => {
     // load user info
   }, []);
@@ -38,7 +45,7 @@ export default function ProfileScreen({
        
        <TouchableOpacity
                 style={styles.buttonStyle}
-                //onPress={}
+                onPress={() => displayData()}
                 activeOpacity={0.85}
               >
                
