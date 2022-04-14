@@ -12,6 +12,8 @@ import { AuthContext } from "../navigation/context";
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {Picker} from '@react-native-picker/picker';
+import {CheckBox} from "react-native-elements"
 
 export default function RegistrationScreen({ navigation }) {
   const [email, setEmail] = React.useState("");
@@ -23,24 +25,34 @@ export default function RegistrationScreen({ navigation }) {
   const [city, setCity] = React.useState("");
   const [state, setState] = React.useState("");
   const [zip, setZip] = React.useState("");
-  const [opGender, setOpenGender] = React.useState(false);
-  const [genderValue, setGenderValue] = React.useState([]);
-  const [gender, setGender] = React.useState([
-    {label: 'Male', value: 'Male'},
-    {label: 'Female', value: 'Female'},
-    {label: 'Other', value: 'Other'},
-    {label: 'Prefer not to say', value: 'Prefer not to say'}
-  ]);
-  const [opRace, setOpenRace] = React.useState(false);
-  const [raceValue, setRaceValue] = React.useState([]);
-  const [race, setRace] = React.useState([
-    {label: 'Asian or Pacific Islander', value: 'Asian or Pacific Islander'},
-    {label: 'Black or African American', value: 'Black or African American'},
-    {label: 'Native American or Alaskan Native', value: 'Native American or Alaskan Native'},
-    {label: 'White or Caucasian', value: 'White or Caucasian'},
-    {label: 'Other', value: 'Other'},
-    {label: 'Prefer not to say', value: 'Prefer not to say'}
-  ]);
+  const [gender, setGender] = React.useState('');
+
+
+  const [Asian, setAsian] = React.useState(false);
+  const [Black, setBlack] = React.useState(false);
+  const [Native, setNative] = React.useState(false);
+  const [White, setWhite] = React.useState(false);
+  const [Other, setOther] = React.useState(false);
+  const [Prefer, setPrefer] = React.useState(false);
+
+  const race: string[] = [];
+  const addRace = (arrayName, condition, raceName) => {
+    if (condition) {
+      arrayName.push(raceName);
+    }
+  }
+
+  const check = () => {
+    addRace(race, Asian, 'Asian or Pacific Islander')
+    addRace(race, Black, 'Black or African American')
+    addRace(race, Native, 'Native American or Alaskan Native')
+    addRace(race, White, 'White or Caucasian')
+    addRace(race, Other, 'Other')
+    addRace(race, Prefer, 'Prefer not to say')
+  }
+
+
+
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [showErrorMessage, setShowErrorMessage] = React.useState(false);
   const [showEmailErrorMessage, setShowEmailErrorMessage] =
@@ -255,29 +267,52 @@ export default function RegistrationScreen({ navigation }) {
           onChange={changeBirthday}
         />
 
-          <Text style = {styles.label}>Gender</Text>
-          <DropDownPicker
-            open={opGender}
-            setOpen={setOpenGender}
-            value={genderValue}
-            setValue={setGenderValue}
-            items={gender}
-            setItems={setGender}
-            multiple={false}
-            min={0}
-          />
-          <Text style = {styles.label}>Race/Ethnicity</Text>
-          <DropDownPicker
-            open={opRace}
-            setOpen={setOpenRace}
-            value={raceValue}
-            setValue={setRaceValue}
-            items={race}
-            setItems={setRace}
-            multiple={true}
-            min={0}
-          />
+        <Text style = {styles.label}>Gender</Text>
 
+        <Picker style ={{width: 400, height: 200, marginTop: -51}}
+        selectedValue={gender}
+
+        onValueChange={(gen, itemIndex) =>
+        setGender(gen)
+        }>
+        <Picker.Item label="Male" value="Male" />
+        <Picker.Item label="Female" value="Female" />
+        <Picker.Item label="Other" value="Other" />
+        <Picker.Item label="Prefer not to say" value="Prefer not to say" />
+        </Picker>
+
+          
+          <Text style = {styles.label}>Race/Ethnicity</Text>
+          
+          <CheckBox 
+          title = "Asian or Pacific Islander"
+          checked = {Asian}
+          onPress = {() => setAsian(!Asian)}/>
+
+          <CheckBox
+          title = "Black or African American"
+          checked = {Black}
+          onPress = {() => setBlack(!Black)}/>
+
+          <CheckBox  
+          title = "Native American or Alaskan Native"
+          checked = {Native}
+          onPress = {() => setNative(!Native)}/>
+
+          <CheckBox 
+          title = "White or Caucasian"
+          checked = {White}
+          onPress = {() => setWhite(!White)}/>
+
+          <CheckBox 
+          title = "Other"
+          checked = {Other}
+          onPress = {() => setOther(!Other)}/>
+
+          <CheckBox 
+          title = "Prefer not to say"
+          checked = {Prefer}
+          onPress = {() => setPrefer(!Prefer)}/>
 
 
           
@@ -300,7 +335,15 @@ export default function RegistrationScreen({ navigation }) {
         />
         
       
-          <ButtonDesign name="Register" onPress={() => passwordMatchCheck()} />
+          <ButtonDesign name="Register" 
+          onPress={() => {
+            passwordMatchCheck()
+            check()
+            console.log(race)
+            } 
+            } 
+            />
+          
           <Text style={styles.label}>
             By registering, you automatically accept the Terms and Conditions of
             PlaceNrecovery.
