@@ -79,10 +79,22 @@ router.post("/answer", verify, async (req, res: Response) => {
   }
 });
 
-router.get("/answer", verify, async (req, res: Response) => {
+router.get("/answer/:timeframe?", verify, async (req, res: Response) => {
   try {
     const user = await User.findOne({ email: req.currentUser.email });
-    res.status(200).json({ answers: user.answers });
+    let { answers } = user;
+    const { timeframe } = req.params;
+    if (timeframe !== undefined) {
+      const today = new Date();
+      if (timeframe === "thisweek") {
+        const diffDate = today.getDate() - today.getDay();
+        const thisSunday = new Date(today.setDate(diffDate));
+        answers = answers.filter(
+          (answer) => new Date(answer.datetime) >= thisSunday
+        );
+      }
+    }
+    res.status(200).json({ answers });
   } catch (error: any) {
     console.error(error);
     res.status(error.httpCode || 500).json(error);

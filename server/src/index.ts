@@ -5,6 +5,7 @@ import localtunnel from "localtunnel";
 const app = express();
 import authRoute from "routes/auth";
 import questionRoute from "routes/questionnaire";
+import dataRoute from "routes/data";
 import authObj from "config/auth.json";
 
 const port: number = parseInt(process.env.PORT || "", 10) || 2400;
@@ -25,6 +26,7 @@ app.use(
 app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/question", questionRoute);
+app.use("/api/data", dataRoute);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Yup, it's working. You can close the tab now...");
