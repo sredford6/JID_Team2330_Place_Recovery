@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
+import * as Device from "expo-device";
+
 import {
   Alert,
   StyleSheet,
@@ -6,6 +8,7 @@ import {
   TextInputComponent,
   TextInput,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { Text, View } from "../components/Themed";
 import {
@@ -21,6 +24,7 @@ import {
   storeDataString,
   timeDifference,
   formatDate,
+  nextDate,
   generateDaySchedule,
   inQuestionnaireOpenInterval,
 } from "../components/Helpers";
@@ -30,6 +34,16 @@ import { ScrollView } from "react-native";
 import * as Location from "expo-location";
 import { goToSettings } from "../components/Helpers";
 
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
 export default function HomeScreen({
   navigation,
 }: RootTabScreenProps<"HomeStack">) {
@@ -37,9 +51,7 @@ export default function HomeScreen({
 
   const isFocused = useIsFocused();
 
-  const [daySchedule, SetDaySchedule] = useState<DaySchedule>(
-    generateDaySchedule(8, 22)
-  );
+  const [schedules, setSchedules] = useState<Array<DaySchedule>>();
 
   /**
    * pseudo sleep schedule for development
@@ -47,16 +59,168 @@ export default function HomeScreen({
    */
   let wakeUp = 8;
   let sleep = 23;
-  const [currentHour, setCurrentHour] = useState<number>(-1);
-  const [isAvailable, setIsAvailable] = useState<number>(-1);
-
+  const [isAvailable, setIsAvailable] = useState<number>(-1); // index of available block
 
   useEffect(() => {
-    setIsAvailable(
-      inQuestionnaireOpenInterval(new Date(), daySchedule.notificationTime)
-    );
+    if (schedules) {
+      setIsAvailable(
+        inQuestionnaireOpenInterval(new Date(), schedules[0].notificationTime)
+      );
+    }
   }, [isFocused]);
 
+  const [expoPushToken, setExpoPushToken] = useState<any>("");
+  const [notification, setNotification] = useState<any>(false);
+
+  const notificationListener = useRef<any>();
+  const responseListener = useRef<any>();
+
+  /**
+   * Code from https://docs.expo.dev/push-notifications/overview/
+   *
+   * @returns getExpoPushTokenAsync, token
+   */
+  async function registerForPushNotificationsAsync() {
+    let token;
+    if (Device.isDevice) {
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== "granted") {
+        // alert("Failed to get push token for push notification!");
+        goToSettings(
+          "Require notification permission",
+          "The app needs to notify you when the questionnaire is ready. Please enable notification in your phone settings."
+        );
+        return;
+      }
+      try {
+        token = (await Notifications.getExpoPushTokenAsync()).data;
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      alert("Must use physical device for Push Notifications");
+    }
+    // 4:36 if token
+    if (Platform.OS === "android") {
+      Notifications.setNotificationChannelAsync("default", {
+        name: "default",
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: "#FF231F7C",
+      });
+    }
+
+    return token;
+  }
+
+  async function scheduleNotification() {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Title",
+        body: "body",
+        data: { data: "data goes here" },
+      },
+      trigger: {
+        seconds: 10,
+      },
+    });
+  }
+
+  useEffect(() => {
+    // 1. fetch local schedules from storage
+    // 2. find current date in the schedules [1,2,3,4,5,6,7]; current date is 3; or current date is 8
+    // pop previous passed date until meet current date, or array is empty, [3,4,5,6,7]; or [] if current date is 8
+    // 3. add x new day scheduels starting from the last date in array (date 7), x = 7 - len(schedules) => [3,4,5,6,7,8,9]
+    // if array is empty, add 7 new day schedules starting from today: [8,9,10,11,12,13,14]
+    // for each newly added schedules, call scheduelNotification() for each time in the timeblocks.
+    // 4. Display current storage
+    // 5. store schedules back into async storage
+
+    storeDataString("schedules", "");
+    (async () => {
+      let schedules = await retrieveDataString("schedules");
+      let j = 0; // index of updatedSchedules
+      let updatedSchedules = Array<DaySchedule>(7);
+      let futureSchedulesCount = 0;
+      let today = formatDate(new Date());
+      let startDate = "";
+      if (!schedules) {
+        futureSchedulesCount = 7;
+        startDate = today;
+      } else {
+        // find current date
+        let schedulesArr = JSON.parse(schedules);
+        let i = 0;
+        for (; i < schedulesArr.length; i++) {
+          // if < today; continue; count += 1
+          if (
+            new Date(today).getTime() > new Date(schedulesArr[i].date).getTime()
+          ) {
+            futureSchedulesCount += 1;
+            continue;
+          } else {
+            break;
+          }
+        }
+        console.log("i", i);
+        // copy future schedules to updatedSchedueles
+        for (; i < schedulesArr.length; i++, j++) {
+          updatedSchedules[j] = schedulesArr[i];
+        }
+        // start day will be today
+        if (futureSchedulesCount == 7) {
+          startDate = today;
+        } else {
+          // will be last date + 1
+          startDate = nextDate(schedulesArr[schedulesArr.length - 1].date);
+        }
+      }
+      // fill out the new schedules
+
+      for (; j < updatedSchedules.length; j++) {
+        let newSchedule = generateDaySchedule(wakeUp, sleep, startDate);
+        updatedSchedules[j] = newSchedule;
+        startDate = nextDate(startDate);
+      }
+      console.log(updatedSchedules);
+      setSchedules(updatedSchedules);
+      storeDataString("schedules", JSON.stringify(updatedSchedules));
+    })();
+  }, []);
+
+  // check norification permission
+  useEffect(() => {
+    (async () => {
+      let token = await registerForPushNotificationsAsync();
+      setExpoPushToken(token);
+    })();
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+
+  // location permission
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -67,34 +231,6 @@ export default function HomeScreen({
         );
         return false;
       }
-    })();
-
-    let schedule = generateDaySchedule(wakeUp, sleep);
-    SetDaySchedule(schedule);
-
-    // load email info and last q time
-    (async () => {
-      /**
-       * TODO: These information may should be fetech from backend.
-       */
-      // const todaySchedule = await
-      // const lastTakenQCount = await retrieveDataString(
-      //   userInfo.email + "_takenQCount"
-      // );
-      // let date = new Date();
-      // if (
-      //   !lastTakenQCount ||
-      //   JSON.parse(lastTakenQCount).date != formatDate(date)
-      // ) {
-      //   let newCount = { date: formatDate(date), count: 0 };
-      //   setTakenQCount(newCount);
-      //   storeDataString(
-      //     userInfo.email + "_takenQCount",
-      //     JSON.stringify(newCount)
-      //   );
-      // } else {
-      //   setTakenQCount(JSON.parse(lastTakenQCount));
-      // }
     })();
   }, []);
 
@@ -108,71 +244,70 @@ export default function HomeScreen({
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              // if (
-              //   isAvailable != -1 &&
-              //   !daySchedule.timeBlocks[isAvailable].completed
-              // ) 
-              {
+              if (
+                isAvailable != -1 &&
+                schedules &&
+                !schedules[0].completed[isAvailable] // not completed
+              ) {
                 navigation.navigate("Questionnaire");
               }
             }}
             activeOpacity={0.85}
           >
             <Text style={styles.buttonTextWhite}>
-              {isAvailable != -1 ? "Start" : "Start"}
+              {isAvailable != -1 ? "Start" : "Not Available"}
             </Text>
           </TouchableOpacity>
-          <Text>
-            Current Time (testing): {currentHour}, isAvailable: {isAvailable}
-          </Text>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={async () => {
+              scheduleNotification();
+
+              let schedules =
+                await Notifications.getPresentedNotificationsAsync();
+              console.log(schedules);
+            }}
+            activeOpacity={0.85}
+          >
+            <Text style={styles.buttonTextWhite}>Test</Text>
+          </TouchableOpacity>
 
           <Text>
-            Morning Block: {daySchedule.timeBlocks[0].begin} -
-            {daySchedule.timeBlocks[0].end}, available at{" "}
-            {daySchedule.notificationTime[0]} {"\n"}
-            Midday Block: {daySchedule.timeBlocks[1].begin} -{" "}
-            {daySchedule.timeBlocks[1].end}, available at{" "}
-            {daySchedule.notificationTime[1]} {"\n"}
-            Evening Block: {daySchedule.timeBlocks[2].begin} - {""}
-            {daySchedule.timeBlocks[2].end}, available at{" "}
-            {daySchedule.notificationTime[2]} {"\n"}
-          </Text>
-          <Text
-            onPress={
-              /**
-               * ONLY for development puroposes.
-               */
-              async () => {
-                // setLastQTime(0);
-                // await storeDataString(userInfo.email + "_lastQTime", "0");
-                // let newQcount = {
-                //   date: formatDate(new Date()),
-                //   count: 0,
-                // };
-                // setTakenQCount(newQcount);
-                // await storeDataString(
-                //   userInfo.email + "_takenQCount",
-                //   JSON.stringify(newQcount)
-                // );
-              }
-            }
-          >
-            TEST: remove last taken date and count
+            {schedules
+              ? "Date:" +
+                schedules[0].date +
+                "\n" +
+                "Morning Block" +
+                schedules[0].timeBlocks[0].begin +
+                "-" +
+                schedules[0].timeBlocks[0].end +
+                ", available at " +
+                schedules[0].notificationTime[0] +
+                ", completed " +
+                schedules[0].completed[0] +
+                "\n" +
+                "Midday Block: " +
+                schedules[0].timeBlocks[1].begin +
+                "-" +
+                schedules[0].timeBlocks[1].end +
+                ", available at " +
+                schedules[0].notificationTime[1] +
+                ", completed " +
+                schedules[0].completed[1] +
+                "\n" +
+                "Evening Block: " +
+                schedules[0].timeBlocks[2].begin +
+                "-" +
+                schedules[0].timeBlocks[2].end +
+                ", available at " +
+                schedules[0].notificationTime[2] +
+                ", completed " +
+                schedules[0].completed[2] +
+                "\n"
+              : " "}
           </Text>
         </View>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Current Time (0-24 integer,for testing)"
-          onChangeText={(h) => {
-            setCurrentHour(parseInt(h));
-            setIsAvailable(
-              inQuestionnaireOpenInterval(
-                parseInt(h),
-                daySchedule.notificationTime
-              )
-            );
-          }}
-        ></TextInput>
       </KeyboardAvoidingView>
     </ScrollView>
   );
