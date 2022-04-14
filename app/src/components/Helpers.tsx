@@ -52,8 +52,8 @@ export function convertTime(t: Date) {
  * @returns string
  */
 export function nextDate(date: string) {
-  let nextDate = new Date(date);
-  nextDate.setDate(nextDate.getDate() + 2);
+  let nextDate = new Date(date + "T00:00");
+  nextDate.setDate(nextDate.getDate() + 1);
   return formatDate(nextDate);
 }
 

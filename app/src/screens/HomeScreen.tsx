@@ -62,10 +62,15 @@ export default function HomeScreen({
   const [isAvailable, setIsAvailable] = useState<number>(-1); // index of available block
 
   useEffect(() => {
+    // refresh page when focus
     if (schedules) {
       setIsAvailable(
         inQuestionnaireOpenInterval(new Date(), schedules[0].notificationTime)
       );
+      (async () => {
+        let sche = (await retrieveDataString("schedules"))!;
+        setSchedules(JSON.parse(sche));
+      })();
     }
   }, [isFocused]);
 
@@ -119,7 +124,8 @@ export default function HomeScreen({
     return token;
   }
 
-  async function scheduleNotification() {
+  //https://docs.expo.dev/versions/latest/sdk/notifications/#scheduling-the-notification-that-will-trigger-once
+  async function scheduleNotification(seconds: number) {
     await Notifications.scheduleNotificationAsync({
       content: {
         title: "Title",
@@ -127,11 +133,11 @@ export default function HomeScreen({
         data: { data: "data goes here" },
       },
       trigger: {
-        seconds: 10,
+        seconds: seconds,
       },
     });
   }
-
+  // storeDataString("schedules", "");
   useEffect(() => {
     // 1. fetch local schedules from storage
     // 2. find current date in the schedules [1,2,3,4,5,6,7]; current date is 3; or current date is 8
@@ -141,8 +147,6 @@ export default function HomeScreen({
     // for each newly added schedules, call scheduelNotification() for each time in the timeblocks.
     // 4. Display current storage
     // 5. store schedules back into async storage
-
-    storeDataString("schedules", "");
     (async () => {
       let schedules = await retrieveDataString("schedules");
       let j = 0; // index of updatedSchedules
@@ -182,9 +186,19 @@ export default function HomeScreen({
         }
       }
       // fill out the new schedules
-
       for (; j < updatedSchedules.length; j++) {
         let newSchedule = generateDaySchedule(wakeUp, sleep, startDate);
+        for (let i = 0; i < newSchedule.notificationTime.length; i++) {
+          let notifyTime = new Date(newSchedule.date + "T00:00");
+          notifyTime.setHours(newSchedule.notificationTime[i]);
+          let { daysDifference, hoursDifference, minutesDifference } =
+            timeDifference(notifyTime.getTime(), new Date().getTime());
+          newSchedule.timeBlocks[i].identifier = await scheduleNotification(
+            minutesDifference * 60 +
+              hoursDifference * 60 * 60 +
+              daysDifference * 24 * 60 * 60
+          );
+        }
         updatedSchedules[j] = newSchedule;
         startDate = nextDate(startDate);
       }
@@ -218,8 +232,7 @@ export default function HomeScreen({
       );
       Notifications.removeNotificationSubscription(responseListener.current);
     };
-  }, []);
-
+  }, [isFocused]);
   // location permission
   useEffect(() => {
     (async () => {
@@ -255,24 +268,34 @@ export default function HomeScreen({
             activeOpacity={0.85}
           >
             <Text style={styles.buttonTextWhite}>
-              {isAvailable != -1 ? "Start" : "Not Available"}
+              {isAvailable != -1 &&
+              schedules &&
+              !schedules[0].completed[isAvailable]
+                ? "Start"
+                : "Not Available"}
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.button}
             onPress={async () => {
-              scheduleNotification();
-
-              let schedules =
-                await Notifications.getPresentedNotificationsAsync();
-              console.log(schedules);
+              console.log(scheduleNotification(1));
             }}
             activeOpacity={0.85}
           >
             <Text style={styles.buttonTextWhite}>Test</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
+          <TouchableOpacity
+            style={styles.button}
+            onPress={async () => {
+              Notifications.cancelAllScheduledNotificationsAsync();
+              storeDataString("schedules", "");
+            }}
+            activeOpacity={0.85}
+          >
+            <Text style={styles.buttonTextWhite}>Reset</Text>
+          </TouchableOpacity>
           <Text>
             {schedules
               ? "Date:" +
