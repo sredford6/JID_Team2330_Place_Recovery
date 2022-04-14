@@ -49,35 +49,7 @@ export default function Demographics({ navigation }) {
       }
     }
 
-    const submitDemographics = async (occupation, education, numberOfMoves, personalHistoryIllness) => {
-      const token: string = (await getItemAsync("user_token"))!;
-      axios
-        .put(`${backendUrl}/api/auth/update`, 
-        {
-          occupation,
-          education,
-          numberOfMoves, 
-          personalHistoryIllness
-        },
-        {
-          headers: {
-            Authorization: token,
-          }
-        })
-        .then((response) => {
-          console.log(response.data);
-          const { message } = response.data;
-          const { status, data } = response;
-          console.log(status);
-          Alert.alert("the demographics form was successfully submitted")
-         
-          navigation.navigate("Profile");
-        })
-        .catch((error) => {
-          console.log(error.message)
-          console.log(error.data)
-        });
-    };
+   
 
     const check = () => {
       addIllness(familyIllness, Depression, 'Depression')
@@ -118,7 +90,35 @@ export default function Demographics({ navigation }) {
 
     const [otherTextP, setOtherTextP] = React.useState()
 
-   
+    const submitDemographics = async (occupation, education, numberOfMoves, personalHistoryIllness) => {
+      const token: string = (await getItemAsync("user_token"))!;
+      axios
+        .put(`${backendUrl}/api/auth/update`, 
+        {
+          occupation,
+          education,
+          numberOfMoves, 
+          personalHistoryIllness
+        },
+        {
+          headers: {
+            Authorization: token,
+          }
+        })
+        .then((response) => {
+          console.log(response.data);
+          const { message } = response.data;
+          const { status, data } = response;
+          console.log(status);
+          Alert.alert("the demographics form was successfully submitted")
+         
+          navigation.navigate("Profile");
+        })
+        .catch((error) => {
+          console.log(error.message)
+          console.log(error.data)
+        });
+    };
    
   
   return (
