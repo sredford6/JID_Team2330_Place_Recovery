@@ -46,6 +46,10 @@
         - city
         - state
         - zip
+        - longAddress
+        - longCity
+        - longState
+        - longZip
         - gender
         - race
         - birthday
@@ -55,6 +59,7 @@
         - education
         - numberOfMoves
         - personalHistoryIllness
+        - familyHistoryIllness
 - User [GET]: /api/auth/user
     - Header
         - authorization

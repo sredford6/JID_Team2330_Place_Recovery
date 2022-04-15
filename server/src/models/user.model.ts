@@ -10,6 +10,10 @@ export interface IUser {
   city: string;
   state: string;
   zip: string;
+  longAddress?: string;
+  longCity?: string;
+  longState?: string;
+  longZip?: string;
   gender: string;
   race: string;
   education?: string;
@@ -38,6 +42,10 @@ const UserSchema = new Schema<IUser>({
   city: { type: String, required: true },
   state: { type: String, required: true },
   zip: { type: String, required: true },
+  longAddress: { type: String },
+  longCity: { type: String },
+  longState: { type: String },
+  longZip: { type: String },
   gender: { type: String, required: true },
   race: { type: String, required: true },
   education: { type: String },

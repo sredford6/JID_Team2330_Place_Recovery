@@ -3,6 +3,7 @@ import * as csv from "@fast-csv/format";
 const router = express.Router();
 
 import User, { IUser } from "models/user.model";
+import { verify } from "middleware";
 
 router.get("/users", async (req, res: Response) => {
   try {
@@ -12,6 +13,10 @@ router.get("/users", async (req, res: Response) => {
     console.error(error);
     res.status(error.httpCode || 500).json(error);
   }
+});
+
+router.get("/myuser", verify, (req, res: Response) => {
+  res.status(200).json(req.currentUser);
 });
 
 export default router;
