@@ -91,7 +91,7 @@ export default function App() {
         })
         .catch((error) => {
           console.log("Your are not logged in!"); // token error
-          Alert.alert("Connection failed. Please log in again.");
+          // Alert.alert("Connection failed. Please log in again.");
           setAuthValid(false);
         });
     });
