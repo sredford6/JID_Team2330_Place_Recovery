@@ -33,6 +33,7 @@ export default function RegistrationScreen({ navigation }) {
   const [Black, setBlack] = React.useState(false);
   const [Native, setNative] = React.useState(false);
   const [White, setWhite] = React.useState(false);
+  const [Two, setTwo] = React.useState(false);
   const [Other, setOther] = React.useState(false);
   const [Prefer, setPrefer] = React.useState(false);
 
@@ -43,6 +44,7 @@ export default function RegistrationScreen({ navigation }) {
   };
 
   const check = () => {
+
     addRace(race, Asian, "Asian or Pacific Islander");
     addRace(race, Black, "Black or African American");
     addRace(race, Native, "Native American or Alaskan Native");
@@ -50,6 +52,9 @@ export default function RegistrationScreen({ navigation }) {
     addRace(race, Other, "Other");
     addRace(race, Prefer, "Prefer not to say");
   };
+
+
+
 
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [showErrorMessage, setShowErrorMessage] = React.useState(false);
@@ -424,15 +429,25 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 5,
   },
+  buttonSmall: {
+    width: 250,
+    height: 45,
+    backgroundColor: "#C4C4C4",
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    marginTop: 5,
+  },
   buttonTextWhite: {
     textAlign: "center",
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
   },
-  buttonTextWhiteSmall: {
+  buttonTextSmall: {
     textAlign: "center",
-    color: "#fff",
+    color: "#072B4F",
     fontSize: 14,
     fontWeight: "bold",
   }
