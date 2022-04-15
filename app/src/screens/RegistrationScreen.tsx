@@ -33,6 +33,7 @@ export default function RegistrationScreen({ navigation }) {
   const [Black, setBlack] = React.useState(false);
   const [Native, setNative] = React.useState(false);
   const [White, setWhite] = React.useState(false);
+  const [Two, setTwo] = React.useState(false);
   const [Other, setOther] = React.useState(false);
   const [Prefer, setPrefer] = React.useState(false);
 
@@ -48,6 +49,7 @@ export default function RegistrationScreen({ navigation }) {
     addRace(race, Black, 'Black or African American')
     addRace(race, Native, 'Native American or Alaskan Native')
     addRace(race, White, 'White or Caucasian')
+    addRace(race,two, 'Two or more races')
     addRace(race, Other, 'Other')
     addRace(race, Prefer, 'Prefer not to say')
   }
@@ -305,6 +307,11 @@ export default function RegistrationScreen({ navigation }) {
           title = "White or Caucasian"
           checked = {White}
           onPress = {() => setWhite(!White)}/>
+
+          <CheckBox 
+          title = "Two or more races"
+          checked = {Two}
+          onPress = {() => setTwo(!Two)}/>
 
           <CheckBox 
           title = "Other"
