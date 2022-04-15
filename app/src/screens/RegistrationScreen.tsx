@@ -49,6 +49,7 @@ export default function RegistrationScreen({ navigation }) {
     addRace(race, Black, "Black or African American");
     addRace(race, Native, "Native American or Alaskan Native");
     addRace(race, White, "White or Caucasian");
+    addRace(race, Two, "Two or more races");
     addRace(race, Other, "Other");
     addRace(race, Prefer, "Prefer not to say");
   };
@@ -303,8 +304,18 @@ export default function RegistrationScreen({ navigation }) {
               label="White or Caucasian"
               value="White or Caucasian"
             />
-            <Picker.Item label="Other" value="Other" />
-            <Picker.Item label="Prefer not to say" value="Prefer not to say" />
+            <Picker.Item
+              label="Two or more races"
+              value="Two or more races"
+            />
+            <Picker.Item 
+            label="Other" 
+            value="Other" 
+            />
+            <Picker.Item 
+            label="Prefer not to say" 
+            value="Prefer not to say" 
+            />
           </Picker>
 
           <Text style={styles.header}> Sleep Schedule</Text>
@@ -342,13 +353,13 @@ export default function RegistrationScreen({ navigation }) {
           </Text>
 
           <TouchableOpacity
-            style={styles.button}
+            style={styles.buttonSmall}
             onPress={() => {
               navigation.navigate("TermsAndConditions");
             }}
             activeOpacity={0.85}
           >
-            <Text style={styles.buttonTextWhiteSmall}>
+            <Text style={styles.buttonTextSmall}>
               View Terms and Conditions
             </Text>
           </TouchableOpacity>
