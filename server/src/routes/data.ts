@@ -15,7 +15,7 @@ router.get("/users", async (req, res: Response) => {
     res.attachment("users.csv");
     res.type("text/csv");
     csvStream.pipe(res);
-    for (let user of users) {
+    for (const user of users) {
       csvStream.write(user.toObject());
     }
     csvStream.end();
@@ -35,7 +35,7 @@ router.get("/answers/:user", async (req, res: Response) => {
     res.attachment(`${user.lastName}_${user.firstName}_Answers.csv`);
     res.type("text/csv");
     csvStream.pipe(res);
-    for (let answer of answers) {
+    for (const answer of answers) {
       csvStream.write(formatIAnswers(answer));
     }
     csvStream.end();
