@@ -206,7 +206,7 @@ function generateToken(user: IUser) {
       password: user.password,
     },
     tokenSecret,
-    { expiresIn: "24h" }
+    { expiresIn: "30d" }
   );
 }
 

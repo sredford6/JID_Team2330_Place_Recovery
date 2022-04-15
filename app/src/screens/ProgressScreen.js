@@ -1,9 +1,58 @@
-import { StyleSheet, Button } from "react-native";
+import { StyleSheet, Button, TouchableHighlightBase } from "react-native";
 
-import { ScrollView, Text, View, Dimensions } from "react-native";
+import {
+  ScrollView,
+  Text,
+  View,
+  Dimensions,
+  ActivityIndicator,
+} from "react-native";
 import { BarChart } from "react-native-chart-kit";
+import axios from "axios";
+import { getItemAsync } from "expo-secure-store";
+import { backendUrl } from "../config/config.json";
+import { NavigationEvents } from "react-navigation";
 
 export default function ProgressScreen() {
+  // axios.get("https://example.com/getSomething", {
+  //   headers: {
+  //     Authorization: token, //the token is a variable which holds the token
+  //   },
+  // });
+
+  // const getResult = async () => {
+  //   try {
+
+  //     await axios
+  //       .get(`${backendUrl}/api/question/answer/thisweek`)
+  //       .then((result) => {
+  //         const sampleQuestions = res.data;
+  //       });
+
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
+
+  // state = {
+  //   resultForHappy: null,
+  // };
+
+  // function getResult() {
+  //   return fetch(
+  //     "https://placenrecovery.herokuapp.com/api/question/answer/thisweek"
+  //   )
+  //     .then((result) => result.json())
+  //     .then((jsonResult) => {
+  //       this.setState({
+  //         resultForHappy: jsonResult,
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
+
   function* hapYLabel() {
     yield* [0, 1, 2, 3, 4, 5];
   }
