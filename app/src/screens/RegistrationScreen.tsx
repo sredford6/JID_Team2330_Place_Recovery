@@ -148,10 +148,11 @@ export default function RegistrationScreen({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset={100}>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
       >
-        <KeyboardAvoidingView style={styles.container} behavior="padding">
+        
           <Text style={styles.title}>Register</Text>
           {showErrorMessage ? (
             <Text style={styles.errorMessage}>{error}</Text>
@@ -219,7 +220,7 @@ export default function RegistrationScreen({ navigation }) {
             value={phoneNumber}
           />
 
-          <Text style={styles.label}>Address</Text>
+          <Text style={styles.label2}>Address</Text>
           <TextInput
             style={styles.input}
             placeholder="Address Line 1"
@@ -258,9 +259,9 @@ export default function RegistrationScreen({ navigation }) {
             value={zip}
           />
 
-          <Text style={styles.label}>Date of Birth</Text>
+          <Text style={styles.label2}>Date of Birth</Text>
           <DateTimePicker
-            style={{ width: 130, backgroundColor: "transparent" }}
+            style={{ width: 270, backgroundColor: "transparent", marginBottom: 22 }}
             value={birthday}
             mode={"date"}
             is24Hour={false}
@@ -268,7 +269,7 @@ export default function RegistrationScreen({ navigation }) {
             onChange={changeBirthday}
           />
 
-          <Text style={styles.label}>Gender</Text>
+          <Text style={styles.label2}>Gender</Text>
 
           <Picker
             style={{ width: 400, height: 200, marginTop: -51 }}
@@ -281,7 +282,7 @@ export default function RegistrationScreen({ navigation }) {
             <Picker.Item label="Prefer not to say" value="Prefer not to say" />
           </Picker>
 
-          <Text style={styles.label}>Race/Ethnicity</Text>
+          <Text style={styles.label2}>Race/Ethnicity</Text>
 
           <Picker
             style={{ width: 400, height: 200, marginTop: -41 }}
@@ -321,7 +322,7 @@ export default function RegistrationScreen({ navigation }) {
           <Text style={styles.header}> Sleep Schedule</Text>
           <Text style={styles.textName}> Wake-up time:</Text>
           <DateTimePicker
-            style={{ width: 100, backgroundColor: "transparent" }}
+            style={{ width: 250, backgroundColor: "transparent" }}
             value={wakeTime}
             mode={"time"}
             is24Hour={true}
@@ -330,7 +331,7 @@ export default function RegistrationScreen({ navigation }) {
           />
           <Text style={styles.textName}> Bedtime:</Text>
           <DateTimePicker
-            style={{ width: 100, backgroundColor: "transparent" }}
+            style={{ width: 250, backgroundColor: "transparent"  }}
             value={sleepTime}
             mode={"time"}
             is24Hour={true}
@@ -363,8 +364,9 @@ export default function RegistrationScreen({ navigation }) {
               View Terms and Conditions
             </Text>
           </TouchableOpacity>
-        </KeyboardAvoidingView>
+        
       </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -373,8 +375,8 @@ export default function RegistrationScreen({ navigation }) {
 const styles = StyleSheet.create({
 
   container: {
-    flex: 1,
-    alignItems: 'center',
+    flexDirection: 'column',
+    
     justifyContent: 'center',
   },
   password: {
@@ -382,22 +384,24 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     marginRight: 40,
     color: '#072B4F',
+  
   },
   title: {
     fontSize: 30,
     marginBottom: 15,
     fontWeight: 'bold',
-    color: '#072B4F'
+    color: '#072B4F',
+    textAlign: 'center'
   },
   input: { 
       height: 45,
-      width: 290,
       margin: 15,
       paddingLeft: 10,
       borderWidth: 1,
       borderRadius: 10,
       fontSize: 18,
-      borderColor: '#072B4F'
+      borderColor: '#072B4F',
+      justifyContent: 'center'
   },
   label: {
     textAlign: 'center',
@@ -406,6 +410,15 @@ const styles = StyleSheet.create({
     marginRight: 40,
     color: '#072B4F', 
   },
+  label2: {
+    textAlign: 'center',
+     margin: 20,
+     marginLeft: 40,
+     marginRight: 40,
+   
+     color: '#072B4F', 
+     fontSize: 22, 
+   },
   textName: {
     textAlign: 'center',
     margin: 20,
@@ -439,6 +452,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 10,
     marginTop: 5,
+    
   },
   buttonSmall: {
     width: 250,
@@ -449,6 +463,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 10,
     marginTop: 5,
+    marginLeft: 80
   },
   buttonTextWhite: {
     textAlign: "center",
