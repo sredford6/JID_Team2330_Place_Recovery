@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
         height: 45,
         borderRadius: 10,
         marginTop: 25,
+        marginLeft: 60
 
     },
     text: {
