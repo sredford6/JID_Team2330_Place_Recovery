@@ -95,9 +95,9 @@ router.get("/answer/:timeframe?", verify, async (req, res: Response) => {
       } else if(timeframe === "frommonday") {
         const thisDay = today.getDay();
         const diffDate = today.getDate() - thisDay + (thisDay === 0 ? -6 : 1);
-        const thisMonday = new Date(today.setDate(diffDate));
+        const thisSunday = new Date(today.setDate(diffDate));
         answers = answers.filter(
-          (answer) => new Date(answer.datetime) >= thisMonday
+          (answer) => new Date(answer.datetime) >= thisSunday
         );
       }
     }

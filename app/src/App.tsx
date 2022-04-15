@@ -10,6 +10,7 @@ import OpeningScreen from "./screens/OpeningScreen";
 import Login from "./screens/LoginScreen";
 import Verification from "./screens/Verification";
 import EmailVerificationScreen from "./screens/EmailVerificationScreen";
+import TermsAndConditions from "./screens/TermsAndConditionsScreen";
 import Loading from "./screens/Loading";
 import React, { useState } from "react";
 import { AuthContext, UserInfo } from "./navigation/context";
@@ -35,6 +36,12 @@ const AuthenticationStackNavigator = () => {
         name="Registration"
         component={RegistrationScreen}
         options={{ title: "Sign Up" }}
+      />
+
+      <AuthStack.Screen
+        name="TermsAndConditions"
+        component={TermsAndConditions}
+        options={{ title: "Terms and Conditions" }}
       />
 
       <AuthStack.Screen name="Opening" component={OpeningScreen} />

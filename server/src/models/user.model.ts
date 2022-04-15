@@ -25,11 +25,12 @@ export interface IUser {
   wakeTime: Date;
   sleepTime: Date;
 
+  answers: IAnswers[];
+
   password: string;
   resetCode?: string;
   resetTries?: number;
   admin: boolean;
-  answers: IAnswers[];
 }
 
 const UserSchema = new Schema<IUser>({
