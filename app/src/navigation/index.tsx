@@ -26,6 +26,7 @@ import {
 } from "../components/types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import Questionnaire from "../screens/QuestionnaireScreen";
+//import TermsAndConditions from "../screens/TermsAndConditionsScreen";
 import Demographics from '../screens/DemographicsScreen';
 import EditPhoneNumberScreen from '../screens/EditPhoneNumber';
 import EditAddressScreen from '../screens/EditAddressScreen';
@@ -49,6 +50,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const HomeStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
+
 
 const HomeStackNavigator = () => {
   return (

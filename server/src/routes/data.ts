@@ -1,10 +1,8 @@
 import express, { Request, Response } from "express";
 import { format } from "@fast-csv/format";
-import { Document, Types } from "mongoose";
 const router = express.Router();
 
-import User, { IUser } from "models/user.model";
-import { IAnswer, IAnswers } from "models/answer.model";
+import User from "models/user.model";
 import { verify } from "middleware";
 import { formatIAnswers } from "helpers/formatters";
 
