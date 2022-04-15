@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Platform, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import {Button, Platform, StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert, TouchableOpacity } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import ButtonDesign from '../components/Button';
@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import axios from 'axios';
 
 import {backendUrl} from "../config/config.json";
+import TermsAndConditions from "../screens/TermsAndConditionsScreen";
 
 import { AuthContext } from "../navigation/context";
 
@@ -108,6 +109,7 @@ export default function RegistrationScreen({ navigation }) {
             birthday,
             wakeTime,
             sleepTime,
+        
 
           });
         } else {
@@ -348,6 +350,16 @@ export default function RegistrationScreen({ navigation }) {
             By registering, you automatically accept the Terms and Conditions of
             PlaceNrecovery.
           </Text>
+         
+          <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  navigation.navigate("TermsAndConditions");
+                }}
+                activeOpacity={0.85}
+              >
+          <Text style={styles.buttonTextWhiteSmall}>View Terms and Conditions</Text>
+          </TouchableOpacity>
         </KeyboardAvoidingView>
       </ScrollView>
     </SafeAreaView>
@@ -415,4 +427,26 @@ const styles = StyleSheet.create({
     color: 'red', 
     fontSize: 18,
   },
+  button: {
+    width: 250,
+    height: 45,
+    backgroundColor: "#072B4F",
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    marginTop: 5,
+  },
+  buttonTextWhite: {
+    textAlign: "center",
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  buttonTextWhiteSmall: {
+    textAlign: "center",
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "bold",
+  }
 });

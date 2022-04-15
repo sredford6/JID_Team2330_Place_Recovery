@@ -2,7 +2,7 @@
     {"id":"001_sc","question":"How calm do you feel?","type":0,"choices": ["Not at all","Slightly","Moderately","Very","Extremely"]},
     {"id":"002_sc","question":"How sad do you feel?","type":0,"choices": ["Not at all","Slightly","Moderately","Very","Extremely"]},
     {"id":"003_sc","question":"How anxious do you feel?","type":0,"choices": ["Not at all","Slightly","Moderately","Very","Extremely"]},
-    {"id":"004_sc_text","question":"Where are you at currently?","type":2,"choices":["Home","Work","School","Walking outside","Traveling"]},
+    {"id":"004_sc_text","question":"Where are you at currently?","type":2,"choices":["Home","Work","School","Walking outside","Traveling", "Other"]},
     
     {"id":"006_sc","question":"How familiar are you with the place you are currently at?","type":0,"choices": ["Not at all","Slightly","Moderately","Very","Extremely"]},
     {"id":"007_mc","question":"Who are you with right now?","type":3,"choices":["Alone","Spouse/Significant Other","Friend(s)","Family Member(s)","Neighbor(s)","Stranger(s)","Health Care Workers","Coworkers/Classmates"]},
