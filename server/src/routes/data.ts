@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { format, writeToString } from "@fast-csv/format";
+import { format } from "@fast-csv/format";
 const router = express.Router();
 
 import User, { IUser } from "models/user.model";
@@ -7,20 +7,17 @@ import { verify } from "middleware";
 
 router.get("/users", async (req, res: Response) => {
   try {
-    const users: IUser[] = await User.find({}).select(
-      "-answers -password -resetCode -resetTries"
+    const users = await User.find({}).select(
+      "-answers -password -resetCode -resetTries -__v"
     );
     const csvStream = format({ headers: true });
-    // const csvString = await writeToString(users);
-    // // console.log(csvString);
+    res.attachment("users.csv");
     res.type("text/csv");
     csvStream.pipe(res);
     for (let user of users) {
-      console.log(user);
-      csvStream.write(user);
+      csvStream.write(user.toObject());
     }
     csvStream.end();
-    // res.status(200).json(users);
   } catch (error: any) {
     console.error(error);
     res.status(error.httpCode || 500).json(error);
