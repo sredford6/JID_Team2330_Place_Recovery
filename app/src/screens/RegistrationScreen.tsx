@@ -226,7 +226,7 @@ export default function RegistrationScreen({ navigation }) {
             maxLength={20}
             onChangeText={(inp) => setAddress(inp)}
             value={address}
-            secureTextEntry={true}
+            
           />
           <TextInput
             style={styles.input}
@@ -236,7 +236,7 @@ export default function RegistrationScreen({ navigation }) {
             maxLength={20}
             onChangeText={(inp) => setCity(inp)}
             value={city}
-            secureTextEntry={true}
+            
           />
           <TextInput
             style={styles.input}
@@ -246,7 +246,7 @@ export default function RegistrationScreen({ navigation }) {
             maxLength={20}
             onChangeText={(inp) => setState(inp)}
             value={state}
-            secureTextEntry={true}
+         
           />
           <TextInput
             style={styles.input}
@@ -257,7 +257,7 @@ export default function RegistrationScreen({ navigation }) {
             keyboardType="numeric"
             onChangeText={(inp) => setZip(inp)}
             value={zip}
-            secureTextEntry={true}
+           
           />
 
         <Text style = {styles.label}>Date of Birth</Text>
@@ -352,13 +352,13 @@ export default function RegistrationScreen({ navigation }) {
           </Text>
          
           <TouchableOpacity
-                style={styles.button}
+                style={styles.buttonSmall}
                 onPress={() => {
                   navigation.navigate("TermsAndConditions");
                 }}
                 activeOpacity={0.85}
               >
-          <Text style={styles.buttonTextWhiteSmall}>View Terms and Conditions</Text>
+          <Text style={styles.buttonTextSmall}>View Terms and Conditions</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
       </ScrollView>
@@ -437,15 +437,25 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 5,
   },
+  buttonSmall: {
+    width: 250,
+    height: 45,
+    backgroundColor: "#C4C4C4",
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    marginTop: 5,
+  },
   buttonTextWhite: {
     textAlign: "center",
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
   },
-  buttonTextWhiteSmall: {
+  buttonTextSmall: {
     textAlign: "center",
-    color: "#fff",
+    color: "#072B4F",
     fontSize: 14,
     fontWeight: "bold",
   }
