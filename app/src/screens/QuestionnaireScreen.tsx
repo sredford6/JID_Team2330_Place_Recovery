@@ -178,13 +178,16 @@ export default function Questionnaire({ navigation }) {
 
   useEffect(() => {
     (async () => {
-      let sche = JSON.parse((await retrieveDataString("schedules"))!);
+      let sche = JSON.parse(
+        (await retrieveDataString(userInfo.email + "_schedules"))!
+      );
       let idx = inQuestionnaireOpenInterval(
         new Date(),
         sche[0].notificationTime
       );
       setBlockIdx(idx);
     })();
+    console.log("idx:", blockIdx);
     loadQuiz();
     GetLocation();
   }, []);
@@ -328,6 +331,7 @@ export default function Questionnaire({ navigation }) {
 
     try {
       const token: string = (await getItemAsync("user_token"))!;
+      console.log(location?.coords);
       const res = await axios.post(
         `${backendUrl}/api/question/answer`,
         {
@@ -351,13 +355,13 @@ export default function Questionnaire({ navigation }) {
     console.log("submit");
     console.log(location);
     let sche: Array<DaySchedule> = JSON.parse(
-      (await retrieveDataString("schedules"))!
+      (await retrieveDataString(userInfo.email + "_schedules"))!
     );
 
     sche[0].timeBlocks[blockIdx].completed = true;
     sche[0].completed[blockIdx] = true;
 
-    storeDataString("schedules", JSON.stringify(sche));
+    storeDataString(userInfo.email + "_schedules", JSON.stringify(sche));
     navigation.navigate("Home");
   };
 
