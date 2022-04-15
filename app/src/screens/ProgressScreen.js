@@ -12,6 +12,8 @@ import axios from "axios";
 import { getItemAsync } from "expo-secure-store";
 import { backendUrl } from "../config/config.json";
 import { NavigationEvents } from "react-navigation";
+import React from "react";
+import { useState, useEffect } from "react";
 
 export default function ProgressScreen() {
   // axios.get("https://example.com/getSomething", {
@@ -34,9 +36,9 @@ export default function ProgressScreen() {
   //   }
   // };
 
-  // state = {
-  //   resultForHappy: null,
-  // };
+  state = {
+    resultForHappy: null,
+  };
 
   // function getResult() {
   //   return fetch(
@@ -52,6 +54,36 @@ export default function ProgressScreen() {
   //       console.log(error);
   //     });
   // }
+
+  const getResult = async () => {
+    const token = await getItemAsync("user_token");
+    // console.log(token);
+    axios
+      .get(`${backendUrl}/api/question/answer/frommonday`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        console.log("===============================");
+        console.log(response.data);
+        // const { message } = response.data;
+        // const { status, data } = response;
+        // console.log(status);
+        // Alert.alert("your personal information was updated");
+
+        // navigation.navigate("Profile");
+      })
+      .catch((error) => {
+        console.log("??????????????????????");
+        console.log(error.message);
+        console.log(error.data);
+      });
+  };
+
+  useEffect(() => {
+    getResult();
+  }, []);
 
   function* hapYLabel() {
     yield* [0, 1, 2, 3, 4, 5];
