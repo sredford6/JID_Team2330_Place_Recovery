@@ -98,7 +98,7 @@ export default function Demographics({ navigation }) {
           occupation,
           education,
           numberOfMoves, 
-          personalHistoryIllness
+          personalHistoryIllness,
         },
         {
           headers: {

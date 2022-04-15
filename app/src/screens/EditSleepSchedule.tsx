@@ -11,17 +11,29 @@ import {backendUrl} from "../config/config.json";
 import axios from 'axios';
 import { getItemAsync } from 'expo-secure-store';
 
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
-export default function EditGenderScreen({navigation}) {
-    const [gender, setGender] = React.useState();
+
+export default function EditSleepSchedule({navigation}) {
+    const [sleepTime, setSleepTime] = React.useState(new Date(1598051730000));
+  const [wakeTime, setWakeTime] = React.useState(new Date(1598051730000));
+
+
+  const changeTime = (event, newTime) => {
+    setSleepTime(newTime);
+  };
+  const changeWakeupTime = (event, newTime) => {
+    setWakeTime(newTime);
+  };
    
-    const editGender = async (gender) => {
+    const editSchedule = async (wakeTime, sleepTime) => {
       const token: string = (await getItemAsync("user_token"))!;
       axios
         .put(`${backendUrl}/api/auth/update`, 
         {
-          gender
+          wakeTime,
+          sleepTime
         },
         {
           headers: {
@@ -33,7 +45,7 @@ export default function EditGenderScreen({navigation}) {
           const { message } = response.data;
           const { status, data } = response;
           console.log(status);
-          Alert.alert("your personal information was updated")
+          Alert.alert("your sleep schedule information was updated")
          
           navigation.navigate("Profile");
         })
@@ -51,27 +63,29 @@ export default function EditGenderScreen({navigation}) {
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
       >
         <KeyboardAvoidingView style={styles.container} behavior="padding">
-          <Text style={styles.title}>Gender</Text>
-
-          <Picker style ={{width: 400, height: 200, marginTop: -41}}
-        selectedValue={gender}
-        
-    onValueChange={(gender, itemIndex) =>
-      setGender(gender)
-  }>
-  <Picker.Item label="Male" value="Male" />
-  <Picker.Item label="Female" value="Female" />
-  <Picker.Item label="Other" value="Other" />
-  <Picker.Item label="Prefer Not to Say" value= "Prefer Not to Say" />
- 
-
-</Picker>
+        <Text style = {styles.title}> Sleep Schedule</Text>
+          <Text style = {styles.label}> Wake-up time:</Text>
+        <DateTimePicker style ={{width: 100, backgroundColor: "transparent"}}
+          value={wakeTime}
+          mode={'time'}
+          is24Hour={true}
+          display="default"
+          onChange={changeWakeupTime}
+        />
+          <Text style = {styles.label}> Bedtime:</Text>
+        <DateTimePicker style ={{width: 100, backgroundColor: "transparent"}}
+          value={sleepTime}
+          mode={'time'}
+          is24Hour={true}
+          display="default" 
+          onChange={changeTime}
+        />
 
           <ButtonDesign
             name="Edit"
             onPress={() => { 
               {
-                editGender(gender);
+                editSchedule(wakeTime, sleepTime);
               }
             }}
           />

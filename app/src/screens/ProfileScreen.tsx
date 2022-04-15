@@ -8,11 +8,19 @@ import { AuthContext } from "../navigation/context";
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import {backendUrl} from "../config/config.json";
+import { getItemAsync } from 'expo-secure-store';
 
 export default function ProfileScreen({
   navigation,
 }: RootTabScreenProps<"TabOne">) {
   const { authFunctions, userInfo } = React.useContext(AuthContext);
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [address, setAddress] = React.useState("")
+  const [city, setCity] = React.useState("");
+  const [state, setState] = React.useState("");
+  const [zip, setZip] = React.useState("");
+  const [gender, setGender] = React.useState("");
+  const [race, setRace] = React.useState("");
 
   const { signOut } = authFunctions;
   const handleSignOut = () => {
@@ -24,13 +32,41 @@ export default function ProfileScreen({
     signOut();
   };
 
-  const displayData = () => {
-    axios.get(`${backendUrl}/api/auth/user`).then((response) => {
-      console.log(response.data);
-    });
-  }
+  const getUserInformation = async () => {
+      
+    const token: string = (await getItemAsync("user_token"))!;
+    const userInfo = axios
+      .get(`${backendUrl}/api/auth/user`, 
+      {
+        headers: {
+          authorization: token,
+        }
+      })
+      .then((response) => {
+
+        //console.log();
+        setPhoneNumber(response.data.phoneNumber)
+        
+        
+        setAddress(response.data.address)
+        setCity(response.data.city)
+        setZip(response.data.zip)
+        setState(response.data.state)
+        setRace(response.data.race)
+        setGender(response.data.gender)
+        const { message } = response.data;
+        const { status, data } = response;
+        console.log(status);
+      })
+      .catch((error) => {
+        console.log(error.message)
+        console.log(error.data)
+      });
+  };
+ 
   useEffect(() => {
-    // load user info
+ 
+     getUserInformation()
   }, []);
 
   // console.log(firstName);
@@ -45,7 +81,7 @@ export default function ProfileScreen({
        
        <TouchableOpacity
                 style={styles.buttonStyle}
-                onPress={() => displayData()}
+                //onPress={() => null}
                 activeOpacity={0.85}
               >
                
@@ -63,12 +99,31 @@ export default function ProfileScreen({
       
       </TouchableOpacity>
 
+         
+      <TouchableOpacity
+                style={styles.buttonStyle}
+                //onPress={() => navigation.navigate("Gender")}
+                activeOpacity={0.85}
+              >
+      <Text style={styles.label}> Gender: {gender}</Text>
+      
+      </TouchableOpacity>
+      
+      <TouchableOpacity
+                style={styles.buttonStyle}
+                //onPress={() => navigation.navigate("Ethnicity")}
+                activeOpacity={0.85}
+              >
+      <Text style={styles.label}> Race/Ethnicity: {race}</Text>
+      
+      </TouchableOpacity>
+
       <TouchableOpacity
                 style={styles.buttonStyle}
                 onPress={() => navigation.navigate("Edit Phone Number")}
                 activeOpacity={0.85}
               >
-      <Text style={styles.label}> Phone Number:<Text style = {styles.editText}>[Edit]</Text></Text>
+      <Text style={styles.label}> Phone Number <Text style = {styles.editText}>[Edit]</Text></Text>
       
       </TouchableOpacity>
 
@@ -77,25 +132,17 @@ export default function ProfileScreen({
                 onPress={() => navigation.navigate("Edit Address")}
                 activeOpacity={0.85}
               >
-      <Text style={styles.label}> Address:<Text style = {styles.editText}>[Edit]</Text></Text>
+      <Text style={styles.label}> Address <Text style = {styles.editText}>[Edit]</Text></Text>
       
       </TouchableOpacity>
-      
+   
+
       <TouchableOpacity
                 style={styles.buttonStyle}
-                onPress={() => navigation.navigate("Gender")}
+                onPress={() => navigation.navigate("Sleep Schedule")}
                 activeOpacity={0.85}
               >
-      <Text style={styles.label}> Gender:<Text style = {styles.editText}>[Edit]</Text></Text>
-      
-      </TouchableOpacity>
-      
-      <TouchableOpacity
-                style={styles.buttonStyle}
-                onPress={() => navigation.navigate("Ethnicity")}
-                activeOpacity={0.85}
-              >
-      <Text style={styles.label}> Race/Ethnicity:<Text style = {styles.editText}>[Edit]</Text></Text>
+      <Text style={styles.label}> Sleep Schedule <Text style = {styles.editText}>[Edit]</Text></Text>
       
       </TouchableOpacity>
       
