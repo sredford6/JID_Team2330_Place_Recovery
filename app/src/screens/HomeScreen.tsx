@@ -175,7 +175,6 @@ export default function HomeScreen({
             break;
           }
         }
-        console.log("i", i);
         // copy future schedules to updatedSchedueles
         for (; i < schedulesArr.length; i++, j++) {
           updatedSchedules[j] = schedulesArr[i];
@@ -254,7 +253,6 @@ export default function HomeScreen({
   }, []);
 
   useEffect(() => {
-    console.log("hello");
     if (schedules) {
       setIsAvailable(
         inQuestionnaireOpenInterval(new Date(), schedules[0].notificationTime)
@@ -319,6 +317,10 @@ export default function HomeScreen({
             {schedules
               ? "Date:" +
                 schedules[0].date +
+                ", sleep schedule: " +
+                wakeUp +
+                "-" +
+                sleep +
                 "\n" +
                 "Morning Block" +
                 schedules[0].timeBlocks[0].begin +
