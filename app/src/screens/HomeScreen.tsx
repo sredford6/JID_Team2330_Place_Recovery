@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   Platform,
+  AppState,
 } from "react-native";
 import { Text, View } from "../components/Themed";
 import {
@@ -61,24 +62,26 @@ export default function HomeScreen({
   let sleep = 23;
   const [isAvailable, setIsAvailable] = useState<number>(-1); // index of available block
 
-  useEffect(() => {
-    // refresh page when focus
-    if (schedules) {
-      setIsAvailable(
-        inQuestionnaireOpenInterval(new Date(), schedules[0].notificationTime)
-      );
-      (async () => {
-        let sche = (await retrieveDataString("schedules"))!;
-        setSchedules(JSON.parse(sche));
-      })();
-    }
-  }, [isFocused]);
-
   const [expoPushToken, setExpoPushToken] = useState<any>("");
   const [notification, setNotification] = useState<any>(false);
 
   const notificationListener = useRef<any>();
   const responseListener = useRef<any>();
+
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
+  const handleAppStateChange = (state: any) => {
+    setAppStateVisible(state);
+  };
+  // https://reactnative.dev/docs/appstate
+  // https://rossbulat.medium.com/working-with-app-state-and-event-listeners-in-react-native-ffa9bba8f6b7
+  useEffect(() => {
+    AppState.addEventListener("change", handleAppStateChange);
+    return () => {
+      AppState.removeEventListener("change", handleAppStateChange);
+    };
+  }, []);
 
   /**
    * Code from https://docs.expo.dev/push-notifications/overview/
@@ -202,7 +205,7 @@ export default function HomeScreen({
         updatedSchedules[j] = newSchedule;
         startDate = nextDate(startDate);
       }
-      console.log(updatedSchedules);
+      // console.log(updatedSchedules);
       setSchedules(updatedSchedules);
       storeDataString("schedules", JSON.stringify(updatedSchedules));
     })();
@@ -246,6 +249,19 @@ export default function HomeScreen({
       }
     })();
   }, []);
+
+  useEffect(() => {
+    console.log("hello");
+    if (schedules) {
+      setIsAvailable(
+        inQuestionnaireOpenInterval(new Date(), schedules[0].notificationTime)
+      );
+      (async () => {
+        let sche = (await retrieveDataString("schedules"))!;
+        setSchedules(JSON.parse(sche));
+      })();
+    }
+  }, [isFocused, appStateVisible]);
 
   return (
     <ScrollView
