@@ -127,9 +127,9 @@ export default function App() {
     verifyToken();
   }, []);
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
 
   return (
     <AuthContext.Provider

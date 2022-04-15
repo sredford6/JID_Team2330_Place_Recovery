@@ -131,8 +131,8 @@ export default function HomeScreen({
   async function scheduleNotification(seconds: number) {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: "Title",
-        body: "body",
+        title: "Your questionnaire is ready!",
+        body: "Your questionnaire is ready. Please complete it within an hour.",
         data: { data: "data goes here" },
       },
       trigger: {
@@ -197,7 +197,7 @@ export default function HomeScreen({
           let { daysDifference, hoursDifference, minutesDifference } =
             timeDifference(notifyTime.getTime(), new Date().getTime());
           newSchedule.timeBlocks[i].identifier = await scheduleNotification(
-            minutesDifference * 60 +
+            (minutesDifference + 1) * 60 +
               hoursDifference * 60 * 60 +
               daysDifference * 24 * 60 * 60
           );
