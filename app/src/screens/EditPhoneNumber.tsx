@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TextInput, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import ButtonDesign from '../components/Button';
@@ -8,12 +8,40 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {backendUrl} from "../config/config.json";
 
 import axios from 'axios';
+import { getItemAsync } from 'expo-secure-store';
 
 
 
 export default function EditPhoneNumberScreen({navigation}) {
     const[phoneNumber, setPhoneNumber] = React.useState();
     
+
+  const editPhone = async (phoneNumber) => {
+    const token: string = (await getItemAsync("user_token"))!;
+    axios
+      .put(`${backendUrl}/api/auth/update`, 
+      {
+        phoneNumber
+      },
+      {
+        headers: {
+          Authorization: token,
+        }
+      })
+      .then((response) => {
+        console.log(response.data);
+        const { message } = response.data;
+        const { status, data } = response;
+        console.log(status);
+        Alert.alert("your personal information was updated")
+       
+        navigation.navigate("Profile");
+      })
+      .catch((error) => {
+        console.log(error.message)
+        console.log(error.data)
+      });
+  };
     
 
 
@@ -39,7 +67,7 @@ export default function EditPhoneNumberScreen({navigation}) {
             name="Edit"
             onPress={() => { 
               {
-                navigation.navigate("Profile");
+                editPhone(phoneNumber)
               }
             }}
           />

@@ -45,6 +45,18 @@ export function convertTime(t: Date) {
     " ";
   return format;
 }
+
+/**
+ * return "YY-MM-DD+1"
+ * @param date string in "YY-MM-DD"
+ * @returns string
+ */
+export function nextDate(date: string) {
+  let nextDate = new Date(date + "T00:00");
+  nextDate.setDate(nextDate.getDate() + 1);
+  return formatDate(nextDate);
+}
+
 /**
  *
  * @param date1 the latest date in number
@@ -103,80 +115,79 @@ export async function retrieveDataString(key: string) {
   }
 }
 
-/**
- * Code from https://docs.expo.dev/push-notifications/overview/
- *
- * @returns getExpoPushTokenAsync, token
- */
-export async function registerForPushNotificationsAsync() {
-  let token;
-  if (Device.isDevice) {
-    const { status: existingStatus } =
-      await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== "granted") {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus !== "granted") {
-      // alert("Failed to get push token for push notification!");
-      goToSettings(
-        "Require notification permission",
-        "The app needs to notify you when the questionnaire is ready. Please enable notification in your phone settings."
-      );
-      return;
-    }
-    try {
-      token = (await Notifications.getExpoPushTokenAsync()).data;
-    } catch (e) {
-      console.log(e);
-    }
-    console.log(token);
-  } else {
-    alert("Must use physical device for Push Notifications");
-  }
+// /**
+//  * Code from https://docs.expo.dev/push-notifications/overview/
+//  *
+//  * @returns getExpoPushTokenAsync, token
+//  */
+// export async function registerForPushNotificationsAsync() {
+//   let token;
+//   if (Device.isDevice) {
+//     const { status: existingStatus } =
+//       await Notifications.getPermissionsAsync();
+//     let finalStatus = existingStatus;
+//     if (existingStatus !== "granted") {
+//       const { status } = await Notifications.requestPermissionsAsync();
+//       finalStatus = status;
+//     }
+//     if (finalStatus !== "granted") {
+//       // alert("Failed to get push token for push notification!");
+//       goToSettings(
+//         "Require notification permission",
+//         "The app needs to notify you when the questionnaire is ready. Please enable notification in your phone settings."
+//       );
+//       return;
+//     }
+//     try {
+//       token = (await Notifications.getExpoPushTokenAsync()).data;
+//     } catch (e) {
+//       console.log(e);
+//     }
+//   } else {
+//     alert("Must use physical device for Push Notifications");
+//   }
+//   // 4:36 if token
+//   if (Platform.OS === "android") {
+//     Notifications.setNotificationChannelAsync("default", {
+//       name: "default",
+//       importance: Notifications.AndroidImportance.MAX,
+//       vibrationPattern: [0, 250, 250, 250],
+//       lightColor: "#FF231F7C",
+//     });
+//   }
 
-  if (Platform.OS === "android") {
-    Notifications.setNotificationChannelAsync("default", {
-      name: "default",
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: "#FF231F7C",
-    });
-  }
-
-  return token;
-}
+//   return token;
+// }
 
 /**
  * Push notification;
  * https://docs.expo.dev/push-notifications/overview/
  * @param expoPushToken expoToken; return from registerForPushNotificationsAsync() / Notifications.getExpoPushTokenAsync()
  */
-export async function sendPushNotification(expoPushToken: any) {
-  const message = {
-    to: expoPushToken,
-    sound: "default",
-    title: "Original Title",
-    body: "And here is the body!",
-    data: { someData: "goes here" },
-  };
+// export async function sendPushNotification(expoPushToken: any) {
+//   const message = {
+//     to: expoPushToken,
+//     sound: "default",
+//     title: "Original Title",
+//     body: "And here is the body!",
+//     data: { someData: "goes here" },
+//   };
 
-  try {
-    await fetch("https://exp.host/--/api/v2/push/send", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Accept-encoding": "gzip, deflate",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(message),
-    });
-  } catch (e) {
-    console.log(e);
-  }
+//   try {
+//     await fetch("https://exp.host/--/api/v2/push/send", {
+//       method: "POST",
+//       headers: {
+//         Accept: "application/json",
+//         "Accept-encoding": "gzip, deflate",
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(message),
+//     });
+//   } catch (e) {
+//     console.log(e);
+//   }
   
-}
+// }
 
 /**
  * Go to the system settings
@@ -205,7 +216,8 @@ export function goToSettings(title: string, content: string) {
  */
 export function generateDaySchedule(
   wakeUp: number,
-  sleep: number
+  sleep: number,
+  date: string
 ): DaySchedule {
   let interval = Math.floor((sleep - wakeUp) / 3);
   let times = Array<TimeBlock>(3);
@@ -214,12 +226,14 @@ export function generateDaySchedule(
       begin: wakeUp + i * interval,
       end: wakeUp + (i + 1) * interval,
       completed: false,
+      identifier: "",
     };
   }
   let daySchedule = {
     timeBlocks: times,
-    completedCount: 0,
+    completed: Array(3).fill(false),
     notificationTime: generateNotificationTime(times),
+    date: date,
   };
   return daySchedule;
 }

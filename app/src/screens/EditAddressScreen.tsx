@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TextInput, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import ButtonDesign from '../components/Button';
@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {backendUrl} from "../config/config.json";
 
 import axios from 'axios';
+import { getItemAsync } from 'expo-secure-store';
 
 
 
@@ -19,6 +20,38 @@ export default function EditAddressScreen({navigation}) {
     const[message, setMessage] = React.useState("");
     const[showMessage, setShowMessage] = React.useState(false);
 
+
+    const editAddress = async (address, city, state, zip) => {
+      
+      const token: string = (await getItemAsync("user_token"))!;
+      axios
+        .put(`${backendUrl}/api/auth/update`, 
+        {
+          address,
+          city,
+          state,
+          zip
+        },
+        {
+          headers: {
+            Authorization: token,
+          }
+        })
+        .then((response) => {
+          console.log(response.data);
+          const { message } = response.data;
+          const { status, data } = response;
+          console.log(status);
+          Alert.alert("your personal information was updated")
+         
+          navigation.navigate("Profile");
+        })
+        .catch((error) => {
+          console.log(error.message)
+          console.log(error.data)
+        });
+    };
+
     const  checkEmptyFields = () => {
         if (
             address == "" ||
@@ -29,7 +62,7 @@ export default function EditAddressScreen({navigation}) {
             setShowMessage(true);
             setMessage("*Please fill in all fields");
         } else {
-            navigation.navigate("Profile");
+          editAddress(address, city, state, zip)
         }
     }
   return (
@@ -52,7 +85,7 @@ export default function EditAddressScreen({navigation}) {
             maxLength={20}
             onChangeText={(inp) => setAddress(inp)}
             value={address}
-            secureTextEntry={true}
+   
           />
           <TextInput
             style={styles.input}
@@ -62,7 +95,7 @@ export default function EditAddressScreen({navigation}) {
             maxLength={20}
             onChangeText={(inp) => setCity(inp)}
             value={city}
-            secureTextEntry={true}
+        
           />
           <TextInput
             style={styles.input}
@@ -72,7 +105,7 @@ export default function EditAddressScreen({navigation}) {
             maxLength={20}
             onChangeText={(inp) => setState(inp)}
             value={state}
-            secureTextEntry={true}
+      
           />
           <TextInput
             style={styles.input}
@@ -83,12 +116,15 @@ export default function EditAddressScreen({navigation}) {
             keyboardType="numeric"
             onChangeText={(inp) => setZip(inp)}
             value={zip}
-            secureTextEntry={true}
+   
           />
 
           <ButtonDesign
             name="Edit"
-            onPress={() => {checkEmptyFields()}
+            onPress={() => {
+              checkEmptyFields()
+             
+            }
             }
           />
         </KeyboardAvoidingView>

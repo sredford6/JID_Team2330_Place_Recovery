@@ -54,7 +54,8 @@ export type TimeBlock = {
 };
 
 export type DaySchedule = {
-  timeBlocks: Array<TimeBlock>;
-  completedCount: number;
-  notificationTime: Array<number>;
+  // timeBlocks: Array<TimeBlock>;
+  completed: Array<boolean>;
+  notificationTime: Array<number>; // time in hours (24)
+  date: string; // 'yyyy-mm-dd'
 };

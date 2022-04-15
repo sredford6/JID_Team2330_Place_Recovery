@@ -10,15 +10,19 @@ import axios from "axios";
 import { getItemAsync } from "expo-secure-store";
 
 import { TextInput } from "react-native-gesture-handler";
-import { retrieveDataString, storeDataString } from "../components/Helpers";
+import {
+  inQuestionnaireOpenInterval,
+  retrieveDataString,
+  storeDataString,
+} from "../components/Helpers";
 import { AuthContext } from "../navigation/context";
 
 import { backendUrl } from "../config/config.json";
 
-
 import * as Location from "expo-location";
 import { LocationGeocodedAddress, LocationObject } from "expo-location";
 import { convertTime, goToSettings } from "../components/Helpers";
+import { DaySchedule } from "../components/types";
 
 export default function Questionnaire({ navigation }) {
   const { useState } = React;
@@ -42,6 +46,7 @@ export default function Questionnaire({ navigation }) {
   const { userInfo } = useContext(AuthContext);
 
   const [permission, setPermission] = useState<Boolean>(false);
+  const [blockIdx, setBlockIdx] = useState<number>(-1);
 
   interface answer_type {
     choiceIndex: Number | Array<number>;
@@ -172,6 +177,14 @@ export default function Questionnaire({ navigation }) {
   };
 
   useEffect(() => {
+    (async () => {
+      let sche = JSON.parse((await retrieveDataString("schedules"))!);
+      let idx = inQuestionnaireOpenInterval(
+        new Date(),
+        sche[0].notificationTime
+      );
+      setBlockIdx(idx);
+    })();
     loadQuiz();
     GetLocation();
   }, []);
@@ -337,22 +350,14 @@ export default function Questionnaire({ navigation }) {
     }
     console.log("submit");
     console.log(location);
-    /**
-     * TODO: The following part might also need to be sent to backend.
-     */
-    // let t = new Date().getTime();
-    // await storeDataString(userInfo.email + "_lastQTime", t.toString());
+    let sche: Array<DaySchedule> = JSON.parse(
+      (await retrieveDataString("schedules"))!
+    );
 
-    // let lastQCount = await retrieveDataString(userInfo.email + "_takenQCount");
-    // if (lastQCount) {
-    //   let updatedQCount = JSON.parse(lastQCount);
-    //   updatedQCount.count = Math.min(updatedQCount.count + 1, 3);
-    //   await storeDataString(
-    //     userInfo.email + "_takenQCount",
-    //     JSON.stringify(updatedQCount)
-    //   );
-    // }
+    sche[0].timeBlocks[blockIdx].completed = true;
+    sche[0].completed[blockIdx] = true;
 
+    storeDataString("schedules", JSON.stringify(sche));
     navigation.navigate("Home");
   };
 
