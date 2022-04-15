@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   Platform,
+  AppState,
 } from "react-native";
 import { Text, View } from "../components/Themed";
 import {
@@ -66,6 +67,21 @@ export default function HomeScreen({
 
   const notificationListener = useRef<any>();
   const responseListener = useRef<any>();
+
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
+  const handleAppStateChange = (state: any) => {
+    setAppStateVisible(state);
+  };
+  // https://reactnative.dev/docs/appstate
+  // https://rossbulat.medium.com/working-with-app-state-and-event-listeners-in-react-native-ffa9bba8f6b7
+  useEffect(() => {
+    AppState.addEventListener("change", handleAppStateChange);
+    return () => {
+      AppState.removeEventListener("change", handleAppStateChange);
+    };
+  }, []);
 
   /**
    * Code from https://docs.expo.dev/push-notifications/overview/
@@ -236,7 +252,6 @@ export default function HomeScreen({
 
   useEffect(() => {
     console.log("hello");
-
     if (schedules) {
       setIsAvailable(
         inQuestionnaireOpenInterval(new Date(), schedules[0].notificationTime)
@@ -246,7 +261,7 @@ export default function HomeScreen({
         setSchedules(JSON.parse(sche));
       })();
     }
-  }, [isFocused]);
+  }, [isFocused, appStateVisible]);
 
   return (
     <ScrollView

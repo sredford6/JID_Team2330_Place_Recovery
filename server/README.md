@@ -95,7 +95,7 @@
         - questionnaire
         - answers
     - Params
-        - timeframe: ["thisweek", "frommonday"]
+        - timeframe: ["thisweek"]
 
 ## Endpoints to add
 
