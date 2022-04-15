@@ -46,6 +46,10 @@
         - city
         - state
         - zip
+        - longAddress
+        - longCity
+        - longState
+        - longZip
         - gender
         - race
         - birthday
@@ -55,6 +59,7 @@
         - education
         - numberOfMoves
         - personalHistoryIllness
+        - familyHistoryIllness
 - User [GET]: /api/auth/user
     - Header
         - authorization
@@ -77,7 +82,13 @@
         - questions
 - Question Retrieval [GET]: /api/question/:question
     - Just put the name of the question file as part of the URL
-- Token Test [GET]: /api/question/answer/:timeframe?
+- Answer [POST]: /api/question/answer/
+    - Header
+        - authorization
+    - Body
+        - questionnaire
+        - answers
+- Answer [GET]: /api/question/answer/:timeframe?
     - Header
         - authorization
     - Body
