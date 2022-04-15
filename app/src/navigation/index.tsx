@@ -167,7 +167,7 @@ export function BottomTabNavigator() {
           headerShown: false,
         }}
       />
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="Location"
         component={LocationScreen}
         options={{
@@ -175,14 +175,14 @@ export function BottomTabNavigator() {
             <MaterialCommunityIcons name="map" color={color} size={size} />
           ),
         }}
-      />
+      /> */}
       <BottomTab.Screen
-        name="Settings"
+        name="Progress"
         component={SettingsScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
-              name="cog-outline"
+              name="chart-line"
               color={color}
               size={size}
             />
