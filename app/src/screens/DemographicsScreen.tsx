@@ -26,10 +26,10 @@ export default function Demographics({ navigation }) {
     const [education, setEducation] = React.useState('');
     const [numberOfMoves, setMoved] = React.useState('');
     const [occupation, setOccupation] = React.useState();
-    const [address, setAddress] = React.useState();
-    const [city, setCity] = React.useState();
-    const [state, setState] = React.useState();
-    const [zip, setZip] = React.useState();
+    const [longAddress, setAddress] = React.useState();
+    const [longCity, setCity] = React.useState();
+    const [longState, setState] = React.useState();
+    const [longZip, setZip] = React.useState();
 
     const [Depression, setDepression] = React.useState(false)
     const [Schizophrenia, setSchizophrenia] = React.useState(false)
@@ -39,9 +39,10 @@ export default function Demographics({ navigation }) {
     const [OCD, setOCD] = React.useState(false)
     const [PTSD, setPTSD] = React.useState(false)
     const [Other, setOther] = React.useState(false)
-
+    const [otherText, setOtherText] = React.useState("")
+    const [otherTextP, setOtherTextP] = React.useState("")
     
-    const familyIllness: string[] = []
+    const familyHistoryIllness: string[] = []
 
     const addIllness = (arrayName, condition, illName) => {
       if (condition) {
@@ -49,20 +50,33 @@ export default function Demographics({ navigation }) {
       }
     }
 
+    const addOtherIllness = () => {
+      if (otherText != "") {
+        familyHistoryIllness.push(otherText)
+      }
+    
+    }
+
+    const addOtherIllnessP = () => {
+      if (otherTextP != "") {
+        personalHistoryIllness.push(otherTextP)
+      }
+    }
    
 
     const check = () => {
-      addIllness(familyIllness, Depression, 'Depression')
-      addIllness(familyIllness, Schizophrenia, 'Schizophrenia')
-      addIllness(familyIllness, BipolarDisorder, 'Bipolar Disorder')
-      addIllness(familyIllness, SchizoaffectiveDisorder, 'Schizoaffective Disorder')
-      addIllness(familyIllness, Anxiety, 'Anxiety')
-      addIllness(familyIllness, OCD, 'OCD')
-      addIllness(familyIllness, PTSD, 'PTSD')
-      addIllness(familyIllness, Other, 'Other')
+      addIllness(familyHistoryIllness, Depression, 'Depression')
+      addIllness(familyHistoryIllness, Schizophrenia, 'Schizophrenia')
+      addIllness(familyHistoryIllness, BipolarDisorder, 'Bipolar Disorder')
+      addIllness(familyHistoryIllness, SchizoaffectiveDisorder, 'Schizoaffective Disorder')
+      addIllness(familyHistoryIllness, Anxiety, 'Anxiety')
+      addIllness(familyHistoryIllness, OCD, 'OCD')
+      addIllness(familyHistoryIllness, PTSD, 'PTSD')
+      addIllness(familyHistoryIllness, Other, 'Other')
+      addOtherIllness()
     }
 
-    const [otherText, setOtherText] = React.useState()
+    
   
     const [DepressionP, setDepressionP] = React.useState(false)
     const [SchizophreniaP, setSchizophreniaP] = React.useState(false)
@@ -84,13 +98,14 @@ export default function Demographics({ navigation }) {
       addIllness(personalHistoryIllness, OCDP, 'OCD')
       addIllness(personalHistoryIllness, PTSDP, 'PTSD')
       addIllness(personalHistoryIllness, OtherP, 'Other')
+      addOtherIllnessP()
       
       
     }
 
-    const [otherTextP, setOtherTextP] = React.useState()
+    
 
-    const submitDemographics = async (occupation, education, numberOfMoves, personalHistoryIllness) => {
+    const submitDemographics = async (occupation, education, numberOfMoves, personalHistoryIllness, longAddress, longCity, longState, longZip, familyHistoryIllness) => {
       const token: string = (await getItemAsync("user_token"))!;
       axios
         .put(`${backendUrl}/api/auth/update`, 
@@ -98,7 +113,12 @@ export default function Demographics({ navigation }) {
           occupation,
           education,
           numberOfMoves, 
-          personalHistoryIllness
+          personalHistoryIllness,
+          longAddress,
+          longCity,
+          longState,
+          longZip,
+          familyHistoryIllness
         },
         {
           headers: {
@@ -165,7 +185,7 @@ export default function Demographics({ navigation }) {
             autoCorrect={false}
             maxLength={20}
             onChangeText={(inp) => setAddress(inp)}
-            value={address}
+            value={longAddress}
             
           />
           <TextInput
@@ -175,7 +195,7 @@ export default function Demographics({ navigation }) {
             autoCorrect={false}
             maxLength={20}
             onChangeText={(inp) => setCity(inp)}
-            value={city}
+            value={longCity}
            
           />
           <TextInput
@@ -185,7 +205,7 @@ export default function Demographics({ navigation }) {
             autoCorrect={false}
             maxLength={20}
             onChangeText={(inp) => setState(inp)}
-            value={state}
+            value={longState}
           
           />
           <TextInput
@@ -196,7 +216,7 @@ export default function Demographics({ navigation }) {
             maxLength={5}
             keyboardType="numeric"
             onChangeText={(inp) => setZip(inp)}
-            value={zip}
+            value={longZip}
             
           />
           <Text style = {styles.label}>Number of times you moved from ages 12-18 </Text>
@@ -335,8 +355,10 @@ export default function Demographics({ navigation }) {
      onPress={() => {
         check()
         checkP()
-        submitDemographics(occupation, education,numberOfMoves,personalHistoryIllness)
-        
+        console.log(familyHistoryIllness)
+        console.log(personalHistoryIllness)
+        submitDemographics(occupation, education,numberOfMoves,personalHistoryIllness, longAddress, longCity, longState, longZip, familyHistoryIllness)
+       
   
      }
        } 

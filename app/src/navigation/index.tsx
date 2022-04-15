@@ -32,6 +32,7 @@ import EditPhoneNumberScreen from '../screens/EditPhoneNumber';
 import EditAddressScreen from '../screens/EditAddressScreen';
 import EditGenderScreen from '../screens/EditGenderScreen';
 import EditEthnicityScreen from '../screens/EditEthnicityScreen';
+import EditSleepSchedule from '../screens/EditSleepSchedule';
 
 export default function HomeNavigation({
   colorScheme,
@@ -109,6 +110,11 @@ const ProfileStackNavigator = () => {
       <ProfileStack.Screen
         name="Ethnicity"
         component={EditEthnicityScreen}
+        options={{ headerShown: true }}
+      />
+      <ProfileStack.Screen
+        name="Sleep Schedule"
+        component={EditSleepSchedule}
         options={{ headerShown: true }}
       />
     </ProfileStack.Navigator>
