@@ -61,19 +61,6 @@ export default function HomeScreen({
   let sleep = 23;
   const [isAvailable, setIsAvailable] = useState<number>(-1); // index of available block
 
-  useEffect(() => {
-    // refresh page when focus
-    if (schedules) {
-      setIsAvailable(
-        inQuestionnaireOpenInterval(new Date(), schedules[0].notificationTime)
-      );
-      (async () => {
-        let sche = (await retrieveDataString("schedules"))!;
-        setSchedules(JSON.parse(sche));
-      })();
-    }
-  }, [isFocused]);
-
   const [expoPushToken, setExpoPushToken] = useState<any>("");
   const [notification, setNotification] = useState<any>(false);
 
@@ -202,7 +189,7 @@ export default function HomeScreen({
         updatedSchedules[j] = newSchedule;
         startDate = nextDate(startDate);
       }
-      console.log(updatedSchedules);
+      // console.log(updatedSchedules);
       setSchedules(updatedSchedules);
       storeDataString("schedules", JSON.stringify(updatedSchedules));
     })();
@@ -246,6 +233,20 @@ export default function HomeScreen({
       }
     })();
   }, []);
+
+  useEffect(() => {
+    console.log("hello");
+
+    if (schedules) {
+      setIsAvailable(
+        inQuestionnaireOpenInterval(new Date(), schedules[0].notificationTime)
+      );
+      (async () => {
+        let sche = (await retrieveDataString("schedules"))!;
+        setSchedules(JSON.parse(sche));
+      })();
+    }
+  }, [isFocused]);
 
   return (
     <ScrollView
