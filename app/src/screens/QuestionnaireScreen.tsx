@@ -19,6 +19,8 @@ import { AuthContext } from "../navigation/context";
 
 import { backendUrl } from "../config/config.json";
 
+// import qs_js from "./sample_question.json";
+
 import * as Location from "expo-location";
 import { LocationGeocodedAddress, LocationObject } from "expo-location";
 import { convertTime, goToSettings } from "../components/Helpers";
@@ -40,6 +42,7 @@ export default function Questionnaire({ navigation }) {
     []
   );
 
+
   const [location, setLocation] = useState<LocationObject>();
   const [fetching, setFetching] = useState(false);
 
@@ -50,9 +53,24 @@ export default function Questionnaire({ navigation }) {
 
   interface answer_type {
     choiceIndex: Number | Array<number>;
-    answer: String | number | Array<String> | Array<number>;
+    answer: String | number | Array<String> | Array<number>|multiple_answer;
     questionId: String;
   }
+
+  interface multiple_answer {
+    From: String;
+    To: String
+    Reason: String
+  }
+
+  const [multiple_answers, setmultiple_answer]= useState(
+   {
+    From: String,
+    To: String,
+    Reason: String
+   }
+  );
+
 
   const GetLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -178,16 +196,13 @@ export default function Questionnaire({ navigation }) {
 
   useEffect(() => {
     (async () => {
-      let sche = JSON.parse(
-        (await retrieveDataString(userInfo.email + "_schedules"))!
-      );
+      let sche = JSON.parse((await retrieveDataString("schedules"))!);
       let idx = inQuestionnaireOpenInterval(
         new Date(),
         sche[0].notificationTime
       );
       setBlockIdx(idx);
     })();
-    console.log("idx:", blockIdx);
     loadQuiz();
     GetLocation();
   }, []);
@@ -284,6 +299,52 @@ export default function Questionnaire({ navigation }) {
     );
   };
 
+  const renderType5 = (i: number) => { // 3 free responce, render yes and no button then fill the input box
+    var temp_interface = {} as multiple_answer;
+    return (
+      <View>
+        {renderType0(i)}
+        <TextInput
+          style={styles.input}
+          placeholder="From:"
+          onChangeText={(freeText) => {
+            temp_interface.From = freeText;
+            let temp_answers = user_answers;
+            temp_answers[i].answer = temp_interface;
+            temp_answers[i].choiceIndex = questions[i]["choices"].length;
+            setUserAnswers(temp_answers);
+            console.log(user_answers)
+          }}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="To:"
+          onChangeText={(freeText) => {
+            temp_interface.To = freeText;
+            let temp_answers = user_answers;
+            temp_answers[i].answer = temp_interface;
+            temp_answers[i].choiceIndex = questions[i]["choices"].length;
+            setUserAnswers(temp_answers);
+            console.log(user_answers)
+          }}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Reason:"
+          onChangeText={(freeText) => {
+            temp_interface.Reason = freeText;
+            let temp_answers = user_answers;
+            temp_answers[i].answer = temp_interface;
+            temp_answers[i].choiceIndex = questions[i]["choices"].length;
+            setUserAnswers(temp_answers);
+            // console.log("user_answers is ");
+            console.log(user_answers)
+          }}
+        />
+      </View>
+    );
+  };
+
   const renderQuestionList = (i: number) => {
     let type = questions[i]["type"];
     switch (type) {
@@ -302,6 +363,8 @@ export default function Questionnaire({ navigation }) {
       case 4:
         // single text entry
         return renderType4(i);
+      case 5:
+        return renderType5(i);
       default:
         console.log("unable to parse type");
     }
@@ -331,7 +394,6 @@ export default function Questionnaire({ navigation }) {
 
     try {
       const token: string = (await getItemAsync("user_token"))!;
-      console.log(location?.coords);
       const res = await axios.post(
         `${backendUrl}/api/question/answer`,
         {
@@ -355,13 +417,13 @@ export default function Questionnaire({ navigation }) {
     console.log("submit");
     console.log(location);
     let sche: Array<DaySchedule> = JSON.parse(
-      (await retrieveDataString(userInfo.email + "_schedules"))!
+      (await retrieveDataString("schedules"))!
     );
 
     sche[0].timeBlocks[blockIdx].completed = true;
     sche[0].completed[blockIdx] = true;
 
-    storeDataString(userInfo.email + "_schedules", JSON.stringify(sche));
+    storeDataString("schedules", JSON.stringify(sche));
     navigation.navigate("Home");
   };
 
