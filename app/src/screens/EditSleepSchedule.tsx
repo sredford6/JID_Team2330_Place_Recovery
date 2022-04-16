@@ -82,7 +82,7 @@ export default function EditSleepSchedule({navigation}) {
         />
 
           <ButtonDesign
-            name="Edit"
+            name="Save"
             onPress={() => { 
               {
                 editSchedule(wakeTime, sleepTime);

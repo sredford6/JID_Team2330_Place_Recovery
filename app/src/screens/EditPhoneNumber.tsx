@@ -64,7 +64,7 @@ export default function EditPhoneNumberScreen({navigation}) {
             onChangeText={(inp) => setPhoneNumber(phoneNumber)}
           />
           <ButtonDesign
-            name="Edit"
+            name="Save"
             onPress={() => { 
               {
                 editPhone(phoneNumber)

@@ -143,16 +143,16 @@ export default function Demographics({ navigation }) {
   
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "center", backgroundColor: "#FFFFFF99" }}>
-      
+      <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset={100}>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
       >
-        <KeyboardAvoidingView style={styles.container} behavior="padding">
+        
           <Text style = {styles.title}> Demographics </Text>
 
         <Text style = {styles.label}>Education:</Text>
 
-        <Picker style ={{width: 400, height: 200, marginTop: -51}}
+        <Picker style ={{width: 375, height: 200, marginTop: -51, alignContent:'center', alignSelf:'center'}}
         selectedValue={education}
         
     onValueChange={(ed, itemIndex) =>
@@ -163,7 +163,7 @@ export default function Demographics({ navigation }) {
     <Picker.Item label="Vocational/Trade/Technical School" value="Vocational/Trade/Technical School" />
     <Picker.Item label="Some College" value="Some College'" />
     <Picker.Item label="Bachelor's Degree" value="Bachelor's Degree" />
-    <Picker.Item label="Advanced Degree'" value="Advanced Degree'" />
+    <Picker.Item label="Advanced Degree" value="Advanced Degree" />
     </Picker>
         
         <Text style = {styles.label}>Occupation:</Text>
@@ -220,7 +220,7 @@ export default function Demographics({ navigation }) {
             
           />
           <Text style = {styles.label}>Number of times you moved from ages 12-18 </Text>
-          <Picker style ={{width: 400, height: 200, marginTop: -51}}
+          <Picker style ={{width: 375, height: 200, marginTop: -51, alignContent:'center', alignSelf:'center'}}
         selectedValue={numberOfMoves}
         
     onValueChange={(num, itemIndex) =>
@@ -364,9 +364,9 @@ export default function Demographics({ navigation }) {
        } 
      />
        
-
+       </ScrollView>
         </KeyboardAvoidingView>
-      </ScrollView>
+      
     </SafeAreaView>
   );
 }
@@ -390,7 +390,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     marginBottom: 20,
     fontWeight: 'bold',
-    color: '#072B4F'
+    color: '#072B4F',
+    textAlign: 'center'
   },
   input: { 
       height: 45,
