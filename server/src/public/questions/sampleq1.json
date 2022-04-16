@@ -35,6 +35,14 @@
       "Traveling",
       "Other"
     ]
+  },{
+    "id": "005_sc_text",
+    "question": "If they select “Traveling, Where are you traveling from and to? What’s the reason for traveling?",
+    "type": 5,
+    "choices": [
+      "Yes",
+      "No"
+    ]
   },
 
   {
