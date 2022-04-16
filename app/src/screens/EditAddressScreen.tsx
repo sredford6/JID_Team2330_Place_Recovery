@@ -120,7 +120,7 @@ export default function EditAddressScreen({navigation}) {
           />
 
           <ButtonDesign
-            name="Edit"
+            name="Save"
             onPress={() => {
               checkEmptyFields()
              
