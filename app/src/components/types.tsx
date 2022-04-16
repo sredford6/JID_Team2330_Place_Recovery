@@ -51,10 +51,11 @@ export type TimeBlock = {
   begin: number;
   end: number;
   completed: boolean;
+  identifier: any;
 };
 
 export type DaySchedule = {
-  // timeBlocks: Array<TimeBlock>;
+  timeBlocks: Array<TimeBlock>;
   completed: Array<boolean>;
   notificationTime: Array<number>; // time in hours (24)
   date: string; // 'yyyy-mm-dd'

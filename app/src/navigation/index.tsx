@@ -26,6 +26,7 @@ import {
 } from "../components/types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import Questionnaire from "../screens/QuestionnaireScreen";
+//import TermsAndConditions from "../screens/TermsAndConditionsScreen";
 import Demographics from '../screens/DemographicsScreen';
 import EditPhoneNumberScreen from '../screens/EditPhoneNumber';
 import EditAddressScreen from '../screens/EditAddressScreen';
@@ -49,6 +50,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const HomeStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
+
 
 const HomeStackNavigator = () => {
   return (
@@ -165,7 +167,7 @@ export function BottomTabNavigator() {
           headerShown: false,
         }}
       />
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="Location"
         component={LocationScreen}
         options={{
@@ -173,14 +175,14 @@ export function BottomTabNavigator() {
             <MaterialCommunityIcons name="map" color={color} size={size} />
           ),
         }}
-      />
+      /> */}
       <BottomTab.Screen
-        name="Settings"
+        name="Progress"
         component={SettingsScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
-              name="cog-outline"
+              name="chart-line"
               color={color}
               size={size}
             />

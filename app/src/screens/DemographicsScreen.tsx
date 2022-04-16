@@ -403,13 +403,13 @@ const styles = StyleSheet.create({
       borderColor: '#072B4F'
   },
   label: {
-    textAlign: 'center',
+   textAlign: 'center',
     margin: 20,
     marginLeft: 40,
     marginRight: 40,
   
     color: '#072B4F', 
-    fontSize: 22,
+    fontSize: 22, 
   },
   textName: {
     textAlign: 'center',

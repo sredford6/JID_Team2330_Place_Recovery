@@ -131,8 +131,8 @@ export default function HomeScreen({
   async function scheduleNotification(seconds: number) {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: "Title",
-        body: "body",
+        title: "Your questionnaire is ready!",
+        body: "Your questionnaire is ready. Please complete it within an hour.",
         data: { data: "data goes here" },
       },
       trigger: {
@@ -151,7 +151,7 @@ export default function HomeScreen({
     // 4. Display current storage
     // 5. store schedules back into async storage
     (async () => {
-      let schedules = await retrieveDataString("schedules");
+      let schedules = await retrieveDataString(userInfo.email + "_schedules");
       let j = 0; // index of updatedSchedules
       let updatedSchedules = Array<DaySchedule>(7);
       let futureSchedulesCount = 0;
@@ -175,7 +175,6 @@ export default function HomeScreen({
             break;
           }
         }
-        console.log("i", i);
         // copy future schedules to updatedSchedueles
         for (; i < schedulesArr.length; i++, j++) {
           updatedSchedules[j] = schedulesArr[i];
@@ -197,7 +196,7 @@ export default function HomeScreen({
           let { daysDifference, hoursDifference, minutesDifference } =
             timeDifference(notifyTime.getTime(), new Date().getTime());
           newSchedule.timeBlocks[i].identifier = await scheduleNotification(
-            minutesDifference * 60 +
+            (minutesDifference + 1) * 60 +
               hoursDifference * 60 * 60 +
               daysDifference * 24 * 60 * 60
           );
@@ -207,7 +206,10 @@ export default function HomeScreen({
       }
       // console.log(updatedSchedules);
       setSchedules(updatedSchedules);
-      storeDataString("schedules", JSON.stringify(updatedSchedules));
+      storeDataString(
+        userInfo.email + "_schedules",
+        JSON.stringify(updatedSchedules)
+      );
     })();
   }, []);
 
@@ -251,13 +253,12 @@ export default function HomeScreen({
   }, []);
 
   useEffect(() => {
-    console.log("hello");
     if (schedules) {
       setIsAvailable(
         inQuestionnaireOpenInterval(new Date(), schedules[0].notificationTime)
       );
       (async () => {
-        let sche = (await retrieveDataString("schedules"))!;
+        let sche = (await retrieveDataString(userInfo.email + "_schedules"))!;
         setSchedules(JSON.parse(sche));
       })();
     }
@@ -306,7 +307,7 @@ export default function HomeScreen({
             style={styles.button}
             onPress={async () => {
               Notifications.cancelAllScheduledNotificationsAsync();
-              storeDataString("schedules", "");
+              storeDataString(userInfo.email + "_schedules", "");
             }}
             activeOpacity={0.85}
           >
@@ -316,6 +317,10 @@ export default function HomeScreen({
             {schedules
               ? "Date:" +
                 schedules[0].date +
+                ", sleep schedule: " +
+                wakeUp +
+                "-" +
+                sleep +
                 "\n" +
                 "Morning Block" +
                 schedules[0].timeBlocks[0].begin +

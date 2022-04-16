@@ -61,9 +61,8 @@ export default function LoginScreen({ navigation }) {
       contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
     >
       <ImageBackground
-        source={require("../assets/images/bg3.jpg")}
+        source={require("../assets/images/bgnew.jpg")}
         resizeMode="cover"
-        blurRadius={8}
         style={styles.image}
       >
         <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -76,7 +75,7 @@ export default function LoginScreen({ navigation }) {
                 placeholder="Email"
                 autoCapitalize="none"
                 autoCorrect={false}
-                placeholderTextColor="#072B4F"
+                placeholderTextColor="#BEBEBE"
                 value={email}
                 onChangeText={(text) => setEmail(text)}
               />
@@ -87,7 +86,7 @@ export default function LoginScreen({ navigation }) {
                 placeholder="Password"
                 autoCapitalize="none"
                 autoCorrect={false}
-                placeholderTextColor="#072B4F"
+                placeholderTextColor="#BEBEBE"
                 secureTextEntry
                 value={password}
                 onChangeText={(text) => setPassword(text)}
@@ -134,13 +133,14 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    // backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
   },
   frameContainer: {
     width: "80%",
     flex: 0.1,
-    backgroundColor: "#FFFFFF99",
+    backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 15,
@@ -150,8 +150,8 @@ const styles = StyleSheet.create({
   shadowProp: {
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
   },
   TitleText: {
     textAlign: "center",
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: "80%",
-    borderBottomColor: "#072B4F",
+    borderBottomColor: "#BEBEBE",
     borderBottomWidth: 1.5,
   },
   textInput: {
