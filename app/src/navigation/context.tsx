@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext } from "react";
 
 export interface UserInfo {
   email: string;
@@ -20,12 +20,7 @@ interface HomeFunctions {
   storeSubmitTime(time: number): any;
 }
 
-export interface HomeContextType {
-  homeFunctions: HomeFunctions;
-  homeVariables: string;
-}
-
-export const AuthContext = React.createContext<AuthContextType>({
+export const AuthContext = createContext<AuthContextType>({
   authFunctions: {
     signIn: (token: string) => {},
     signOut: () => {},
@@ -33,9 +28,7 @@ export const AuthContext = React.createContext<AuthContextType>({
   userInfo: { email: "", firstName: "", lastName: "" },
 });
 
-export const HomeContext = React.createContext<HomeContextType>({
-  homeFunctions: {
-    storeSubmitTime: (time: number) => {},
-  },
-  homeVariables: "abc",
+export const WelcomeContext = createContext({
+  isFirstTime: false,
+  setIsFirstTime: (update: boolean) => {},
 });

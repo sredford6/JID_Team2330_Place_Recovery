@@ -109,8 +109,8 @@ export default function LoginScreen({ navigation }) {
             </View>
             <Text
               style={{ marginTop: 20 }}
-              onPress={() => navigation.navigate("WelcomeScreen")}
-              // onPress={() => navigation.navigate("EmailVerificationScreen")}
+              //onPress={() => navigation.navigate("WelcomeScreen")}
+               onPress={() => navigation.navigate("EmailVerificationScreen")}
             >
               Forgot Password ?
             </Text>
