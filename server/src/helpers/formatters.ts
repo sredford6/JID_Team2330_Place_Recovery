@@ -14,7 +14,12 @@ function formatIAnswers(
   ansObj.index = index;
   ansObj.email = userEmail;
   ansObj.questionnaire = answer.questionnaire;
-  ansObj.location = answer.location;
+  if (answer.location !== undefined) {
+    ansObj.location = `latitude: ${answer.location.latitude}; longitude: ${answer.location.longitude}`;
+  } else {
+    ansObj.location = `unknown`;
+  }
+  
   for (let i = 0; i < answers.length; i++) {
     ansObj[`questionId${i}`] = answers[i].questionId;
     ansObj[`answer${i}`] = answers[i].answer.toString();
