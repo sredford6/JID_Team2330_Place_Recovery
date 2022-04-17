@@ -415,7 +415,8 @@ export default function Questionnaire({ navigation }) {
       );
       console.log(res.data);
     } catch (error: any) {
-      console.error(error);
+      console.error("error:", error);
+      console.error("error.data:", error.data);
     }
     console.log("submit");
     console.log(blockIdx + " block");
