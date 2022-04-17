@@ -31,11 +31,11 @@ const welcomeStack = createNativeStackNavigator();
 const AuthenticationStackNavigator = () => {
   return (
     <AuthStack.Navigator>
-      <AuthStack.Screen
+      {/* <AuthStack.Screen
         name = "WelcomeScreen"
         component={WelcomeScreen}
         options={{ headerShown: false, title: "Welcome" }}
-      />
+      /> */}
 
       <AuthStack.Screen
         name="Login"

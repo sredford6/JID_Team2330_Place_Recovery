@@ -196,7 +196,9 @@ export default function Questionnaire({ navigation }) {
 
   useEffect(() => {
     (async () => {
-      let sche = JSON.parse((await retrieveDataString("schedules"))!);
+      let sche = JSON.parse(
+        (await retrieveDataString(userInfo.email + "_schedules"))!
+      );
       let idx = inQuestionnaireOpenInterval(
         new Date(),
         sche[0].notificationTime
@@ -299,7 +301,8 @@ export default function Questionnaire({ navigation }) {
     );
   };
 
-  const renderType5 = (i: number) => { // 3 free responce, render yes and no button then fill the input box
+  const renderType5 = (i: number) => {
+    // 3 free responce, render yes and no button then fill the input box
     var temp_interface = {} as multiple_answer;
     return (
       <View>
@@ -313,7 +316,7 @@ export default function Questionnaire({ navigation }) {
             temp_answers[i].answer = temp_interface;
             temp_answers[i].choiceIndex = questions[i]["choices"].length;
             setUserAnswers(temp_answers);
-            console.log(user_answers)
+            console.log(user_answers);
           }}
         />
         <TextInput
@@ -325,7 +328,7 @@ export default function Questionnaire({ navigation }) {
             temp_answers[i].answer = temp_interface;
             temp_answers[i].choiceIndex = questions[i]["choices"].length;
             setUserAnswers(temp_answers);
-            console.log(user_answers)
+            console.log(user_answers);
           }}
         />
         <TextInput
@@ -338,7 +341,7 @@ export default function Questionnaire({ navigation }) {
             temp_answers[i].choiceIndex = questions[i]["choices"].length;
             setUserAnswers(temp_answers);
             // console.log("user_answers is ");
-            console.log(user_answers)
+            console.log(user_answers);
           }}
         />
       </View>
@@ -415,15 +418,16 @@ export default function Questionnaire({ navigation }) {
       console.error(error);
     }
     console.log("submit");
+    console.log(blockIdx + " block");
     console.log(location);
     let sche: Array<DaySchedule> = JSON.parse(
-      (await retrieveDataString("schedules"))!
+      (await retrieveDataString(userInfo.email + "_schedules"))!
     );
 
     sche[0].timeBlocks[blockIdx].completed = true;
     sche[0].completed[blockIdx] = true;
 
-    storeDataString("schedules", JSON.stringify(sche));
+    storeDataString(userInfo.email + "_schedules", JSON.stringify(sche));
     navigation.navigate("Home");
   };
 
