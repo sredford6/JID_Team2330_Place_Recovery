@@ -26,14 +26,14 @@
         - password
         - firstName
         - lastName
-        - phoneNumber
-        - address
-        - city
-        - state
-        - zip
-        - gender
-        - race
-        - birthday
+        - phoneNumber?
+        - address?
+        - city?
+        - state?
+        - zip?
+        - gender?
+        - race?
+        - birthday?
         - wakeTime
         - sleepTime
 - Update [PUT]: /api/auth/update
@@ -88,6 +88,7 @@
     - Body
         - questionnaire
         - answers
+        - location
 - Answer [GET]: /api/question/answer/:timeframe?
     - Header
         - authorization
@@ -95,7 +96,18 @@
         - questionnaire
         - answers
     - Params
-        - timeframe: ["thisweek"]
+        - timeframe: ["thisweek", "frommonday"]
+
+
+### Data
+- Users [GET]: /api/data/users
+- Answers User [GET]: /api/data/answers/:user
+    - Params
+        - user: user id
+- Answers All Users [GET]: /api/data/answers/all
+- Answer [GET]: /api/data/myuser
+    - Header
+        - authorization
 
 ## Endpoints to add
 

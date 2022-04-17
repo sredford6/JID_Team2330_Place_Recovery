@@ -28,7 +28,7 @@ router.post("/login", async (req: Request, res: Response) => {
       res.status(200).json({ token: generateToken(user) });
     } else {
       throw {
-        code: 403,
+        code: 401,
         message: `passwords do not match.`,
         error: new Error(`passwords do not match.`),
       };
@@ -96,7 +96,7 @@ router.put("/update", verify, async (req: Request, res: Response) => {
       "answers" in req.body
     ) {
       throw {
-        code: 403,
+        code: 401,
         message: `field not allowed to be updated`,
         error: new Error(`field not allowed to be updated`),
       };
@@ -125,7 +125,7 @@ router.get("/get-reset", async (req: Request, res: Response) => {
     user.resetTries = 0;
     await user.save();
     sendEmail({
-      subject: "[Neighborhood] Reset Password",
+      subject: "[Place&Recovery] Reset Password",
       text: `Your reset code is ${user.resetCode}`,
       to: user.email,
       from: authObj.google.email,
