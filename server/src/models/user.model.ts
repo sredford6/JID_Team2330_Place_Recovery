@@ -3,13 +3,13 @@ import { IAnswers, AnswersSchema } from "models/answer.model";
 
 export interface IUser {
   email: string;
-  phoneNumber: string;
+  phoneNumber?: string;
   firstName: string;
   lastName: string;
-  address: string;
-  city: string;
-  state: string;
-  zip: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
   longAddress?: string;
   longCity?: string;
   longState?: string;
@@ -21,7 +21,7 @@ export interface IUser {
   numberOfMoves?: string;
   personalHistoryIllness?: string[];
   familyHistoryIllness?: string[];
-  birthday: Date;
+  birthday?: Date;
   wakeTime: Date;
   sleepTime: Date;
 
@@ -36,13 +36,13 @@ export interface IUser {
 const UserSchema = new Schema<IUser>({
   email: { type: String, required: true },
   password: { type: String, required: true },
-  phoneNumber: { type: String, required: true },
+  phoneNumber: { type: String },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  address: { type: String, required: true },
-  city: { type: String, required: true },
-  state: { type: String, required: true },
-  zip: { type: String, required: true },
+  address: { type: String },
+  city: { type: String },
+  state: { type: String },
+  zip: { type: String },
   longAddress: { type: String },
   longCity: { type: String },
   longState: { type: String },
@@ -54,7 +54,7 @@ const UserSchema = new Schema<IUser>({
   numberOfMoves: { type: String },
   personalHistoryIllness: { type: [String] },
   familyHistoryIllness: { type: [String] },
-  birthday: { type: Date, required: true },
+  birthday: { type: Date },
   wakeTime: { type: Date, required: true },
   sleepTime: { type: Date, required: true },
   resetCode: { type: String, required: false },
