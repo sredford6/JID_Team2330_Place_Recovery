@@ -8,6 +8,8 @@ import { NavigationContainer, TabActions } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import OpeningScreen from "./screens/OpeningScreen";
 import Login from "./screens/LoginScreen";
+import WelcomeScreen from "./screens/WelcomeScreen";
+
 import Verification from "./screens/Verification";
 import EmailVerificationScreen from "./screens/EmailVerificationScreen";
 import TermsAndConditions from "./screens/TermsAndConditionsScreen";
@@ -23,10 +25,18 @@ import axios from "axios";
 import { Alert } from "react-native";
 
 const AuthStack = createNativeStackNavigator();
+const welcomeStack = createNativeStackNavigator();
+
 
 const AuthenticationStackNavigator = () => {
   return (
     <AuthStack.Navigator>
+      <AuthStack.Screen
+        name = "WelcomeScreen"
+        component={WelcomeScreen}
+        options={{ headerShown: false, title: "Welcome" }}
+      />
+
       <AuthStack.Screen
         name="Login"
         component={Login}
