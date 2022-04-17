@@ -31,8 +31,8 @@
         - city?
         - state?
         - zip?
-        - gender
-        - race
+        - gender?
+        - race?
         - birthday?
         - wakeTime
         - sleepTime
