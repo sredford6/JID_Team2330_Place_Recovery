@@ -125,7 +125,7 @@ router.get("/get-reset", async (req: Request, res: Response) => {
     user.resetTries = 0;
     await user.save();
     sendEmail({
-      subject: "[Neighborhood] Reset Password",
+      subject: "[PlaceNRecovery] Reset Password",
       text: `Your reset code is ${user.resetCode}`,
       to: user.email,
       from: authObj.google.email,
