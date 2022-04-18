@@ -16,11 +16,13 @@ export interface IAnswers {
 export interface ILocation {
   latitude: number;
   longitude: number;
+  geoid: string;
 }
 
 export const LocationSchema = new Schema<ILocation>({
   latitude: { type: Number },
   longitude: { type: Number },
+  geoid: { type: String },
 });
 
 export const AnswersSchema = new Schema<IAnswers>({

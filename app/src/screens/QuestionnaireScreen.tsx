@@ -421,8 +421,8 @@ export default function Questionnaire({ navigation }) {
           location: {
             longitude,
             latitude,
+            geoid
           },
-          geoid,
           questionnaire,
           answers: user_answers,
         },

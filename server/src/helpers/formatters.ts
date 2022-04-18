@@ -16,8 +16,10 @@ function formatIAnswers(
   ansObj.questionnaire = answer.questionnaire;
   if (answer.location !== undefined) {
     ansObj.location = `latitude: ${answer.location.latitude}; longitude: ${answer.location.longitude}`;
+    ansObj.geoid = answer.location.geoid;
   } else {
     ansObj.location = `unknown`;
+    ansObj.geoid = "unknown";
   }
   
   for (let i = 0; i < answers.length; i++) {

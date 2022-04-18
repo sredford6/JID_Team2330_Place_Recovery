@@ -75,6 +75,9 @@ export function validateLocation(arg: any): arg is ILocation {
   if (arg.latitude === undefined || typeof arg.latitude !== "number") {
     return false;
   }
+  if (arg.geoid === undefined || typeof arg.geoid !== "string") {
+    return false;
+  }
   return true;
 }
 
