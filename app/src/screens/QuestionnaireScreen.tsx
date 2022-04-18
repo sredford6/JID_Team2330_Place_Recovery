@@ -413,7 +413,7 @@ export default function Questionnaire({ navigation }) {
           }
         });
         console.log(geocensus.data);
-        geoid = geocensus.data['result']['geographies']['Census Tracts']['GEOID'];
+        geoid = geocensus.data['result']['geographies']['Census Tracts'][0]['GEOID'];
       }
       console.log(`GEOID: ${geoid}`);
       
