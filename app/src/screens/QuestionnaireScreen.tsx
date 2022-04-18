@@ -412,10 +412,8 @@ export default function Questionnaire({ navigation }) {
             y: latitude
           }
         });
-        console.log(geocensus.data);
         geoid = geocensus.data['result']['geographies']['Census Tracts'][0]['GEOID'];
       }
-      console.log(`GEOID: ${geoid}`);
       
       const res = await axios.post(
         `${backendUrl}/api/question/answer`,
