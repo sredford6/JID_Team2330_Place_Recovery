@@ -415,7 +415,7 @@ export default function Questionnaire({ navigation }) {
         console.log(geocensus.data);
         geoid = geocensus.data['result']['geographies']['Census Tracts']['GEOID'];
       }
-      console.log(geoid);
+      console.log(`GEOID: ${geoid}`);
       
       const res = await axios.post(
         `${backendUrl}/api/question/answer`,
