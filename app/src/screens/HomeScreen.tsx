@@ -252,17 +252,22 @@ export default function HomeScreen({
     })();
   }, []);
 
+  // update schedules when return to home screen (like after a questionnaire)
+  useEffect(() => {
+    (async () => {
+      let sche = (await retrieveDataString(userInfo.email + "_schedules"))!;
+      setSchedules(JSON.parse(sche));
+    })();
+  }, [isFocused, appStateVisible]);
+
+  // update isAvailable status and update items on the screen
   useEffect(() => {
     if (schedules) {
       setIsAvailable(
         inQuestionnaireOpenInterval(new Date(), schedules[0].notificationTime)
       );
-      (async () => {
-        let sche = (await retrieveDataString(userInfo.email + "_schedules"))!;
-        setSchedules(JSON.parse(sche));
-      })();
     }
-  }, [isFocused, appStateVisible]);
+  }, [schedules]);
 
   return (
     <ScrollView
