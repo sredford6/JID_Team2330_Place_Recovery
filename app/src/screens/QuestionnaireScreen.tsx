@@ -397,13 +397,32 @@ export default function Questionnaire({ navigation }) {
 
     try {
       const token: string = (await getItemAsync("user_token"))!;
+      let longitude = 0;
+      let latitude = 0;
+      let geoid = undefined;
+      if(location?.coords) {
+        longitude = location?.coords.longitude;
+        latitude = location?.coords.latitude
+        const geocensus = await axios.get(`https://geocoding.geo.census.gov/geocoder/geographies/coordinates`, {
+          params: {
+            benchmark: 4,
+            vintage: 4,
+            format: "json",
+            x: longitude,
+            y: latitude
+          }
+        });
+        geoid = geocensus.data['result']['geographies']['Census Tracts'][0]['GEOID'];
+      }
+      
       const res = await axios.post(
         `${backendUrl}/api/question/answer`,
         {
           location: {
-            longitude: location?.coords ? location?.coords.longitude : 0,
-            latitude: location?.coords ? location?.coords.latitude : 0,
+            longitude,
+            latitude,
           },
+          geoid,
           questionnaire,
           answers: user_answers,
         },
@@ -415,7 +434,8 @@ export default function Questionnaire({ navigation }) {
       );
       console.log(res.data);
     } catch (error: any) {
-      console.error(error);
+      console.error("error:", error);
+      console.error("error.data:", error.data);
     }
     console.log("submit");
     console.log(blockIdx + " block");
