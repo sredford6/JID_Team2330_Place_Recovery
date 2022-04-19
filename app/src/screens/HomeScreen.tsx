@@ -18,6 +18,8 @@ import {
   DaySchedule,
 } from "../components/types";
 import { useIsFocused } from "@react-navigation/native";
+import axios from "axios";
+import { backendUrl } from "../config/config.json";
 
 import {
   convertTime,
@@ -36,6 +38,8 @@ import * as Location from "expo-location";
 import { goToSettings } from "../components/Helpers";
 
 import * as Notifications from "expo-notifications";
+import { LinearGradient } from "expo-linear-gradient";
+import { getItemAsync } from "expo-secure-store";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -54,12 +58,9 @@ export default function HomeScreen({
 
   const [schedules, setSchedules] = useState<Array<DaySchedule>>();
 
-  /**
-   * pseudo sleep schedule for development
-   * hours in 24-hour clock
-   */
-  let wakeUp = 8;
-  let sleep = 23;
+  const [wakeTime, setWakeTime] = useState<number>(8);
+  const [sleepTime, setSleepTime] = useState<number>(21);
+
   const [isAvailable, setIsAvailable] = useState<number>(-1); // index of available block
 
   const [expoPushToken, setExpoPushToken] = useState<any>("");
@@ -83,6 +84,39 @@ export default function HomeScreen({
     };
   }, []);
 
+  const getSleepSchedule = async () => {
+    const token: string = (await getItemAsync("user_token"))!;
+
+    const userInfo = axios
+      .get(`${backendUrl}/api/data/myuser`, {
+        headers: {
+          authorization: token,
+        },
+      })
+      .then((response) => {
+        let wake = new Date(response.data.wakeTime).getHours();
+        let sleep = new Date(response.data.sleepTime).getHours();
+        if (sleep - wake < 6) {
+          wake = wake < 5 ? 8 : wake; // earliest windows starts at 5 am
+          setWakeTime(wake);
+          setSleepTime(22);
+        } else {
+          setWakeTime(wake);
+          setSleepTime(sleep);
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+        console.log(error.data);
+      });
+    console.log("@113", sleepTime, wakeTime);
+  };
+
+  const ready = () => {
+    return (
+      isAvailable != -1 && schedules && !schedules[0].completed[isAvailable]
+    );
+  };
   /**
    * Code from https://docs.expo.dev/push-notifications/overview/
    *
@@ -150,6 +184,8 @@ export default function HomeScreen({
     // for each newly added schedules, call scheduelNotification() for each time in the timeblocks.
     // 4. Display current storage
     // 5. store schedules back into async storage
+
+    getSleepSchedule();
     (async () => {
       let schedules = await retrieveDataString(userInfo.email + "_schedules");
       let j = 0; // index of updatedSchedules
@@ -189,7 +225,7 @@ export default function HomeScreen({
       }
       // fill out the new schedules
       for (; j < updatedSchedules.length; j++) {
-        let newSchedule = generateDaySchedule(wakeUp, sleep, startDate);
+        let newSchedule = generateDaySchedule(wakeTime, sleepTime, startDate);
         for (let i = 0; i < newSchedule.notificationTime.length; i++) {
           let notifyTime = new Date(newSchedule.date + "T00:00");
           notifyTime.setHours(newSchedule.notificationTime[i]);
@@ -273,28 +309,24 @@ export default function HomeScreen({
     <ScrollView
       contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
     >
-      <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <View style={styles.container}>
         <View style={[styles.frameContainer, styles.shadowProp]}>
-          <Text style={styles.headTextLeft}>Daily Questionnaire</Text>
+          <Text style={styles.title}>
+            {ready()
+              ? "The questionnaire is ready!"
+              : "Your next questionnaire is not ready"}
+          </Text>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              if (
-                isAvailable != -1 &&
-                schedules &&
-                !schedules[0].completed[isAvailable] // not completed
-              ) {
+              if (ready()) {
                 navigation.navigate("Questionnaire");
               }
             }}
             activeOpacity={0.85}
           >
             <Text style={styles.buttonTextWhite}>
-              {isAvailable != -1 &&
-              schedules &&
-              !schedules[0].completed[isAvailable]
-                ? "Start"
-                : "Not Available"}
+              {ready() ? "Start" : "Not Available"}
             </Text>
           </TouchableOpacity>
 
@@ -318,14 +350,42 @@ export default function HomeScreen({
           >
             <Text style={styles.buttonTextWhite}>Reset</Text>
           </TouchableOpacity>
-          <Text>
+        </View>
+        <View style={[styles.frameContainer, styles.shadowProp]}>
+          <Text style={styles.title}>Questionnaire status</Text>
+          <LinearGradient
+            colors={["#576DE7", "#8DACE7"]}
+            style={styles.status}
+            start={{ x: 0, y: 4 }}
+            end={{ x: 0.5, y: 0 }}
+          >
+            <Text style={styles.textWhite}>TODO</Text>
+          </LinearGradient>
+          <LinearGradient
+            colors={["#576DE7", "#8DACE7"]}
+            style={styles.status}
+            start={{ x: 0, y: 4 }}
+            end={{ x: 0.5, y: 0 }}
+          >
+            <Text style={styles.textWhite}>TODO</Text>
+          </LinearGradient>
+          <LinearGradient
+            colors={["#576DE7", "#8DACE7"]}
+            style={styles.status}
+            start={{ x: 0, y: 4 }}
+            end={{ x: 0.5, y: 0 }}
+          >
+            <Text style={styles.textWhite}>TODO</Text>
+          </LinearGradient>
+
+          {/* <Text>
             {schedules
               ? "Date:" +
                 schedules[0].date +
                 ", sleep schedule: " +
-                wakeUp +
+                wakeTime +
                 "-" +
-                sleep +
+                sleepTime +
                 "\n" +
                 "Morning Block" +
                 schedules[0].timeBlocks[0].begin +
@@ -355,44 +415,49 @@ export default function HomeScreen({
                 schedules[0].completed[2] +
                 "\n"
               : " "}
-          </Text>
+          </Text> */}
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0.8,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
+    backgroundColor: "#FFFFFF00",
   },
   frameContainer: {
     width: "88%",
     flex: 0.2,
-    backgroundColor: "#FFFFFF99",
+    backgroundColor: "#FFFFFF",
     justifyContent: "space-between",
     //justifyContent: "center",
     alignItems: "center",
     //alignContent: "space-between",
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     paddingVertical: 40,
-    borderRadius: 20,
+    borderRadius: 24,
   },
   shadowProp: {
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+  },
+  status: {
+    width: 280,
+    height: 35,
+    alignItems: "flex-start",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    borderRadius: 8,
   },
   title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  leftContainer: {
-    alignItems: "flex-start",
-    alignContent: "space-between",
+    fontSize: 18,
+    fontWeight: "400",
   },
   blackText: {
     fontSize: 14,
@@ -412,7 +477,7 @@ const styles = StyleSheet.create({
   button: {
     width: 250,
     height: 45,
-    backgroundColor: "#072B4F",
+    backgroundColor: "#446EE7",
     padding: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -424,6 +489,11 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  textWhite: {
+    textAlign: "center",
+    color: "#fff",
+    fontSize: 15,
   },
   image: {
     flex: 1,

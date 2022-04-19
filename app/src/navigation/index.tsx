@@ -33,6 +33,7 @@ import EditAddressScreen from '../screens/EditAddressScreen';
 import EditGenderScreen from '../screens/EditGenderScreen';
 import EditEthnicityScreen from '../screens/EditEthnicityScreen';
 import EditSleepSchedule from '../screens/EditSleepSchedule';
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function HomeNavigation({
   colorScheme,
@@ -51,7 +52,6 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const HomeStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
 
-
 const HomeStackNavigator = () => {
   return (
     <HomeStack.Navigator>
@@ -61,7 +61,7 @@ const HomeStackNavigator = () => {
         options={{
           headerShown: true,
           headerStyle: {
-            backgroundColor: "#e3fbe3",
+            backgroundColor: "#446EE7",
           },
         }}
       />
@@ -83,7 +83,7 @@ const ProfileStackNavigator = () => {
         options={{
           headerShown: true,
           headerStyle: {
-            backgroundColor: "#e3fbe3",
+            backgroundColor: "#446EE7",
           },
         }}
       />
@@ -92,12 +92,12 @@ const ProfileStackNavigator = () => {
         component={Demographics}
         options={{ headerShown: true }}
       />
-       <ProfileStack.Screen
+      <ProfileStack.Screen
         name="Edit Phone Number"
         component={EditPhoneNumberScreen}
         options={{ headerShown: true }}
       />
-       <ProfileStack.Screen
+      <ProfileStack.Screen
         name="Edit Address"
         component={EditAddressScreen}
         options={{ headerShown: true }}
@@ -152,7 +152,7 @@ export function BottomTabNavigator() {
       initialRouteName="HomeStack"
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#e3fbe3",
+          backgroundColor: "#446EE7",
         },
       }}
     >
@@ -187,6 +187,7 @@ export function BottomTabNavigator() {
               size={size}
             />
           ),
+          headerShown: true,
         }}
       />
       <BottomTab.Screen
@@ -198,7 +199,6 @@ export function BottomTabNavigator() {
           ),
           headerShown: false,
         }}
-       
       />
     </BottomTab.Navigator>
   );
