@@ -57,13 +57,13 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+    <ImageBackground
+      source={require("../assets/images/bgnew.jpg")}
+      resizeMode="cover"
+      style={styles.image}
     >
-      <ImageBackground
-        source={require("../assets/images/bgnew.jpg")}
-        resizeMode="cover"
-        style={styles.image}
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
       >
         <KeyboardAvoidingView style={styles.container} behavior="padding">
           <View style={[styles.frameContainer, styles.shadowProp]}>
@@ -110,7 +110,7 @@ export default function LoginScreen({ navigation }) {
             <Text
               style={{ marginTop: 20 }}
               //onPress={() => navigation.navigate("WelcomeScreen")}
-               onPress={() => navigation.navigate("EmailVerificationScreen")}
+              onPress={() => navigation.navigate("EmailVerificationScreen")}
             >
               Forgot Password ?
             </Text>
@@ -123,8 +123,8 @@ export default function LoginScreen({ navigation }) {
             </View>
           </View>
         </KeyboardAvoidingView>
-      </ImageBackground>
-    </ScrollView>
+      </ScrollView>
+    </ImageBackground>
   );
 }
 const styles = StyleSheet.create({

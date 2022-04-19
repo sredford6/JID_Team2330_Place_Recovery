@@ -237,7 +237,7 @@ export default function HomeScreen({
       );
       Notifications.removeNotificationSubscription(responseListener.current);
     };
-  }, [isFocused]);
+  }, [isFocused, appStateVisible]);
   // location permission
   useEffect(() => {
     (async () => {
