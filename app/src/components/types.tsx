@@ -29,8 +29,8 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
 export type RootTabParamList = {
   HomeStack: undefined;
   Location: undefined;
-  Settings: undefined;
-  Profile: undefined;
+  Progress: undefined;
+  ProfileStack: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =

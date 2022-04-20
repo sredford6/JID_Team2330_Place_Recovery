@@ -16,7 +16,7 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LocationScreen from '../screens/LocationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import SettingsScreen from "../screens/ProgressScreen";
+import ProgressScreen from "../screens/ProgressScreen";
 import OpeningScreen from "../screens/OpeningScreen";
 import RegistrationScreen from "../screens/RegistrationScreen";
 import {
@@ -27,12 +27,12 @@ import {
 import LinkingConfiguration from "./LinkingConfiguration";
 import Questionnaire from "../screens/QuestionnaireScreen";
 //import TermsAndConditions from "../screens/TermsAndConditionsScreen";
-import Demographics from '../screens/DemographicsScreen';
-import EditPhoneNumberScreen from '../screens/EditPhoneNumber';
-import EditAddressScreen from '../screens/EditAddressScreen';
-import EditGenderScreen from '../screens/EditGenderScreen';
-import EditEthnicityScreen from '../screens/EditEthnicityScreen';
-import EditSleepSchedule from '../screens/EditSleepSchedule';
+import Demographics from "../screens/DemographicsScreen";
+import EditPhoneNumberScreen from "../screens/EditPhoneNumber";
+import EditAddressScreen from "../screens/EditAddressScreen";
+import EditGenderScreen from "../screens/EditGenderScreen";
+import EditEthnicityScreen from "../screens/EditEthnicityScreen";
+import EditSleepSchedule from "../screens/EditSleepSchedule";
 import { LinearGradient } from "expo-linear-gradient";
 
 export default function HomeNavigation({
@@ -187,7 +187,7 @@ export function BottomTabNavigator() {
       /> */}
       <BottomTab.Screen
         name="Progress"
-        component={SettingsScreen}
+        component={ProgressScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
@@ -200,7 +200,7 @@ export function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Profile"
+        name="ProfileStack"
         component={ProfileStackNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
