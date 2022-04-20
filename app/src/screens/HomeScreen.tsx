@@ -406,7 +406,10 @@ export default function HomeScreen({
               end={{ x: 0.8, y: 4 }}
             > */}
             <TouchableOpacity
-              style={ready() ? styles.buttonDeep : styles.button}
+              style={[
+                ready() ? styles.buttonDeep : styles.button,
+                styles.shadowPropButton,
+              ]}
               onPress={() => {
                 if (ready()) {
                   navigation.navigate("Questionnaire");
@@ -564,6 +567,12 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.15,
     shadowRadius: 6,
+  },
+  shadowPropButton: {
+    shadowColor: "#082B48",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
   status: {
     width: 300,
