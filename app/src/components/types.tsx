@@ -60,3 +60,9 @@ export type DaySchedule = {
   notificationTime: Array<number>; // time in hours (24)
   date: string; // 'yyyy-mm-dd'
 };
+
+export type DayStatus = {
+  q1: number;
+  q2: number;
+  q3: number;
+};

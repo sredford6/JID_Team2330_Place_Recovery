@@ -61,7 +61,10 @@ const HomeStackNavigator = () => {
         options={{
           headerShown: true,
           headerStyle: {
-            backgroundColor: "#446EE7",
+            backgroundColor: "#1F569E",
+          },
+          headerTitleStyle: {
+            color: "white",
           },
         }}
       />
@@ -83,7 +86,10 @@ const ProfileStackNavigator = () => {
         options={{
           headerShown: true,
           headerStyle: {
-            backgroundColor: "#446EE7",
+            backgroundColor: "#1F569E",
+          },
+          headerTitleStyle: {
+            color: "white",
           },
         }}
       />
@@ -152,7 +158,10 @@ export function BottomTabNavigator() {
       initialRouteName="HomeStack"
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#446EE7",
+          backgroundColor: "#1F569E",
+        },
+        headerTitleStyle: {
+          color: "white",
         },
       }}
     >
