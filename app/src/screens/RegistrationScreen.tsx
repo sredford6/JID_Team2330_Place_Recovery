@@ -65,7 +65,7 @@ export default function RegistrationScreen({ navigation }) {
 
   const { authFunctions } = React.useContext(AuthContext);
   const { signIn } = authFunctions;
-  const [birthday, setBirthday] = React.useState(new Date(1598051730000));
+  const [birthday, setBirthday] = React.useState(new Date());
   const [sleepTime, setSleepTime] = React.useState(new Date(1598051730000));
   const [wakeTime, setWakeTime] = React.useState(new Date(1598051730000));
 
@@ -182,7 +182,7 @@ export default function RegistrationScreen({ navigation }) {
             value={email}
           />
           <Text style={styles.password}>
-            *Password must be more than 6 characters long and must contain at
+            *Password must be more than 6 characters long and contain at
             least one number
           </Text>
           <TextInput
@@ -220,7 +220,7 @@ export default function RegistrationScreen({ navigation }) {
             value={phoneNumber}
           />
 
-          <Text style={styles.label2}>Address</Text>
+          <Text style={styles.label2}>Address(Optional)</Text>
           <TextInput
             style={styles.input}
             placeholder="Address Line 1"
@@ -259,9 +259,9 @@ export default function RegistrationScreen({ navigation }) {
             value={zip}
           />
 
-          <Text style={styles.label2}>Date of Birth</Text>
+          <Text style={styles.label2}>Date of Birth(Optional)</Text>
           <DateTimePicker
-            style={{ width: 270, backgroundColor: "transparent", marginBottom: 22 }}
+            style={{ width: 130, backgroundColor: "transparent", marginBottom: 22, alignContent:'center', alignSelf:'center' }}
             value={birthday}
             mode={"date"}
             is24Hour={false}
@@ -269,26 +269,31 @@ export default function RegistrationScreen({ navigation }) {
             onChange={changeBirthday}
           />
 
-          <Text style={styles.label2}>Gender</Text>
+          <Text style={styles.label2}>Gender(Optional)</Text>
 
           <Picker
-            style={{ width: 400, height: 200, marginTop: -51 }}
+            style={{ width: 372, height: 200,marginTop: -31, alignContent:'center', alignSelf:'center' }}
             selectedValue={gender}
             onValueChange={(gen, itemIndex) => setGender(gen)}
           >
+             <Picker.Item label="Prefer not to say" value="Prefer not to say" />
             <Picker.Item label="Male" value="Male" />
             <Picker.Item label="Female" value="Female" />
             <Picker.Item label="Other" value="Other" />
-            <Picker.Item label="Prefer not to say" value="Prefer not to say" />
+            
           </Picker>
 
-          <Text style={styles.label2}>Race/Ethnicity</Text>
+          <Text style={styles.label2}>Race/Ethnicity(Optional)</Text>
 
           <Picker
-            style={{ width: 400, height: 200, marginTop: -41 }}
+            style={{ width: 372, height: 200, marginTop: -31,alignContent:'center', alignSelf:'center' }}
             selectedValue={race}
             onValueChange={(race, itemIndex) => setRace(race)}
           >
+             <Picker.Item 
+            label="Prefer not to say" 
+            value="Prefer not to say" 
+            />
             <Picker.Item
               label="Asian or Pacific Islander"
               value="Asian or Pacific Islander"
@@ -313,16 +318,13 @@ export default function RegistrationScreen({ navigation }) {
             label="Other" 
             value="Other" 
             />
-            <Picker.Item 
-            label="Prefer not to say" 
-            value="Prefer not to say" 
-            />
+           
           </Picker>
 
           <Text style={styles.header}> Sleep Schedule</Text>
           <Text style={styles.textName}> Wake-up time:</Text>
           <DateTimePicker
-            style={{ width: 250, backgroundColor: "transparent" }}
+            style={{ width: 100, backgroundColor: "transparent", alignContent:'center', alignSelf:'center'  }}
             value={wakeTime}
             mode={"time"}
             is24Hour={true}
@@ -331,7 +333,7 @@ export default function RegistrationScreen({ navigation }) {
           />
           <Text style={styles.textName}> Bedtime:</Text>
           <DateTimePicker
-            style={{ width: 250, backgroundColor: "transparent"  }}
+            style={{ width: 100, backgroundColor: "transparent", alignContent:'center', alignSelf:'center'   }}
             value={sleepTime}
             mode={"time"}
             is24Hour={true}
