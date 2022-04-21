@@ -67,7 +67,7 @@ export default function RegistrationScreen({ navigation }) {
   const { signIn } = authFunctions;
   const [birthday, setBirthday] = React.useState(new Date());
   const [sleepTime, setSleepTime] = React.useState(new Date(1598051730000));
-  const [wakeTime, setWakeTime] = React.useState(new Date(1598051730000));
+  const [wakeTime, setWakeTime] = React.useState(new Date(23456700000));
 
   const changeBirthday = (event, newDate) => {
     setBirthday(newDate);
@@ -86,7 +86,7 @@ export default function RegistrationScreen({ navigation }) {
       lastName == "" ||
       email == "" ||
       password == "" ||
-      confirmPassword == ""
+      confirmPassword == "" 
     ) {
       setShowErrorMessage(true);
       setError("*Please fill in all required fields");
@@ -213,7 +213,7 @@ export default function RegistrationScreen({ navigation }) {
           />
           <TextInput
             style={styles.input}
-            placeholder="Phone Number"
+            placeholder="Phone Number(Optional)"
             maxLength={10}
             keyboardType="numeric"
             onChangeText={(inp) => setPhoneNumber(inp)}
