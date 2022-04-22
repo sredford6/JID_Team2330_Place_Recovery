@@ -200,7 +200,7 @@ export function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="ProfileStack"
+        name="User Profile"
         component={ProfileStackNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (

@@ -384,11 +384,11 @@ export default function HomeScreen({
   }, [schedules]);
 
   return (
-    <ImageBackground
+/*     <ImageBackground
       source={require("../assets/images/bgnew.jpg")}
       resizeMode="cover"
       style={styles.image}
-    >
+    > */
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
       >
@@ -536,7 +536,7 @@ export default function HomeScreen({
           </View>
         </View>
       </ScrollView>
-    </ImageBackground>
+    /* </ImageBackground> */
   );
 }
 
