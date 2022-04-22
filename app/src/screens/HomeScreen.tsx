@@ -424,7 +424,7 @@ export default function HomeScreen({
             {/* </LinearGradient> */}
 
             <TouchableOpacity
-              style={styles.button2}
+              style={styles.button}
               onPress={async () => {
                 Notifications.cancelAllScheduledNotificationsAsync();
                 storeDataString(userInfo.email + "_schedules", "");
