@@ -90,15 +90,15 @@ export default function HomeScreen({
 
   const statusColor = (status: number) => {
     if (status == -1) {
-      return ["#698cbf", "#9bb2e5"];
+      return ["#72B3BA", "#72B3BA"];
     } else if (status == 0) {
-      return ["#ff5858", "#ffc8c8"];
+      return ["#A2A2A2", "#A2A2A2"];
     } else if (status == 1) {
-      return ["#5da92f", "#9bd46a"];
+      return ["#068D9D", "#068D9D"];
     } else if (status == 2) {
-      return ["#ff930f", "#fff95b"];
+      return ["#068D9D", "#fff95b"];
     }
-    return ["#698cbf", "#9bb2e5"];
+    return ["#A2A2A2", "#A2A2A2"];
   };
 
   /**
@@ -240,8 +240,8 @@ export default function HomeScreen({
   async function scheduleNotification(seconds: number) {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: "Your questionnaire is ready!",
-        body: "Your questionnaire is ready. Please complete it within an hour.",
+        title: "Your next questionnaire is ready",
+        body: "Please complete within the hour.",
         data: { data: "data goes here" },
       },
       trigger: {
@@ -385,7 +385,7 @@ export default function HomeScreen({
 
   return (
     <ImageBackground
-      source={require("../assets/images/bluebg2.jpg")}
+      source={require("../assets/images/home4.png")}
       resizeMode="cover"
       style={styles.image}
     >
@@ -396,8 +396,8 @@ export default function HomeScreen({
           <View style={[styles.frameContainer, styles.shadowProp]}>
             <Text style={styles.title}>
               {ready()
-                ? "The questionnaire is ready!"
-                : "Your next questionnaire is not ready"}
+                ? "Your questionnaire is available"
+                : "Your next questionnaire is not yet available"}
             </Text>
             {/* <LinearGradient
               colors={["#9EC5E5", "#428FC5"]}
@@ -446,15 +446,14 @@ export default function HomeScreen({
                 {" "}
                 {status.q1 == -1
                   ? schedules
-                    ? "The 1st questionnaire will be opened at " +
-                      convert24HourTo12(schedules[0].notificationTime[0]) +
-                      "."
-                    : "The 1st questionnaire is not available yet."
+                    ? "The 1st questionnaire will open at " +
+                      convert24HourTo12(schedules[0].notificationTime[0])
+                    : "The 1st questionnaire is not available yet"
                   : status.q1 == 0
-                  ? "You've missed the 1st questionnaire."
+                  ? "You've missed the 1st questionnaire"
                   : status.q1 == 1
-                  ? "You've completed the 1st questionnaire."
-                  : "The 1st questionnaire is now open!"}
+                  ? "You've completed the 1st questionnaire"
+                  : "The 1st questionnaire is now open"}
               </Text>
             </LinearGradient>
             <LinearGradient
@@ -466,15 +465,14 @@ export default function HomeScreen({
               <Text style={styles.statusText}>
                 {status.q2 == -1
                   ? schedules
-                    ? "The 2nd questionnaire will be opened at " +
-                      convert24HourTo12(schedules[0].notificationTime[1]) +
-                      "."
-                    : "The 2nd questionnaire is not available yet."
+                    ? "The 2nd questionnaire will open at " +
+                      convert24HourTo12(schedules[0].notificationTime[1])
+                    : "The 2nd questionnaire is not available yet"
                   : status.q2 == 0
-                  ? "You've missed the 2nd questionnaire."
+                  ? "You've missed the 2nd questionnaire"
                   : status.q2 == 1
-                  ? "You've completed the 2nd questionnaire."
-                  : "The 2nd questionnaire is now open!"}
+                  ? "You've completed the 2nd questionnaire"
+                  : "The 2nd questionnaire is now open"}
               </Text>
             </LinearGradient>
             <LinearGradient
@@ -486,15 +484,14 @@ export default function HomeScreen({
               <Text style={styles.statusText}>
                 {status.q3 == -1
                   ? schedules
-                    ? "The 3rd questionnaire will be opened at " +
-                      convert24HourTo12(schedules[0].notificationTime[2]) +
-                      "."
-                    : "The 3rd questionnaire is not available yet."
+                    ? "The 3rd questionnaire will open at " +
+                      convert24HourTo12(schedules[0].notificationTime[2])
+                    : "The 3rd questionnaire is not available yet"
                   : status.q3 == 0
-                  ? "You've missed the 3rd questionnaire."
+                  ? "You've missed the 3rd questionnaire"
                   : status.q3 == 1
-                  ? "You've completed the 3rd questionnaire."
-                  : "The 3rd questionnaire is now open!"}
+                  ? "You've completed the 3rd questionnaire"
+                  : "The 3rd questionnaire is now open"}
               </Text>
             </LinearGradient>
             {/* 
@@ -548,7 +545,7 @@ const styles = StyleSheet.create({
     flex: 0.8,
     alignItems: "center",
     justifyContent: "space-evenly",
-    backgroundColor: "#FFFFFF00",
+    backgroundColor: "#FFFFFF00"
   },
   frameContainer: {
     width: "88%",
@@ -569,9 +566,9 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
   },
   shadowPropButton: {
-    shadowColor: "#082B48",
+    shadowColor: "#FFFFFF",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.8,
     shadowRadius: 2,
   },
   status: {
@@ -586,6 +583,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
     color: "#082B48",
+    textAlign: "center"
   },
   blackText: {
     fontSize: 14,
@@ -605,17 +603,27 @@ const styles = StyleSheet.create({
   button: {
     width: 200,
     height: 55,
-    backgroundColor: "#9EC5E5",
+    backgroundColor: "#068D9D",
     padding: 10,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 8,
     marginTop: 5,
   },
+  button2: {
+    width: 200,
+    height: 55,
+    backgroundColor: "#FFFFFF",
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 8,
+    marginTop: 0,
+  },
   buttonDeep: {
     width: 200,
     height: 55,
-    backgroundColor: "#053968",
+    backgroundColor: "#068D9D",
     padding: 10,
     alignItems: "center",
     justifyContent: "center",

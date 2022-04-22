@@ -33,7 +33,7 @@ export default function EditEthnicityScreen({navigation}) {
           const { message } = response.data;
           const { status, data } = response;
           console.log(status);
-          Alert.alert("your personal information was updated")
+          Alert.alert("Your personal information was updated")
          
           navigation.navigate("Profile");
         })
