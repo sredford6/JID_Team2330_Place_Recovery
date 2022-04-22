@@ -13,8 +13,9 @@ import { getItemAsync } from 'expo-secure-store';
 
 
 export default function EditPhoneNumberScreen({navigation}) {
-    const[phoneNumber, setPhoneNumber] = React.useState();
-    
+    const[phoneNumber, setPhoneNumber] = React.useState("");
+    const[message, setMessage] = React.useState("");
+    const[showMessage, setShowMessage] = React.useState(false);
 
   const editPhone = async (phoneNumber) => {
     const token: string = (await getItemAsync("user_token"))!;
@@ -42,8 +43,21 @@ export default function EditPhoneNumberScreen({navigation}) {
         console.log(error.data)
       });
   };
-    
 
+
+  const  checkEmptyFields = () => {
+    if (
+        
+        phoneNumber == "" 
+    ) {
+      console.log(phoneNumber)
+        setShowMessage(true);
+        setMessage("*Please enter your new phone number");
+    } else {
+      console.log(phoneNumber)
+      editPhone(phoneNumber)
+    }
+}
 
 
   return (
@@ -55,19 +69,20 @@ export default function EditPhoneNumberScreen({navigation}) {
           <Text style={styles.title}> Phone Number</Text>
 
           <Text style={styles.label}>Please enter your new phone number</Text>
+          {showMessage ? <Text style={styles.message}>{message}</Text> : null}
           <TextInput
             style={styles.input}
             placeholder="Phone Number"
             maxLength={10}
             keyboardType="numeric"
             autoCapitalize="none"
-            onChangeText={(inp) => setPhoneNumber(phoneNumber)}
+            onChangeText={(inp) => setPhoneNumber(inp)}
           />
           <ButtonDesign
             name="Save"
             onPress={() => { 
               {
-                editPhone(phoneNumber)
+                checkEmptyFields()
               }
             }}
           />
