@@ -385,7 +385,7 @@ export default function HomeScreen({
 
   return (
     <ImageBackground
-      source={require("../assets/images/bluebg2.jpg")}
+      source={require("../assets/images/bgnew.jpg")}
       resizeMode="cover"
       style={styles.image}
     >
@@ -396,8 +396,8 @@ export default function HomeScreen({
           <View style={[styles.frameContainer, styles.shadowProp]}>
             <Text style={styles.title}>
               {ready()
-                ? "The questionnaire is ready!"
-                : "Your next questionnaire is not ready"}
+                ? "Your questionnaire is available"
+                : "Your next questionnaire is not yet available"}
             </Text>
             {/* <LinearGradient
               colors={["#9EC5E5", "#428FC5"]}
@@ -446,15 +446,14 @@ export default function HomeScreen({
                 {" "}
                 {status.q1 == -1
                   ? schedules
-                    ? "The 1st questionnaire will be opened at " +
-                      convert24HourTo12(schedules[0].notificationTime[0]) +
-                      "."
-                    : "The 1st questionnaire is not available yet."
+                    ? "The 1st questionnaire will open at " +
+                      convert24HourTo12(schedules[0].notificationTime[0])
+                    : "The 1st questionnaire is not available yet"
                   : status.q1 == 0
-                  ? "You've missed the 1st questionnaire."
+                  ? "You've missed the 1st questionnaire"
                   : status.q1 == 1
-                  ? "You've completed the 1st questionnaire."
-                  : "The 1st questionnaire is now open!"}
+                  ? "You've completed the 1st questionnaire"
+                  : "The 1st questionnaire is now open"}
               </Text>
             </LinearGradient>
             <LinearGradient
@@ -466,15 +465,14 @@ export default function HomeScreen({
               <Text style={styles.statusText}>
                 {status.q2 == -1
                   ? schedules
-                    ? "The 2nd questionnaire will be opened at " +
-                      convert24HourTo12(schedules[0].notificationTime[1]) +
-                      "."
-                    : "The 2nd questionnaire is not available yet."
+                    ? "The 2nd questionnaire will open at " +
+                      convert24HourTo12(schedules[0].notificationTime[1])
+                    : "The 2nd questionnaire is not available yet"
                   : status.q2 == 0
-                  ? "You've missed the 2nd questionnaire."
+                  ? "You've missed the 2nd questionnaire"
                   : status.q2 == 1
-                  ? "You've completed the 2nd questionnaire."
-                  : "The 2nd questionnaire is now open!"}
+                  ? "You've completed the 2nd questionnaire"
+                  : "The 2nd questionnaire is now open"}
               </Text>
             </LinearGradient>
             <LinearGradient
@@ -486,15 +484,14 @@ export default function HomeScreen({
               <Text style={styles.statusText}>
                 {status.q3 == -1
                   ? schedules
-                    ? "The 3rd questionnaire will be opened at " +
-                      convert24HourTo12(schedules[0].notificationTime[2]) +
-                      "."
-                    : "The 3rd questionnaire is not available yet."
+                    ? "The 3rd questionnaire will open at " +
+                      convert24HourTo12(schedules[0].notificationTime[2])
+                    : "The 3rd questionnaire is not available yet"
                   : status.q3 == 0
-                  ? "You've missed the 3rd questionnaire."
+                  ? "You've missed the 3rd questionnaire"
                   : status.q3 == 1
-                  ? "You've completed the 3rd questionnaire."
-                  : "The 3rd questionnaire is now open!"}
+                  ? "You've completed the 3rd questionnaire"
+                  : "The 3rd questionnaire is now open"}
               </Text>
             </LinearGradient>
             {/* 
@@ -586,6 +583,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
     color: "#082B48",
+    textAlign: "center"
   },
   blackText: {
     fontSize: 14,
