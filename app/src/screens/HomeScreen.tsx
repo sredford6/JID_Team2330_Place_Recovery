@@ -240,8 +240,8 @@ export default function HomeScreen({
   async function scheduleNotification(seconds: number) {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: "Your questionnaire is ready!",
-        body: "Your questionnaire is ready. Please complete it within an hour.",
+        title: "Your next questionnaire is ready",
+        body: "Please complete within the hour.",
         data: { data: "data goes here" },
       },
       trigger: {
@@ -568,7 +568,7 @@ const styles = StyleSheet.create({
   shadowPropButton: {
     shadowColor: "#FFFFFF",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.,
+    shadowOpacity: 0.8,
     shadowRadius: 2,
   },
   status: {
@@ -623,7 +623,7 @@ const styles = StyleSheet.create({
   buttonDeep: {
     width: 200,
     height: 55,
-    backgroundColor: "#053968",
+    backgroundColor: "#068D9D",
     padding: 10,
     alignItems: "center",
     justifyContent: "center",

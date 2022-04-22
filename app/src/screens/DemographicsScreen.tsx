@@ -129,7 +129,7 @@ export default function Demographics({ navigation }) {
           console.log(response.data);
           const { message } = response.data;
           const { status, data } = response;
-          Alert.alert("the demographics form was successfully submitted")
+          Alert.alert("The form was successfully submitted")
          
           navigation.navigate("Profile");
         })
