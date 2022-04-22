@@ -90,15 +90,15 @@ export default function HomeScreen({
 
   const statusColor = (status: number) => {
     if (status == -1) {
-      return ["#698cbf", "#9bb2e5"];
+      return ["#72B3BA", "#72B3BA"];
     } else if (status == 0) {
-      return ["#ff5858", "#ffc8c8"];
+      return ["#A2A2A2", "#A2A2A2"];
     } else if (status == 1) {
-      return ["#5da92f", "#9bd46a"];
+      return ["#068D9D", "#068D9D"];
     } else if (status == 2) {
-      return ["#ff930f", "#fff95b"];
+      return ["#068D9D", "#fff95b"];
     }
-    return ["#698cbf", "#9bb2e5"];
+    return ["#A2A2A2", "#A2A2A2"];
   };
 
   /**
@@ -384,11 +384,11 @@ export default function HomeScreen({
   }, [schedules]);
 
   return (
-/*     <ImageBackground
-      source={require("../assets/images/bgnew.jpg")}
+    <ImageBackground
+      source={require("../assets/images/home4.png")}
       resizeMode="cover"
       style={styles.image}
-    > */
+    >
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
       >
@@ -424,7 +424,7 @@ export default function HomeScreen({
             {/* </LinearGradient> */}
 
             <TouchableOpacity
-              style={styles.button}
+              style={styles.button2}
               onPress={async () => {
                 Notifications.cancelAllScheduledNotificationsAsync();
                 storeDataString(userInfo.email + "_schedules", "");
@@ -536,7 +536,7 @@ export default function HomeScreen({
           </View>
         </View>
       </ScrollView>
-    /* </ImageBackground> */
+    </ImageBackground>
   );
 }
 
@@ -545,7 +545,7 @@ const styles = StyleSheet.create({
     flex: 0.8,
     alignItems: "center",
     justifyContent: "space-evenly",
-    backgroundColor: "#FFFFFF00",
+    backgroundColor: "#FFFFFF00"
   },
   frameContainer: {
     width: "88%",
@@ -566,9 +566,9 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
   },
   shadowPropButton: {
-    shadowColor: "#082B48",
+    shadowColor: "#FFFFFF",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.,
     shadowRadius: 2,
   },
   status: {
@@ -603,12 +603,22 @@ const styles = StyleSheet.create({
   button: {
     width: 200,
     height: 55,
-    backgroundColor: "#9EC5E5",
+    backgroundColor: "#068D9D",
     padding: 10,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 8,
     marginTop: 5,
+  },
+  button2: {
+    width: 200,
+    height: 55,
+    backgroundColor: "#FFFFFF",
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 8,
+    marginTop: 0,
   },
   buttonDeep: {
     width: 200,

@@ -61,7 +61,7 @@ const HomeStackNavigator = () => {
         options={{
           headerShown: true,
           headerStyle: {
-            backgroundColor: "#1F569E",
+            backgroundColor: "#068D9D",
           },
           headerTitleStyle: {
             color: "white",
@@ -86,7 +86,7 @@ const ProfileStackNavigator = () => {
         options={{
           headerShown: true,
           headerStyle: {
-            backgroundColor: "#1F569E",
+            backgroundColor: "#068D9D",
           },
           headerTitleStyle: {
             color: "white",
@@ -195,8 +195,13 @@ export function BottomTabNavigator() {
               color={color}
               size={size}
             />
+            
           ),
           headerShown: true,
+          headerStyle: {
+            backgroundColor: "#068D9D"
+          }
+
         }}
       />
       <BottomTab.Screen
