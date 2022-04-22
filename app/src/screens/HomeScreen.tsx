@@ -10,14 +10,18 @@ import {
   TouchableOpacity,
   Platform,
   AppState,
+  ImageBackground,
 } from "react-native";
 import { Text, View } from "../components/Themed";
 import {
   RootTabScreenProps,
   CountOfTakenQofDay,
   DaySchedule,
+  DayStatus,
 } from "../components/types";
 import { useIsFocused } from "@react-navigation/native";
+import axios from "axios";
+import { backendUrl } from "../config/config.json";
 
 import {
   convertTime,
@@ -36,6 +40,8 @@ import * as Location from "expo-location";
 import { goToSettings } from "../components/Helpers";
 
 import * as Notifications from "expo-notifications";
+import { LinearGradient } from "expo-linear-gradient";
+import { getItemAsync } from "expo-secure-store";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -54,12 +60,9 @@ export default function HomeScreen({
 
   const [schedules, setSchedules] = useState<Array<DaySchedule>>();
 
-  /**
-   * pseudo sleep schedule for development
-   * hours in 24-hour clock
-   */
-  let wakeUp = 8;
-  let sleep = 23;
+  const [wakeTime, setWakeTime] = useState<number>(8);
+  const [sleepTime, setSleepTime] = useState<number>(22);
+
   const [isAvailable, setIsAvailable] = useState<number>(-1); // index of available block
 
   const [expoPushToken, setExpoPushToken] = useState<any>("");
@@ -70,6 +73,8 @@ export default function HomeScreen({
 
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
+  const [status, setStatus] = useState<DayStatus>({ q1: -1, q2: -1, q3: -1 });
 
   const handleAppStateChange = (state: any) => {
     setAppStateVisible(state);
@@ -83,6 +88,110 @@ export default function HomeScreen({
     };
   }, []);
 
+  const statusColor = (status: number) => {
+    if (status == -1) {
+      return ["#698cbf", "#9bb2e5"];
+    } else if (status == 0) {
+      return ["#ff5858", "#ffc8c8"];
+    } else if (status == 1) {
+      return ["#5da92f", "#9bd46a"];
+    } else if (status == 2) {
+      return ["#ff930f", "#fff95b"];
+    }
+    return ["#698cbf", "#9bb2e5"];
+  };
+
+  /**
+   *
+   * @param hour hour from 0-24
+   * @returns format like 8 AM, 12 PM, 6 PM
+   */
+  const convert24HourTo12 = (hour: number) => {
+    if (hour < 12) {
+      return hour.toString() + " AM";
+    } else if (hour == 12) {
+      return hour.toString() + " PM";
+    } else {
+      return (hour - 12).toString() + " PM";
+    }
+  };
+
+  const updateStatus = () => {
+    if (schedules) {
+      let currentHour = new Date().getHours();
+      let status = {
+        q1: checkStatus(0, currentHour),
+        q2: checkStatus(1, currentHour),
+        q3: checkStatus(2, currentHour),
+      };
+      setStatus(status);
+    } else {
+      setStatus({
+        q1: -1,
+        q2: -1,
+        q3: -1,
+      });
+    }
+  };
+
+  /**
+   *
+   * @param idx idx of ith questionnaire of the day
+   * @returns status: -1: no open yet; 0: missed; 1: completed; 2: currently open
+   */
+  const checkStatus = (idx: number, currentHour: number) => {
+    if (schedules) {
+      if (schedules[0].completed[idx]) {
+        return 1;
+      }
+      let notificationTime = schedules[0].notificationTime[idx];
+      if (currentHour < notificationTime) {
+        return -1;
+      }
+      if (currentHour == notificationTime) {
+        return 2;
+      }
+      if (currentHour > notificationTime) {
+        return 0;
+      }
+    }
+    return -1;
+  };
+
+  const getSleepSchedule = async () => {
+    const token: string = (await getItemAsync("user_token"))!;
+    try {
+      let response = await axios.get(`${backendUrl}/api/data/myuser`, {
+        headers: {
+          authorization: token,
+        },
+      });
+      if (response.status == 200) {
+        let wake = new Date(response.data.wakeTime).getHours();
+        let sleep = new Date(response.data.sleepTime).getHours();
+        if (sleep - wake < 6) {
+          wake = wake < 5 ? 8 : wake; // earliest windows starts at 5 am
+          setWakeTime(wake);
+          sleep = 22;
+          setSleepTime(sleep);
+        } else {
+          setWakeTime(wake);
+          setSleepTime(sleep);
+        }
+        return [wake, sleep];
+      } else {
+        return [wakeTime, sleepTime];
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const ready = () => {
+    return (
+      isAvailable != -1 && schedules && !schedules[0].completed[isAvailable]
+    );
+  };
   /**
    * Code from https://docs.expo.dev/push-notifications/overview/
    *
@@ -150,7 +259,11 @@ export default function HomeScreen({
     // for each newly added schedules, call scheduelNotification() for each time in the timeblocks.
     // 4. Display current storage
     // 5. store schedules back into async storage
+
     (async () => {
+      let sleepschedule = (await getSleepSchedule())!;
+      let wakeTime = sleepschedule[0];
+      let sleepTime = sleepschedule[1];
       let schedules = await retrieveDataString(userInfo.email + "_schedules");
       let j = 0; // index of updatedSchedules
       let updatedSchedules = Array<DaySchedule>(7);
@@ -189,7 +302,7 @@ export default function HomeScreen({
       }
       // fill out the new schedules
       for (; j < updatedSchedules.length; j++) {
-        let newSchedule = generateDaySchedule(wakeUp, sleep, startDate);
+        let newSchedule = generateDaySchedule(wakeTime, sleepTime, startDate);
         for (let i = 0; i < newSchedule.notificationTime.length; i++) {
           let notifyTime = new Date(newSchedule.date + "T00:00");
           notifyTime.setHours(newSchedule.notificationTime[i]);
@@ -237,7 +350,7 @@ export default function HomeScreen({
       );
       Notifications.removeNotificationSubscription(responseListener.current);
     };
-  }, [isFocused]);
+  }, [isFocused, appStateVisible]);
   // location permission
   useEffect(() => {
     (async () => {
@@ -252,142 +365,227 @@ export default function HomeScreen({
     })();
   }, []);
 
+  // update schedules when return to home screen (like after a questionnaire)
+  useEffect(() => {
+    (async () => {
+      let sche = (await retrieveDataString(userInfo.email + "_schedules"))!;
+      setSchedules(JSON.parse(sche));
+    })();
+  }, [isFocused, appStateVisible]);
+
+  // update isAvailable status and update items on the screen
   useEffect(() => {
     if (schedules) {
       setIsAvailable(
         inQuestionnaireOpenInterval(new Date(), schedules[0].notificationTime)
       );
-      (async () => {
-        let sche = (await retrieveDataString(userInfo.email + "_schedules"))!;
-        setSchedules(JSON.parse(sche));
-      })();
+      updateStatus();
     }
-  }, [isFocused, appStateVisible]);
+  }, [schedules]);
 
   return (
-    <ScrollView
-      contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+    <ImageBackground
+      source={require("../assets/images/bluebg2.jpg")}
+      resizeMode="cover"
+      style={styles.image}
     >
-      <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <View style={[styles.frameContainer, styles.shadowProp]}>
-          <Text style={styles.headTextLeft}>Daily Questionnaire</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              if (
-                isAvailable != -1 &&
-                schedules &&
-                !schedules[0].completed[isAvailable] // not completed
-              ) {
-                navigation.navigate("Questionnaire");
-              }
-            }}
-            activeOpacity={0.85}
-          >
-            <Text style={styles.buttonTextWhite}>
-              {isAvailable != -1 &&
-              schedules &&
-              !schedules[0].completed[isAvailable]
-                ? "Start"
-                : "Not Available"}
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+      >
+        <View style={styles.container}>
+          <View style={[styles.frameContainer, styles.shadowProp]}>
+            <Text style={styles.title}>
+              {ready()
+                ? "The questionnaire is ready!"
+                : "Your next questionnaire is not ready"}
             </Text>
-          </TouchableOpacity>
+            {/* <LinearGradient
+              colors={["#9EC5E5", "#428FC5"]}
+              // style={styles.button}
+              start={{ x: 0.1, y: -0.5 }}
+              end={{ x: 0.8, y: 4 }}
+            > */}
+            <TouchableOpacity
+              style={[
+                ready() ? styles.buttonDeep : styles.button,
+                styles.shadowPropButton,
+              ]}
+              onPress={() => {
+                if (ready()) {
+                  navigation.navigate("Questionnaire");
+                }
+              }}
+              activeOpacity={0.85}
+            >
+              <Text style={styles.buttonTextWhite}>
+                {ready() ? "Start" : "Not Available"}
+              </Text>
+            </TouchableOpacity>
+            {/* </LinearGradient> */}
 
-          {/* <TouchableOpacity
-            style={styles.button}
-            onPress={async () => {
-              console.log(scheduleNotification(1));
-            }}
-            activeOpacity={0.85}
-          >
-            <Text style={styles.buttonTextWhite}>Test</Text>
-          </TouchableOpacity> */}
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={async () => {
-              Notifications.cancelAllScheduledNotificationsAsync();
-              storeDataString(userInfo.email + "_schedules", "");
-            }}
-            activeOpacity={0.85}
-          >
-            <Text style={styles.buttonTextWhite}>Reset</Text>
-          </TouchableOpacity>
-          <Text>
-            {schedules
-              ? "Date:" +
-                schedules[0].date +
-                ", sleep schedule: " +
-                wakeUp +
-                "-" +
-                sleep +
-                "\n" +
-                "Morning Block" +
-                schedules[0].timeBlocks[0].begin +
-                "-" +
-                schedules[0].timeBlocks[0].end +
-                ", available at " +
-                schedules[0].notificationTime[0] +
-                ", completed " +
-                schedules[0].completed[0] +
-                "\n" +
-                "Midday Block: " +
-                schedules[0].timeBlocks[1].begin +
-                "-" +
-                schedules[0].timeBlocks[1].end +
-                ", available at " +
-                schedules[0].notificationTime[1] +
-                ", completed " +
-                schedules[0].completed[1] +
-                "\n" +
-                "Evening Block: " +
-                schedules[0].timeBlocks[2].begin +
-                "-" +
-                schedules[0].timeBlocks[2].end +
-                ", available at " +
-                schedules[0].notificationTime[2] +
-                ", completed " +
-                schedules[0].completed[2] +
-                "\n"
-              : " "}
-          </Text>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={async () => {
+                Notifications.cancelAllScheduledNotificationsAsync();
+                storeDataString(userInfo.email + "_schedules", "");
+              }}
+              activeOpacity={0.85}
+            >
+              <Text style={styles.buttonTextWhite}>Reset</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.frameContainer, styles.shadowProp]}>
+            <Text style={styles.title}>Questionnaire status</Text>
+            <LinearGradient
+              colors={statusColor(status.q1)}
+              style={styles.status}
+              start={{ x: 0.5, y: 4 }}
+              end={{ x: 1.5, y: 0 }}
+            >
+              <Text style={styles.statusText}>
+                {" "}
+                {status.q1 == -1
+                  ? schedules
+                    ? "The 1st questionnaire will be opened at " +
+                      convert24HourTo12(schedules[0].notificationTime[0]) +
+                      "."
+                    : "The 1st questionnaire is not available yet."
+                  : status.q1 == 0
+                  ? "You've missed the 1st questionnaire."
+                  : status.q1 == 1
+                  ? "You've completed the 1st questionnaire."
+                  : "The 1st questionnaire is now open!"}
+              </Text>
+            </LinearGradient>
+            <LinearGradient
+              colors={statusColor(status.q2)}
+              style={styles.status}
+              start={{ x: 0.5, y: 4 }}
+              end={{ x: 1.5, y: 0 }}
+            >
+              <Text style={styles.statusText}>
+                {status.q2 == -1
+                  ? schedules
+                    ? "The 2nd questionnaire will be opened at " +
+                      convert24HourTo12(schedules[0].notificationTime[1]) +
+                      "."
+                    : "The 2nd questionnaire is not available yet."
+                  : status.q2 == 0
+                  ? "You've missed the 2nd questionnaire."
+                  : status.q2 == 1
+                  ? "You've completed the 2nd questionnaire."
+                  : "The 2nd questionnaire is now open!"}
+              </Text>
+            </LinearGradient>
+            <LinearGradient
+              colors={statusColor(status.q3)}
+              style={styles.status}
+              start={{ x: 0.5, y: 4 }}
+              end={{ x: 1.5, y: 0 }}
+            >
+              <Text style={styles.statusText}>
+                {status.q3 == -1
+                  ? schedules
+                    ? "The 3rd questionnaire will be opened at " +
+                      convert24HourTo12(schedules[0].notificationTime[2]) +
+                      "."
+                    : "The 3rd questionnaire is not available yet."
+                  : status.q3 == 0
+                  ? "You've missed the 3rd questionnaire."
+                  : status.q3 == 1
+                  ? "You've completed the 3rd questionnaire."
+                  : "The 3rd questionnaire is now open!"}
+              </Text>
+            </LinearGradient>
+            {/* 
+            <Text>
+              {schedules
+                ? "Date:" +
+                  schedules[0].date +
+                  ", sleep schedule: " +
+                  wakeTime +
+                  "-" +
+                  sleepTime +
+                  "\n" +
+                  "Morning Block" +
+                  schedules[0].timeBlocks[0].begin +
+                  "-" +
+                  schedules[0].timeBlocks[0].end +
+                  ", available at " +
+                  schedules[0].notificationTime[0] +
+                  ", completed " +
+                  schedules[0].completed[0] +
+                  "\n" +
+                  "Midday Block: " +
+                  schedules[0].timeBlocks[1].begin +
+                  "-" +
+                  schedules[0].timeBlocks[1].end +
+                  ", available at " +
+                  schedules[0].notificationTime[1] +
+                  ", completed " +
+                  schedules[0].completed[1] +
+                  "\n" +
+                  "Evening Block: " +
+                  schedules[0].timeBlocks[2].begin +
+                  "-" +
+                  schedules[0].timeBlocks[2].end +
+                  ", available at " +
+                  schedules[0].notificationTime[2] +
+                  ", completed " +
+                  schedules[0].completed[2] +
+                  "\n"
+                : " "}
+            </Text> */}
+          </View>
         </View>
-      </KeyboardAvoidingView>
-    </ScrollView>
+      </ScrollView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0.8,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
+    backgroundColor: "#FFFFFF00",
   },
   frameContainer: {
     width: "88%",
     flex: 0.2,
-    backgroundColor: "#FFFFFF99",
+    backgroundColor: "#FFFFFF",
     justifyContent: "space-between",
     //justifyContent: "center",
     alignItems: "center",
     //alignContent: "space-between",
-    paddingHorizontal: 10,
-    paddingVertical: 40,
-    borderRadius: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 30,
+    borderRadius: 32,
   },
   shadowProp: {
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+  },
+  shadowPropButton: {
+    shadowColor: "#082B48",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
     shadowRadius: 2,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
+  status: {
+    width: 300,
+    height: 35,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 8,
+    borderRadius: 12,
   },
-  leftContainer: {
-    alignItems: "flex-start",
-    alignContent: "space-between",
+  title: {
+    fontSize: 18,
+    fontWeight: "500",
+    color: "#082B48",
   },
   blackText: {
     fontSize: 14,
@@ -405,9 +603,19 @@ const styles = StyleSheet.create({
     //paddingRight: 8,
   },
   button: {
-    width: 250,
-    height: 45,
-    backgroundColor: "#072B4F",
+    width: 200,
+    height: 55,
+    backgroundColor: "#9EC5E5",
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 8,
+    marginTop: 5,
+  },
+  buttonDeep: {
+    width: 200,
+    height: 55,
+    backgroundColor: "#053968",
     padding: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -419,6 +627,17 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  textWhite: {
+    textAlign: "center",
+    color: "#fff",
+    fontSize: 15,
+  },
+  statusText: {
+    textAlign: "center",
+    color: "#fff",
+    fontWeight: "500",
+    fontSize: 11.5,
   },
   image: {
     flex: 1,

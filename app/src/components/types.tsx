@@ -29,8 +29,8 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
 export type RootTabParamList = {
   HomeStack: undefined;
   Location: undefined;
-  Settings: undefined;
-  Profile: undefined;
+  Progress: undefined;
+  ProfileStack: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
@@ -59,4 +59,10 @@ export type DaySchedule = {
   completed: Array<boolean>;
   notificationTime: Array<number>; // time in hours (24)
   date: string; // 'yyyy-mm-dd'
+};
+
+export type DayStatus = {
+  q1: number;
+  q2: number;
+  q3: number;
 };

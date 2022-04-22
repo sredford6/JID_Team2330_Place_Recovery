@@ -16,7 +16,7 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LocationScreen from '../screens/LocationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import SettingsScreen from "../screens/ProgressScreen";
+import ProgressScreen from "../screens/ProgressScreen";
 import OpeningScreen from "../screens/OpeningScreen";
 import RegistrationScreen from "../screens/RegistrationScreen";
 import {
@@ -27,12 +27,13 @@ import {
 import LinkingConfiguration from "./LinkingConfiguration";
 import Questionnaire from "../screens/QuestionnaireScreen";
 //import TermsAndConditions from "../screens/TermsAndConditionsScreen";
-import Demographics from '../screens/DemographicsScreen';
-import EditPhoneNumberScreen from '../screens/EditPhoneNumber';
-import EditAddressScreen from '../screens/EditAddressScreen';
-import EditGenderScreen from '../screens/EditGenderScreen';
-import EditEthnicityScreen from '../screens/EditEthnicityScreen';
-import EditSleepSchedule from '../screens/EditSleepSchedule';
+import Demographics from "../screens/DemographicsScreen";
+import EditPhoneNumberScreen from "../screens/EditPhoneNumber";
+import EditAddressScreen from "../screens/EditAddressScreen";
+import EditGenderScreen from "../screens/EditGenderScreen";
+import EditEthnicityScreen from "../screens/EditEthnicityScreen";
+import EditSleepSchedule from "../screens/EditSleepSchedule";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function HomeNavigation({
   colorScheme,
@@ -51,7 +52,6 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const HomeStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
 
-
 const HomeStackNavigator = () => {
   return (
     <HomeStack.Navigator>
@@ -61,7 +61,10 @@ const HomeStackNavigator = () => {
         options={{
           headerShown: true,
           headerStyle: {
-            backgroundColor: "#e3fbe3",
+            backgroundColor: "#1F569E",
+          },
+          headerTitleStyle: {
+            color: "white",
           },
         }}
       />
@@ -83,7 +86,10 @@ const ProfileStackNavigator = () => {
         options={{
           headerShown: true,
           headerStyle: {
-            backgroundColor: "#e3fbe3",
+            backgroundColor: "#1F569E",
+          },
+          headerTitleStyle: {
+            color: "white",
           },
         }}
       />
@@ -92,12 +98,12 @@ const ProfileStackNavigator = () => {
         component={Demographics}
         options={{ headerShown: true }}
       />
-       <ProfileStack.Screen
+      <ProfileStack.Screen
         name="Edit Phone Number"
         component={EditPhoneNumberScreen}
         options={{ headerShown: true }}
       />
-       <ProfileStack.Screen
+      <ProfileStack.Screen
         name="Edit Address"
         component={EditAddressScreen}
         options={{ headerShown: true }}
@@ -152,7 +158,10 @@ export function BottomTabNavigator() {
       initialRouteName="HomeStack"
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#e3fbe3",
+          backgroundColor: "#1F569E",
+        },
+        headerTitleStyle: {
+          color: "white",
         },
       }}
     >
@@ -178,7 +187,7 @@ export function BottomTabNavigator() {
       /> */}
       <BottomTab.Screen
         name="Progress"
-        component={SettingsScreen}
+        component={ProgressScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
@@ -187,10 +196,11 @@ export function BottomTabNavigator() {
               size={size}
             />
           ),
+          headerShown: true,
         }}
       />
       <BottomTab.Screen
-        name="Profile"
+        name="ProfileStack"
         component={ProfileStackNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -198,7 +208,6 @@ export function BottomTabNavigator() {
           ),
           headerShown: false,
         }}
-       
       />
     </BottomTab.Navigator>
   );

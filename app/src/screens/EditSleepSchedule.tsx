@@ -44,7 +44,6 @@ export default function EditSleepSchedule({navigation}) {
           console.log(response.data);
           const { message } = response.data;
           const { status, data } = response;
-          console.log(status);
           Alert.alert("your sleep schedule information was updated")
          
           navigation.navigate("Profile");

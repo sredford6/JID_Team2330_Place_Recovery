@@ -21,7 +21,7 @@ export function validateQuestion(arg: any): arg is Question {
     arg.type === undefined ||
     typeof arg.type !== "number" ||
     arg.type < 0 ||
-    arg.type > 3
+    arg.type > 5
   )
     return false;
   return true;
@@ -75,30 +75,79 @@ export function validateLocation(arg: any): arg is ILocation {
   if (arg.latitude === undefined || typeof arg.latitude !== "number") {
     return false;
   }
+  if (arg.geoid === undefined || typeof arg.geoid !== "string") {
+    return false;
+  }
   return true;
 }
 
 export function validateAnswer(arg: any): arg is IAnswer {
   if (!arg) return false;
-  if (!arg.questionId || typeof arg.questionId !== "string") return false;
-  if (arg.answer === undefined) return false;
+  if (!arg.questionId || typeof arg.questionId !== "string") {
+    throw {
+      httpCode: 400,
+      message: `answers format is incorrect. problem with questionId`,
+      error: new Error(`answers format is incorrect. problem with questionId`),
+    };
+    return false;
+  }
+  if (arg.answer === undefined) {
+    throw {
+      httpCode: 400,
+      message: `answers format is incorrect. answer is undefined in ${arg.questionId}`,
+      error: new Error(
+        `answers format is incorrect. answer is undefined in ${arg.questionId}`
+      ),
+    };
+    return false;
+  }
   if (Array.isArray(arg.answer)) {
     if (
       !arrayOfType(arg.answer, "string") &&
       !arrayOfType(arg.answer, "number")
     ) {
+      throw {
+        httpCode: 400,
+        message: `answers format is incorrect. problem with answer array in ${arg.questionId}`,
+        error: new Error(
+          `answers format is incorrect. problem with answer array in ${arg.questionId}`
+        ),
+      };
       return false;
     }
   } else {
-    if (typeof arg.answer !== "string" && typeof arg.answer !== "number")
+    if (typeof arg.answer !== "string" && typeof arg.answer !== "number") {
+      throw {
+        httpCode: 400,
+        message: `answers format is incorrect. problem with answer in ${arg.questionId}`,
+        error: new Error(
+          `answers format is incorrect. problem with answer in ${arg.questionId}`
+        ),
+      };
       return false;
+    }
   }
-  if (arg.choiceIndex === undefined) return false;
+  if (arg.choiceIndex === undefined) {
+    throw {
+      httpCode: 400,
+      message: `answers format is incorrect. choice index is undefined in ${arg.questionId}`,
+      error: new Error(
+        `answers format is incorrect. choice index is undefined in ${arg.questionId}`
+      ),
+    };
+    return false;
+  }
   if (
-    Array.isArray(arg.choiceIndex) &&
-    !arrayOfType(arg.choiceIndex, "number") &&
-    typeof arg.choiceIndex !== "number"
+    typeof arg.choiceIndex !== "number" &&
+    !(Array.isArray(arg.choiceIndex) && arrayOfType(arg.choiceIndex, "number"))
   ) {
+    throw {
+      httpCode: 400,
+      message: `answers format is incorrect. problem with choice index in ${arg.questionId}`,
+      error: new Error(
+        `answers format is incorrect. problem with choice index in ${arg.questionId}`
+      ),
+    };
     return false;
   }
 
@@ -116,6 +165,13 @@ export function validateAnswerArray(arg: any): arg is IAnswer[] {
       return false;
     }
     if (questionIds.has(answer.questionId)) {
+      throw {
+        httpCode: 400,
+        message: `answers format is incorrect. repeated answer ${answer.questionId}`,
+        error: new Error(
+          `answers format is incorrect. repeated answer ${answer.questionId}`
+        ),
+      };
       return false;
     }
     questionIds.add(answer.questionId);

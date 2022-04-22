@@ -4,7 +4,10 @@ const router = express.Router();
 
 import User from "models/user.model";
 import { verify } from "middleware";
-import { formatIAnswers } from "helpers/formatters";
+import {
+  formatIAnswersMultipleUsers,
+  formatIAnswersSingleUser,
+} from "helpers/formatters";
 
 router.get("/users", async (req, res: Response) => {
   try {
@@ -28,15 +31,23 @@ router.get("/users", async (req, res: Response) => {
 router.get("/answers/:user", async (req, res: Response) => {
   try {
     const userId = req.params.user;
-    const user = await User.findOne({ _id: userId });
-    const { answers } = user;
-    answers.sort((a, b) => b.answers.length - a.answers.length);
+    let answers;
+    if (userId === "all") {
+      const users = await User.find({}).select("answers email");
+      answers = formatIAnswersMultipleUsers(users);
+      res.attachment(`All_Users_Answers.csv`);
+    } else {
+      const user = await User.findOne({ _id: userId }).select("answers email");
+      answers = formatIAnswersSingleUser(user);
+      res.attachment(`${user.lastName}_${user.firstName}_Answers.csv`);
+    }
+
     const csvStream = format({ headers: true });
-    res.attachment(`${user.lastName}_${user.firstName}_Answers.csv`);
+
     res.type("text/csv");
     csvStream.pipe(res);
     for (const answer of answers) {
-      csvStream.write(formatIAnswers(answer));
+      csvStream.write(answer);
     }
     csvStream.end();
   } catch (error: any) {

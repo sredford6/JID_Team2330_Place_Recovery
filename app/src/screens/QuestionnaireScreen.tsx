@@ -19,6 +19,8 @@ import { AuthContext } from "../navigation/context";
 
 import { backendUrl } from "../config/config.json";
 
+// import qs_js from "./sample_question.json";
+
 import * as Location from "expo-location";
 import { LocationGeocodedAddress, LocationObject } from "expo-location";
 import { convertTime, goToSettings } from "../components/Helpers";
@@ -40,6 +42,7 @@ export default function Questionnaire({ navigation }) {
     []
   );
 
+
   const [location, setLocation] = useState<LocationObject>();
   const [fetching, setFetching] = useState(false);
 
@@ -50,9 +53,24 @@ export default function Questionnaire({ navigation }) {
 
   interface answer_type {
     choiceIndex: Number | Array<number>;
-    answer: String | number | Array<String> | Array<number>;
+    answer: String | number | Array<String> | Array<number>|multiple_answer;
     questionId: String;
   }
+
+  interface multiple_answer {
+    From: String;
+    To: String
+    Reason: String
+  }
+
+  const [multiple_answers, setmultiple_answer]= useState(
+   {
+    From: String,
+    To: String,
+    Reason: String
+   }
+  );
+
 
   const GetLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -187,7 +205,6 @@ export default function Questionnaire({ navigation }) {
       );
       setBlockIdx(idx);
     })();
-    console.log("idx:", blockIdx);
     loadQuiz();
     GetLocation();
   }, []);
@@ -284,6 +301,53 @@ export default function Questionnaire({ navigation }) {
     );
   };
 
+  const renderType5 = (i: number) => {
+    // 3 free responce, render yes and no button then fill the input box
+    var temp_interface = {} as multiple_answer;
+    return (
+      <View>
+        {renderType0(i)}
+        <TextInput
+          style={styles.input}
+          placeholder="From:"
+          onChangeText={(freeText) => {
+            temp_interface.From = freeText;
+            let temp_answers = user_answers;
+            temp_answers[i].answer = temp_interface;
+            temp_answers[i].choiceIndex = questions[i]["choices"].length;
+            setUserAnswers(temp_answers);
+            console.log(user_answers);
+          }}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="To:"
+          onChangeText={(freeText) => {
+            temp_interface.To = freeText;
+            let temp_answers = user_answers;
+            temp_answers[i].answer = temp_interface;
+            temp_answers[i].choiceIndex = questions[i]["choices"].length;
+            setUserAnswers(temp_answers);
+            console.log(user_answers);
+          }}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Reason:"
+          onChangeText={(freeText) => {
+            temp_interface.Reason = freeText;
+            let temp_answers = user_answers;
+            temp_answers[i].answer = temp_interface;
+            temp_answers[i].choiceIndex = questions[i]["choices"].length;
+            setUserAnswers(temp_answers);
+            // console.log("user_answers is ");
+            console.log(user_answers);
+          }}
+        />
+      </View>
+    );
+  };
+
   const renderQuestionList = (i: number) => {
     let type = questions[i]["type"];
     switch (type) {
@@ -302,6 +366,8 @@ export default function Questionnaire({ navigation }) {
       case 4:
         // single text entry
         return renderType4(i);
+      case 5:
+        return renderType5(i);
       default:
         console.log("unable to parse type");
     }
@@ -331,13 +397,31 @@ export default function Questionnaire({ navigation }) {
 
     try {
       const token: string = (await getItemAsync("user_token"))!;
-      console.log(location?.coords);
+      let longitude = 0;
+      let latitude = 0;
+      let geoid = undefined;
+      if(location?.coords) {
+        longitude = location?.coords.longitude;
+        latitude = location?.coords.latitude
+        const geocensus = await axios.get(`https://geocoding.geo.census.gov/geocoder/geographies/coordinates`, {
+          params: {
+            benchmark: 4,
+            vintage: 4,
+            format: "json",
+            x: longitude,
+            y: latitude
+          }
+        });
+        geoid = geocensus.data['result']['geographies']['Census Tracts'][0]['GEOID'];
+      }
+      
       const res = await axios.post(
         `${backendUrl}/api/question/answer`,
         {
           location: {
-            longitude: location?.coords ? location?.coords.longitude : 0,
-            latitude: location?.coords ? location?.coords.latitude : 0,
+            longitude,
+            latitude,
+            geoid
           },
           questionnaire,
           answers: user_answers,
@@ -350,9 +434,11 @@ export default function Questionnaire({ navigation }) {
       );
       console.log(res.data);
     } catch (error: any) {
-      console.error(error);
+      console.error("error:", error);
+      console.error("error.data:", error.data);
     }
     console.log("submit");
+    console.log(blockIdx + " block");
     console.log(location);
     let sche: Array<DaySchedule> = JSON.parse(
       (await retrieveDataString(userInfo.email + "_schedules"))!

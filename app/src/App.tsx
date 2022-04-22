@@ -8,25 +8,45 @@ import { NavigationContainer, TabActions } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import OpeningScreen from "./screens/OpeningScreen";
 import Login from "./screens/LoginScreen";
+import WelcomeScreen from "./screens/WelcomeScreen";
+
 import Verification from "./screens/Verification";
 import EmailVerificationScreen from "./screens/EmailVerificationScreen";
 import TermsAndConditions from "./screens/TermsAndConditionsScreen";
 import Loading from "./screens/Loading";
-import React, { useState } from "react";
-import { AuthContext, UserInfo } from "./navigation/context";
+import React, { useState, useEffect } from "react";
+import { AuthContext, UserInfo, WelcomeContext } from "./navigation/context";
 
-import {backendUrl} from "./config/config.json";
+import { backendUrl } from "./config/config.json";
 
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
-
-import { Alert } from "react-native";
+import { retrieveDataString, storeDataString } from "./components/Helpers";
 
 const AuthStack = createNativeStackNavigator();
+const WelcomeStack = createNativeStackNavigator();
+
+const WelcomeStackNavigator = () => {
+  return (
+    <WelcomeStack.Navigator>
+      <WelcomeStack.Screen
+        name="WelcomeScreen"
+        component={WelcomeScreen}
+        options={{ headerShown: false, title: "Welcome" }}
+      />
+    </WelcomeStack.Navigator>
+  );
+};
 
 const AuthenticationStackNavigator = () => {
   return (
     <AuthStack.Navigator>
+      {/* <AuthStack.Screen
+        name="WelcomeScreen"
+        component={WelcomeScreen}
+        options={{ headerShown: false, title: "Welcome" }}
+      /> */}
+
       <AuthStack.Screen
         name="Login"
         component={Login}
@@ -66,8 +86,9 @@ export default function App() {
 
   const [isLoading, setIsLoading] = React.useState(true);
   const [authValid, setAuthValid] = React.useState(false);
+  const [isFirstTime, setIsFirstTime] = React.useState(true);
 
-  const [userInfo, setUserInfo] = React.useState<UserInfo>(() => userInfo);
+  const [userInfo, setUserInfo] = React.useState<any>();
 
   const setItem = (name: string, data: string) => {
     try {
@@ -81,7 +102,7 @@ export default function App() {
 
   const verifyToken = () => {
     SecureStore.getItemAsync("user_token").then((token) => {
-      console.log(token);
+      // console.log(token);
       axios
         .get(`${backendUrl}/api/auth/jwt-test`, {
           headers: {
@@ -124,26 +145,42 @@ export default function App() {
     };
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 1500);
+    }, 500);
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    retrieveDataString("is_first_time").then((first) => {
+      if (!first) {
+        storeDataString("is_first_time", "true");
+      } else {
+        setIsFirstTime(false);
+      }
+    });
+
     verifyToken();
   }, []);
 
-  // if (isLoading) {
-  //   return <Loading />;
-  // }
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <AuthContext.Provider
       value={{ authFunctions: authContext, userInfo: userInfo }}
     >
       <NavigationContainer>
-        {authValid ? <HomeNavigation /> : <AuthenticationStackNavigator />}
+        {isFirstTime ? (
+          <WelcomeContext.Provider value={{ isFirstTime, setIsFirstTime }}>
+            <WelcomeStackNavigator />
+          </WelcomeContext.Provider>
+        ) : authValid ? (
+          <HomeNavigation />
+        ) : (
+          <AuthenticationStackNavigator />
+        )}
       </NavigationContainer>
     </AuthContext.Provider>
   );

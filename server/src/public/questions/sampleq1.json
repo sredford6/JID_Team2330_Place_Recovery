@@ -37,14 +37,13 @@
     ]
   },{
     "id": "005_sc_text",
-    "question": "If they select “Traveling, Where are you traveling from and to? What’s the reason for traveling?",
+    "question": "If you select Traveling, Where are you traveling from and to? What is the reason for traveling? If Not select No",
     "type": 5,
     "choices": [
       "Yes",
       "No"
     ]
   },
-
   {
     "id": "006_sc",
     "question": "How familiar are you with the place you are currently at?",
