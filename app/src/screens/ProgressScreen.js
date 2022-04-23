@@ -6,6 +6,7 @@ import {
   View,
   Dimensions,
   ActivityIndicator,
+  ImageBackground,
 } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 import axios from "axios";
@@ -16,28 +17,24 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Questionnaire from "./QuestionnaireScreen";
 
+// let stress = [0, 0, 0, 0, 0, 0, 0];
+// let calmness = [0, 0, 0, 0, 0, 0, 0];
+// let sadness = [0, 0, 0, 0, 0, 0, 0];
+// let anxiety = [0, 0, 0, 0, 0, 0, 0];
 export default function ProgressScreen() {
-  // 1. 把用户当天某个问题（0 - 4）的answer加起来除以questionnaire的提交次数
-  //2. 根据timestamp判断当天提交了几次questionnaire
-  //3.answer/questionnaire提交次数
-
-  // 最外面的object是ueser
-  // 第二层的object是questionnaire
-  // 最里面的array的object是回答的问题
-  // 根据date判断是不是同一天
-  // 第一个元素肯定是monday
-
-  // each object is a question,
-
-  // let happiness = [0, 0, 0, 0, 0, 0, 0];
-
-  const [calmness, setcalmness] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [sadness, setsadness] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [anxiety, setanxiety] = useState([0, 0, 0, 0, 0, 0, 0]);
-  const [happiness, sethappiness] = useState([0, 0, 0, 0, 0, 0, 0]);
-  // this.state = {
-  //   test: [1, 2, 2, 4, 5, 3, 3],
-  // };
+  const [stress, setstress] = useState([0, 0, 0, 0, 0, 0, 0]);
+  const [calmness, setcalmness] = useState([0, 0, 0, 0, 0, 0, 0]);
+
+  const updateSadness = (day, value) => {
+    setList((existingItems) => {
+      return existingItems.map((item, j) => {
+        return j === day ? item + value : item;
+      });
+    });
+  };
+
   const getResult = async () => {
     const token = await getItemAsync("user_token");
     // console.log(token);
@@ -49,56 +46,66 @@ export default function ProgressScreen() {
       })
       .then((response) => {
         let count = [0, 0, 0, 0, 0, 0, 0];
+        console.log("======================");
+        // console.log(response);
         for (let i = 0; i < response.data.answers.length; i++) {
           // This is the questionnaire
+          console.log("?????");
           const questionnaire = response.data.answers[i];
+          console.log("======================");
+          console.log(questionnaire);
           const questions = questionnaire.answers;
-
+          // date of the questionnaire
+          console.log(questions);
           const date = questionnaire.datetime.substring(0, 10);
           const d = new Date(date);
+          // day of the questionnaire
           let day = d.getDay();
           count[day] = count[day] + 1;
+
+          // monday
           if (day == 0) {
             // add results to the array
-            happiness[0] = questions[0].answer;
+            stress[0] = questions[0].answer;
             calmness[0] = questions[1].answer;
-            sadness[0] = questions[2].answer;
+            updateSadness(0, questions[0].answer);
             anxiety[0] = questions[3].answer;
+            // tuesday
           } else if (day == 1) {
-            happiness[1] = questions[0].answer;
+            stress[1] = questions[0].answer;
             calmness[1] = questions[1].answer;
-            sadness[1] = questions[2].answer;
+            updateSadness(1, questions[0].answer);
             anxiety[1] = questions[3].answer;
           } else if (day == 2) {
-            happiness[2] = questions[0].answer;
+            stress[2] = questions[0].answer;
             calmness[2] = questions[1].answer;
-            sadness[2] = questions[2].answer;
+            updateSadness(2, questions[0].answer);
             anxiety[2] = questions[3].answer;
           } else if (day == 3) {
-            happiness[3] = questions[0].answer;
+            stress[3] = questions[0].answer;
             calmness[3] = questions[1].answer;
-            sadness[3] = questions[2].answer;
+            updateSadness(3, questions[0].answer);
             anxiety[3] = questions[3].answer;
           } else if (day == 4) {
-            happiness[4] = questions[0].answer;
+            stress[4] = questions[0].answer;
             calmness[4] = questions[1].answer;
-            sadness[4] = questions[2].answer;
+            updateSadness(4, questions[0].answer);
             anxiety[4] = questions[3].answer;
           } else if (day == 5) {
-            happiness[5] = questions[0].answer;
+            stress[5] = questions[0].answer;
             calmness[5] = questions[1].answer;
-            sadness[5] = questions[2].answer;
+            updateSadness(5, questions[0].answer);
             anxiety[5] = questions[3].answer;
           } else if (day == 6) {
-            happiness[6] = questions[0].answer;
+            stress[6] = questions[0].answer;
             calmness[6] = questions[1].answer;
-            sadness[6] = questions[2].answer;
+            updateSadness(6, questions[0].answer);
             anxiety[6] = questions[3].answer;
           }
         }
         for (let i = 0; i < 7; i++) {
           if (count[i] != 0) {
-            happiness[i] = happiness[i] / count[i];
+            stress[i] = stress[i] / count[i];
             calmness[i] = calmness[i] / count[i];
             sadness[i] = sadness[i] / count[i];
             anxiety[i] = anxiety[i] / count[i];
@@ -106,7 +113,7 @@ export default function ProgressScreen() {
         }
 
         // console.log("hap");
-        // console.log(happiness);
+        // console.log(stress);
         // console.log(calmness);
         // console.log(sadness);
         // console.log(anxiety);
@@ -135,111 +142,117 @@ export default function ProgressScreen() {
   const calmLabelIterator = calmYLabel();
 
   function* sadYLabel() {
-    yield* [0, 1, 2, 3, 4, 5];
+    yield* [0, 1.0, 2.0, 3.0, 4.0, 5.0];
   }
 
   const sadLabelIterator = sadYLabel();
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.TitleText}>Happiness</Text>
-        <BarChart
-          data={{
-            labels: ["Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat.", "Sun."],
-            datasets: [
-              {
-                data: happiness,
-              },
-            ],
-          }}
-          fromZero={true}
-          showValuesOnTopOfBars={true}
-          width={Dimensions.get("window").width} // from react-native
-          height={220}
-          // yAxisInterval={2} // optional, defaults to 1
-          // strokeWidth={10}
-          segments={5}
-          chartConfig={{
-            // backgroundColor: "white",
-            fillShadowGradient: "#34A0A4",
-            fillShadowGradientOpacity: 1,
-            backgroundGradientFrom: "#fff",
-            backgroundGradientTo: "#fff",
-            decimalPlaces: 2, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            formatYLabel: () => hapyLabelIterator.next().value,
-          }}
-          style={{
-            marginVertical: 8,
-            borderRadius: 16,
-          }}
-        />
-        <Text style={styles.TitleText}>Calmness</Text>
-        <BarChart
-          data={{
-            labels: ["Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat.", "Sun."],
-            datasets: [
-              {
-                data: [0, 2, 3, 4, 1, 2, 3],
-              },
-            ],
-          }}
-          showValuesOnTopOfBars={true}
-          width={Dimensions.get("window").width} // from react-native
-          height={220} //adjust the height of the graph
-          segments={5}
-          chartConfig={{
-            fillShadowGradient: "#34A0A4",
-            fillShadowGradientOpacity: 1,
-            backgroundGradientFrom: "#fff",
-            backgroundGradientTo: "#fff",
-            // backgroundGradientFrom: "#34A0A4",
-            // backgroundGradientTo: "#34A0A4",
-            decimalPlaces: 2, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            formatYLabel: () => calmLabelIterator.next().value,
-          }}
-          style={{
-            marginVertical: 8,
-            borderRadius: 16,
-          }}
-        />
-        <Text style={styles.TitleText}>Sadness</Text>
-        <BarChart
-          data={{
-            labels: ["Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat.", "Sun."],
-            datasets: [
-              {
-                data: sadness,
-              },
-            ],
-          }}
-          showValuesOnTopOfBars={true}
-          width={Dimensions.get("window").width} // from react-native
-          height={220} //adjust the height of the graph
-          segments={5}
-          chartConfig={{
-            fillShadowGradient: "#34A0A4",
-            fillShadowGradientOpacity: 1,
-            backgroundGradientFrom: "#fff",
-            backgroundGradientTo: "#fff",
-            //backgroundColor: "#eee",
-            // backgroundGradientFrom: "#34A0A4",
-            // backgroundGradientTo: "#34A0A4",
-            decimalPlaces: 2, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            formatYLabel: () => sadLabelIterator.next().value,
-          }}
-          style={{
-            marginVertical: 8,
-            borderRadius: 16,
-          }}
-        />
-      </View>
-    </ScrollView>
+    <ImageBackground
+      source={require("../assets/images/home4.png")}
+      resizeMode="cover"
+      style={styles.image}
+    >
+      <ScrollView>
+        <View style={styles.container}>
+          <Text style={styles.TitleText}>Stress</Text>
+          <BarChart
+            data={{
+              labels: ["Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat.", "Sun."],
+              datasets: [
+                {
+                  // data: stress,
+                  data: stress,
+                },
+              ],
+            }}
+            showValuesOnTopOfBars={true}
+            width={Dimensions.get("window").width - 20} // from react-native
+            height={220} //adjust the height of the graph
+            segments={5}
+            chartConfig={{
+              fillShadowGradient: "#34A0A4",
+              fillShadowGradientOpacity: 1,
+              backgroundGradientFrom: "#fff",
+              backgroundGradientTo: "#fff",
+              // backgroundGradientFrom: "#82A3FF",
+              // backgroundGradientTo: "#FFFFFF",
+              decimalPlaces: 2, // optional, defaults to 2dp
+              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              formatYLabel: () => hapyLabelIterator.next().value,
+            }}
+            style={{
+              marginVertical: 8,
+              borderRadius: 16,
+            }}
+          />
+          <Text style={styles.TitleText}>Calmness</Text>
+          <BarChart
+            data={{
+              labels: ["Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat.", "Sun."],
+              datasets: [
+                {
+                  data: calmness,
+                },
+              ],
+            }}
+            showValuesOnTopOfBars={true}
+            width={Dimensions.get("window").width - 20} // from react-native
+            height={220} //adjust the height of the graph
+            segments={5}
+            chartConfig={{
+              fillShadowGradient: "#34A0A4",
+              fillShadowGradientOpacity: 1,
+              backgroundGradientFrom: "#fff",
+              backgroundGradientTo: "#fff",
+              //backgroundColor: "#eee",
+              // backgroundGradientFrom: "#82A3FF",
+              // backgroundGradientTo: "#FFFFFF",
+              decimalPlaces: 2, // optional, defaults to 2dp
+              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              formatYLabel: () => calmLabelIterator.next().value,
+            }}
+            style={{
+              marginVertical: 8,
+              borderRadius: 16,
+            }}
+          />
+          <Text style={styles.TitleText}>Sadness</Text>
+          <BarChart
+            data={{
+              labels: ["Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat.", "Sun."],
+              datasets: [
+                {
+                  data: sadness,
+                },
+              ],
+            }}
+            showValuesOnTopOfBars={true}
+            width={Dimensions.get("window").width - 20} // from react-native
+            height={220} //adjust the height of the graph
+            segments={5}
+            chartConfig={{
+              fillShadowGradient: "#34A0A4",
+              fillShadowGradientOpacity: 1,
+              backgroundGradientFrom: "#fff",
+              backgroundGradientTo: "#fff",
+              //backgroundColor: "#eee",
+              // backgroundGradientFrom: "#82A3FF",
+              // backgroundGradientTo: "#FFFFFF",
+              decimalPlaces: 2, // optional, defaults to 2dp
+              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              formatYLabel: () => sadLabelIterator.next().value,
+            }}
+            style={{
+              marginVertical: 8,
+              borderRadius: 16,
+            }}
+          />
+        </View>
+      </ScrollView>
+    </ImageBackground>
   );
 }
 
@@ -260,6 +273,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingBottom: 30,
     paddingTop: 30,
+  },
+  shadowProp: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+  },
+  shadowPropButton: {
+    shadowColor: "#FFFFFF",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+  },
+  image: {
+    flex: 1,
+    justifyContent: "center",
   },
   // scrollView: {
   //   marginHorizontal: 20,
