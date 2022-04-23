@@ -129,7 +129,7 @@ export default function Demographics({ navigation }) {
           console.log(response.data);
           const { message } = response.data;
           const { status, data } = response;
-          Alert.alert("the demographics form was successfully submitted")
+          Alert.alert("The form was successfully submitted")
          
           navigation.navigate("Profile");
         })
@@ -157,6 +157,7 @@ export default function Demographics({ navigation }) {
     onValueChange={(ed, itemIndex) =>
       setEducation(ed)
   }>
+    <Picker.Item label="Not Selected" value="Not Selected" />
     <Picker.Item label="Less than High School" value="Less than High School" />
     <Picker.Item label="High School Graduate" value="High School Graduate'" />
     <Picker.Item label="Vocational/Trade/Technical School" value="Vocational/Trade/Technical School" />
@@ -225,6 +226,7 @@ export default function Demographics({ navigation }) {
     onValueChange={(num, itemIndex) =>
       setMoved(num)
     }>
+    <Picker.Item label="Not Selected" value="Not Selected" />
     <Picker.Item label="0" value="0" />
     <Picker.Item label="1" value="1" />
     <Picker.Item label="2" value="2" />

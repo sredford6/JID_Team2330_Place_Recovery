@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     width: 320,
     height: 58,
     paddingVertical: 8,
-    backgroundColor: "#F5FFFA",
+    backgroundColor: "#DBECEE",
     paddingHorizontal: 15,
     borderRadius: 4,
     justifyContent: "center",
