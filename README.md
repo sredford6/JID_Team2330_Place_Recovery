@@ -7,6 +7,29 @@ The project is a mobile application for mental health and risk stratification ba
   
 # Release Notes
 
+## Version 1.0.0 
+### Features
+- The app can handle multiple free response questions.
+- The Home Screen can show the complete status of the questionnaire and the timeclock for the next questionnaire.
+- The app only allows user to take questionnaire within the available period.
+- The Welcome Screen that is displaying the general information and guidance for the user first time opened the application.
+- User can reset notification schedules by long pressing the button on home page.
+- A profile screen that can display the user's personal information and allow them to access the additional demographics form.
+- The progress screen contains bar charts that will be used to illustrate the user's progress/trends.
+- Client can export user data to csv through links.
+- Published the app to Apple App Store.
+- Published the app to Google Play Store.
+
+### Fixed Bugs 
+- Fixed locations not working on Android devices.
+
+
+### Known Issues
+- DateTimePicker has problems on Andriod, work fine on iOS.
+- Haven't tested the case where there is no GPS signals.
+- The notification might not work porperly if the users change the system time. Users can reset notifcation schedules if the notification don't work.
+
+
 ## Version 0.4.0 (Sprint 4)
 ### Features
 
