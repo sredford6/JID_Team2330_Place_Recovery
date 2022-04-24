@@ -21,6 +21,7 @@ export default function ProfileScreen({
   const [zip, setZip] = React.useState("");
   const [gender, setGender] = React.useState("");
   const [race, setRace] = React.useState("");
+  const [counter, setCounter] = React.useState(0);
 
 
 
@@ -45,8 +46,7 @@ export default function ProfileScreen({
         }
       })
       .then((response) => {
-        
-        //console.log();
+       
   
         setPhoneNumber(response.data.phoneNumber)
         
@@ -69,12 +69,20 @@ export default function ProfileScreen({
   };
  
   useEffect(() => {
+    if (counter == 0) {
+      console.log(counter)
+      getUserInformation()
+      setCounter(1)
+      
+    } 
+    
     const interval=setInterval(()=>{
       getUserInformation()
-     },2000)
-       
-       
-     return()=>clearInterval(interval)
+      }, 5000)
+      
+    return()=>clearInterval(interval)
+
+    
   }, []);
 
   // console.log(firstName);
