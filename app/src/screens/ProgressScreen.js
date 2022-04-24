@@ -29,18 +29,18 @@ export default function ProgressScreen() {
   const [stress, setstress] = useState([0, 0, 0, 0, 0, 0, 0]);
   const appState = useRef(AppState.currentState);
 
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const handleAppStateChange = (state) => {
-    setAppStateVisible(state);
-  };
-  // https://reactnative.dev/docs/appstate
-  // https://rossbulat.medium.com/working-with-app-state-and-event-listeners-in-react-native-ffa9bba8f6b7
-  useEffect(() => {
-    AppState.addEventListener("change", handleAppStateChange);
-    return () => {
-      AppState.removeEventListener("change", handleAppStateChange);
-    };
-  }, []);
+  // const [appStateVisible, setAppStateVisible] = useState(appState.current);
+  // const handleAppStateChange = (state) => {
+  //   setAppStateVisible(state);
+  // };
+  // // https://reactnative.dev/docs/appstate
+  // // https://rossbulat.medium.com/working-with-app-state-and-event-listeners-in-react-native-ffa9bba8f6b7
+  // useEffect(() => {
+  //   AppState.addEventListener("change", handleAppStateChange);
+  //   return () => {
+  //     AppState.removeEventListener("change", handleAppStateChange);
+  //   };
+  // }, []);
 
   const updateSadness = (day, value) => {
     setsadness((existingItems) => {
@@ -75,7 +75,7 @@ export default function ProgressScreen() {
   const getResult = async () => {
     setsadness([0, 0, 0, 0, 0, 0, 0]);
     setanxiety([0, 0, 0, 0, 0, 0, 0]);
-    setstress([0, 0, 0, 0, 0, 0]);
+    setstress([0, 0, 0, 0, 0, 0, 0]);
     const token = await getItemAsync("user_token");
     // console.log(token);
     axios
@@ -155,8 +155,6 @@ export default function ProgressScreen() {
             });
           }
         }
-        // console.log(stress);
-        // console.log(sadness);
       })
       .catch((error) => {
         console.log(error.message);
@@ -165,8 +163,12 @@ export default function ProgressScreen() {
   };
 
   useEffect(() => {
-    getResult();
-  }, [appStateVisible]);
+    (async () => {
+      await getResult();
+    })();
+    // console.log(stress);
+    // console.log(sadness);
+  }, []);
 
   function* hapYLabel() {
     yield* [0, 1, 2, 3, 4, 5];

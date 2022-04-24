@@ -410,6 +410,9 @@ export default function HomeScreen({
                 ready() ? styles.buttonDeep : styles.button,
                 styles.shadowPropButton,
               ]}
+              onLongPress={() => {
+                console.log("hold");
+              }}
               onPress={() => {
                 if (ready()) {
                   navigation.navigate("Questionnaire");
