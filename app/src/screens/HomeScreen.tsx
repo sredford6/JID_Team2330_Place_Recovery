@@ -365,6 +365,23 @@ export default function HomeScreen({
     })();
   }, []);
 
+  const handleLongPress = () => {
+    Alert.alert(
+      "Reset your notification schedules",
+      "You should only reset your notification schedules if the notifications do not work.",
+      [
+        { text: "Cancel" },
+        {
+          text: "Reset",
+          onPress: async () => {
+            Notifications.cancelAllScheduledNotificationsAsync();
+            storeDataString(userInfo.email + "_schedules", "");
+          },
+        },
+      ]
+    );
+  };
+
   // update schedules when return to home screen (like after a questionnaire)
   useEffect(() => {
     (async () => {
@@ -410,9 +427,7 @@ export default function HomeScreen({
                 ready() ? styles.buttonDeep : styles.button,
                 styles.shadowPropButton,
               ]}
-              onLongPress={() => {
-                console.log("hold");
-              }}
+              onLongPress={handleLongPress}
               onPress={() => {
                 if (ready()) {
                   navigation.navigate("Questionnaire");
@@ -618,7 +633,7 @@ const styles = StyleSheet.create({
   button: {
     width: 200,
     height: 55,
-    backgroundColor: "#068D9D",
+    backgroundColor: "#72B3BA",
     padding: 10,
     alignItems: "center",
     justifyContent: "center",
