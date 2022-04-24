@@ -17,7 +17,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function EditSleepSchedule({navigation}) {
     const [sleepTime, setSleepTime] = React.useState(new Date(1598051730000));
-  const [wakeTime, setWakeTime] = React.useState(new Date(1598051730000));
+    const [wakeTime, setWakeTime] = React.useState(new Date(23456700000));
 
 
   const changeTime = (event, newTime) => {
