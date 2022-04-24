@@ -16,7 +16,7 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LocationScreen from '../screens/LocationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import ProgressScreen from "../screens/ProgressScreen";
+import ProgressScreen from "../screens/ProgressScreen.js";
 import OpeningScreen from "../screens/OpeningScreen";
 import RegistrationScreen from "../screens/RegistrationScreen";
 import {
