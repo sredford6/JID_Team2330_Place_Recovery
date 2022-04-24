@@ -82,7 +82,7 @@ export default function EditAddressScreen({navigation}) {
             placeholder="Address Line 1"
             autoCapitalize="none"
             autoCorrect={false}
-            maxLength={20}
+            maxLength={40}
             onChangeText={(inp) => setAddress(inp)}
             value={address}
    
@@ -92,7 +92,7 @@ export default function EditAddressScreen({navigation}) {
             placeholder="City"
             autoCapitalize="none"
             autoCorrect={false}
-            maxLength={20}
+            maxLength={30}
             onChangeText={(inp) => setCity(inp)}
             value={city}
         

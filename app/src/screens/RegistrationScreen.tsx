@@ -135,6 +135,7 @@ export default function RegistrationScreen({ navigation }) {
         console.log(status);
         if (status == 200) {
           signIn(data.token);
+          Alert.alert("Welcome! Please navigate to user profile and complete the additional demographics form.")
         }
       })
       .catch((error) => {

@@ -393,7 +393,7 @@ export default function HomeScreen({
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
       >
         <View style={styles.container}>
-          <View style={[styles.frameContainer, styles.shadowProp]}>
+          <View style={[styles.frameContainerQ, styles.shadowProp]}>
             <Text style={styles.title}>
               {ready()
                 ? "Your questionnaire is available"
@@ -423,7 +423,7 @@ export default function HomeScreen({
             </TouchableOpacity>
             {/* </LinearGradient> */}
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.button}
               onPress={async () => {
                 Notifications.cancelAllScheduledNotificationsAsync();
@@ -432,7 +432,7 @@ export default function HomeScreen({
               activeOpacity={0.85}
             >
               <Text style={styles.buttonTextWhite}>Reset</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <View style={[styles.frameContainer, styles.shadowProp]}>
             <Text style={styles.title}>Questionnaire status</Text>
@@ -545,7 +545,19 @@ const styles = StyleSheet.create({
     flex: 0.8,
     alignItems: "center",
     justifyContent: "space-evenly",
-    backgroundColor: "#FFFFFF00"
+    backgroundColor: "#FFFFFF00",
+  },
+  frameContainerQ: {
+    width: "88%",
+    flex: 0.2,
+    backgroundColor: "#FFFFFF",
+    justifyContent: "space-evenly",
+    //justifyContent: "center",
+    alignItems: "center",
+    //alignContent: "space-between",
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+    borderRadius: 32,
   },
   frameContainer: {
     width: "88%",
@@ -583,7 +595,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
     color: "#082B48",
-    textAlign: "center"
+    textAlign: "center",
   },
   blackText: {
     fontSize: 14,

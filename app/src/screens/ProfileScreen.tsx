@@ -1,4 +1,4 @@
-import { StyleSheet, Button, ScrollView } from 'react-native';
+import { StyleSheet, Button, ScrollView, ImageBackground } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -21,6 +21,9 @@ export default function ProfileScreen({
   const [zip, setZip] = React.useState("");
   const [gender, setGender] = React.useState("");
   const [race, setRace] = React.useState("");
+  const [counter, setCounter] = React.useState(0);
+
+
 
   const { signOut } = authFunctions;
   const handleSignOut = () => {
@@ -43,8 +46,8 @@ export default function ProfileScreen({
         }
       })
       .then((response) => {
-
-        //console.log();
+       
+  
         setPhoneNumber(response.data.phoneNumber)
         
         
@@ -54,9 +57,10 @@ export default function ProfileScreen({
         setState(response.data.state)
         setRace(response.data.race)
         setGender(response.data.gender)
+       
         const { message } = response.data;
         const { status, data } = response;
-        console.log(status);
+        
       })
       .catch((error) => {
         console.log(error.message)
@@ -65,12 +69,25 @@ export default function ProfileScreen({
   };
  
   useEffect(() => {
- 
-     getUserInformation()
+    if (counter == 0) {
+      console.log(counter)
+      getUserInformation()
+      setCounter(1)
+      
+    } 
+    
+    const interval=setInterval(()=>{
+      getUserInformation()
+      }, 5000)
+      
+    return()=>clearInterval(interval)
+
+    
   }, []);
 
   // console.log(firstName);
   return (
+    
     <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
       >
@@ -123,7 +140,7 @@ export default function ProfileScreen({
                 onPress={() => navigation.navigate("Edit Phone Number")}
                 activeOpacity={0.85}
               >
-      <Text style={styles.label}> Phone Number <Text style = {styles.editText}>[Edit]</Text></Text>
+      <Text style={styles.label}> Phone Number: {phoneNumber} <Text style = {styles.editText}>[Edit]</Text></Text>
       
       </TouchableOpacity>
 
@@ -132,7 +149,7 @@ export default function ProfileScreen({
                 onPress={() => navigation.navigate("Edit Address")}
                 activeOpacity={0.85}
               >
-      <Text style={styles.label}> Address <Text style = {styles.editText}>[Edit]</Text></Text>
+      <Text style={styles.label}>Address: {address}, {city}, {state} {zip} <Text style = {styles.editText}>[Edit]</Text></Text>
       
       </TouchableOpacity>
    
