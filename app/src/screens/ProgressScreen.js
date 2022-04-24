@@ -7,14 +7,16 @@ import {
   Dimensions,
   ActivityIndicator,
   ImageBackground,
+  AppState,
 } from "react-native";
+
 import { BarChart, LineChart } from "react-native-chart-kit";
 import axios from "axios";
 import { getItemAsync } from "expo-secure-store";
 import { backendUrl } from "../config/config.json";
 import { NavigationEvents } from "react-navigation";
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Questionnaire from "./QuestionnaireScreen";
 
 // let stress = [0, 0, 0, 0, 0, 0, 0];
@@ -25,7 +27,20 @@ export default function ProgressScreen() {
   const [sadness, setsadness] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [anxiety, setanxiety] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [stress, setstress] = useState([0, 0, 0, 0, 0, 0, 0]);
-  // const [calmness, setcalmness] = useState([0, 0, 0, 0, 0, 0, 0]);
+  const appState = useRef(AppState.currentState);
+
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+  const handleAppStateChange = (state) => {
+    setAppStateVisible(state);
+  };
+  // https://reactnative.dev/docs/appstate
+  // https://rossbulat.medium.com/working-with-app-state-and-event-listeners-in-react-native-ffa9bba8f6b7
+  useEffect(() => {
+    AppState.addEventListener("change", handleAppStateChange);
+    return () => {
+      AppState.removeEventListener("change", handleAppStateChange);
+    };
+  }, []);
 
   const updateSadness = (day, value) => {
     setsadness((existingItems) => {
@@ -58,6 +73,9 @@ export default function ProgressScreen() {
   // };
 
   const getResult = async () => {
+    setsadness([0, 0, 0, 0, 0, 0, 0]);
+    setanxiety([0, 0, 0, 0, 0, 0, 0]);
+    setstress([0, 0, 0, 0, 0, 0]);
     const token = await getItemAsync("user_token");
     // console.log(token);
     axios
@@ -69,13 +87,13 @@ export default function ProgressScreen() {
       .then((response) => {
         let count = [0, 0, 0, 0, 0, 0, 0];
         // console.log("======================");
-        console.log(response);
+        // per questionnaire
         for (let i = 0; i < response.data.answers.length; i++) {
           // This is the questionnaire
           // console.log("?????");
           const questionnaire = response.data.answers[i];
-          console.log("======================");
-          console.log(questionnaire);
+          // console.log("======================");
+          // console.log(questionnaire.answers[0].answer);
           const questions = questionnaire.answers;
           // date of the questionnaire
           // console.log(questions);
@@ -88,34 +106,34 @@ export default function ProgressScreen() {
           // monday
           if (day == 0) {
             // add results to the array
-            updateSadness(0, questions[0].answer);
-            updateAnxiety(0, questions[1].answer);
-            updateStress(0, questions[2].answer);
+            updateSadness(0, questions[0].choiceIndex + 1);
+            updateAnxiety(0, questions[1].choiceIndex + 1);
+            updateStress(0, questions[2].choiceIndex + 1);
             // tuesday
           } else if (day == 1) {
-            updateSadness(1, questions[0].answer);
-            updateAnxiety(1, questions[1].answer);
-            updateStress(1, questions[2].answer);
+            updateSadness(1, questions[0].choiceIndex + 1);
+            updateAnxiety(1, questions[1].choiceIndex + 1);
+            updateStress(1, questions[2].choiceIndex + 1);
           } else if (day == 2) {
-            updateSadness(2, questions[0].answer);
-            updateAnxiety(2, questions[1].answer);
-            updateStress(2, questions[2].answer);
+            updateSadness(2, questions[0].choiceIndex + 1);
+            updateAnxiety(2, questions[1].choiceIndex + 1);
+            updateStress(2, questions[2].choiceIndex + 1);
           } else if (day == 3) {
-            updateSadness(3, questions[0].answer);
-            updateAnxiety(3, questions[1].answer);
-            updateStress(3, questions[2].answer);
+            updateSadness(3, questions[0].choiceIndex + 1);
+            updateAnxiety(3, questions[1].choiceIndex + 1);
+            updateStress(3, questions[2].choiceIndex + 1);
           } else if (day == 4) {
-            updateSadness(4, questions[0].answer);
-            updateAnxiety(4, questions[1].answer);
-            updateStress(4, questions[2].answer);
+            updateSadness(4, questions[0].choiceIndex + 1);
+            updateAnxiety(4, questions[1].choiceIndex + 1);
+            updateStress(4, questions[2].choiceIndex + 1);
           } else if (day == 5) {
-            updateSadness(5, questions[0].answer);
-            updateAnxiety(5, questions[1].answer);
-            updateStress(5, questions[2].answer);
+            updateSadness(5, questions[0].choiceIndex + 1);
+            updateAnxiety(5, questions[1].choiceIndex + 1);
+            updateStress(5, questions[2].choiceIndex + 1);
           } else if (day == 6) {
-            updateSadness(6, questions[0].answer);
-            updateAnxiety(6, questions[1].answer);
-            updateStress(6, questions[2].answer);
+            updateSadness(6, questions[0].choiceIndex + 1);
+            updateAnxiety(6, questions[1].choiceIndex + 1);
+            updateStress(6, questions[2].choiceIndex + 1);
           }
         }
         for (let i = 0; i < 7; i++) {
@@ -137,18 +155,10 @@ export default function ProgressScreen() {
             });
           }
         }
-        // console.log(sadness);
         // console.log(stress);
-        // console.log(anxiety);
-
-        // console.log("hap");
-        // console.log(stress);
-        // console.log(calmness);
         // console.log(sadness);
-        // console.log(anxiety);
       })
       .catch((error) => {
-        console.log("??????????????????????");
         console.log(error.message);
         console.log(error.data);
       });
@@ -156,7 +166,7 @@ export default function ProgressScreen() {
 
   useEffect(() => {
     getResult();
-  }, []);
+  }, [appStateVisible]);
 
   function* hapYLabel() {
     yield* [0, 1, 2, 3, 4, 5];
@@ -258,7 +268,7 @@ export default function ProgressScreen() {
               borderRadius: 16,
             }}
           />
-          <Text style={styles.TitleText}>Sadness</Text>
+          <Text style={styles.TitleText}>Happiness</Text>
           <LineChart
             data={{
               labels: ["Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat.", "Sun."],
