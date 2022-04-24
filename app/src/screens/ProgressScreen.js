@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   ImageBackground,
 } from "react-native";
-import { BarChart } from "react-native-chart-kit";
+import { BarChart, LineChart } from "react-native-chart-kit";
 import axios from "axios";
 import { getItemAsync } from "expo-secure-store";
 import { backendUrl } from "../config/config.json";
@@ -25,15 +25,37 @@ export default function ProgressScreen() {
   const [sadness, setsadness] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [anxiety, setanxiety] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [stress, setstress] = useState([0, 0, 0, 0, 0, 0, 0]);
-  const [calmness, setcalmness] = useState([0, 0, 0, 0, 0, 0, 0]);
+  // const [calmness, setcalmness] = useState([0, 0, 0, 0, 0, 0, 0]);
 
   const updateSadness = (day, value) => {
-    setList((existingItems) => {
+    setsadness((existingItems) => {
       return existingItems.map((item, j) => {
         return j === day ? item + value : item;
       });
     });
   };
+
+  const updateStress = (day, value) => {
+    setstress((existingItems) => {
+      return existingItems.map((item, j) => {
+        return j === day ? item + value : item;
+      });
+    });
+  };
+
+  const updateAnxiety = (day, value) => {
+    setanxiety((existingItems) => {
+      return existingItems.map((item, j) => {
+        return j === day ? item + value : item;
+      });
+    });
+  };
+
+  // const checkState = () => {
+  //   console.log(sadness);
+  //   console.log(stress);
+  //   console.log(anxiety);
+  // };
 
   const getResult = async () => {
     const token = await getItemAsync("user_token");
@@ -46,17 +68,17 @@ export default function ProgressScreen() {
       })
       .then((response) => {
         let count = [0, 0, 0, 0, 0, 0, 0];
-        console.log("======================");
-        // console.log(response);
+        // console.log("======================");
+        console.log(response);
         for (let i = 0; i < response.data.answers.length; i++) {
           // This is the questionnaire
-          console.log("?????");
+          // console.log("?????");
           const questionnaire = response.data.answers[i];
           console.log("======================");
           console.log(questionnaire);
           const questions = questionnaire.answers;
           // date of the questionnaire
-          console.log(questions);
+          // console.log(questions);
           const date = questionnaire.datetime.substring(0, 10);
           const d = new Date(date);
           // day of the questionnaire
@@ -66,51 +88,58 @@ export default function ProgressScreen() {
           // monday
           if (day == 0) {
             // add results to the array
-            stress[0] = questions[0].answer;
-            calmness[0] = questions[1].answer;
             updateSadness(0, questions[0].answer);
-            anxiety[0] = questions[3].answer;
+            updateAnxiety(0, questions[1].answer);
+            updateStress(0, questions[2].answer);
             // tuesday
           } else if (day == 1) {
-            stress[1] = questions[0].answer;
-            calmness[1] = questions[1].answer;
             updateSadness(1, questions[0].answer);
-            anxiety[1] = questions[3].answer;
+            updateAnxiety(1, questions[1].answer);
+            updateStress(1, questions[2].answer);
           } else if (day == 2) {
-            stress[2] = questions[0].answer;
-            calmness[2] = questions[1].answer;
             updateSadness(2, questions[0].answer);
-            anxiety[2] = questions[3].answer;
+            updateAnxiety(2, questions[1].answer);
+            updateStress(2, questions[2].answer);
           } else if (day == 3) {
-            stress[3] = questions[0].answer;
-            calmness[3] = questions[1].answer;
             updateSadness(3, questions[0].answer);
-            anxiety[3] = questions[3].answer;
+            updateAnxiety(3, questions[1].answer);
+            updateStress(3, questions[2].answer);
           } else if (day == 4) {
-            stress[4] = questions[0].answer;
-            calmness[4] = questions[1].answer;
             updateSadness(4, questions[0].answer);
-            anxiety[4] = questions[3].answer;
+            updateAnxiety(4, questions[1].answer);
+            updateStress(4, questions[2].answer);
           } else if (day == 5) {
-            stress[5] = questions[0].answer;
-            calmness[5] = questions[1].answer;
             updateSadness(5, questions[0].answer);
-            anxiety[5] = questions[3].answer;
+            updateAnxiety(5, questions[1].answer);
+            updateStress(5, questions[2].answer);
           } else if (day == 6) {
-            stress[6] = questions[0].answer;
-            calmness[6] = questions[1].answer;
             updateSadness(6, questions[0].answer);
-            anxiety[6] = questions[3].answer;
+            updateAnxiety(6, questions[1].answer);
+            updateStress(6, questions[2].answer);
           }
         }
         for (let i = 0; i < 7; i++) {
           if (count[i] != 0) {
-            stress[i] = stress[i] / count[i];
-            calmness[i] = calmness[i] / count[i];
-            sadness[i] = sadness[i] / count[i];
-            anxiety[i] = anxiety[i] / count[i];
+            setsadness((existingItems) => {
+              return existingItems.map((item, j) => {
+                return j === i ? item / count[i] : item;
+              });
+            });
+            setanxiety((existingItems) => {
+              return existingItems.map((item, j) => {
+                return j === i ? item / count[i] : item;
+              });
+            });
+            setstress((existingItems) => {
+              return existingItems.map((item, j) => {
+                return j === i ? item / count[i] : item;
+              });
+            });
           }
         }
+        // console.log(sadness);
+        // console.log(stress);
+        // console.log(anxiety);
 
         // console.log("hap");
         // console.log(stress);
@@ -142,7 +171,7 @@ export default function ProgressScreen() {
   const calmLabelIterator = calmYLabel();
 
   function* sadYLabel() {
-    yield* [0, 1.0, 2.0, 3.0, 4.0, 5.0];
+    yield* [0, 1, 2, 3, 4, 5];
   }
 
   const sadLabelIterator = sadYLabel();
@@ -155,16 +184,21 @@ export default function ProgressScreen() {
       <ScrollView>
         <View style={styles.container}>
           <Text style={styles.TitleText}>Stress</Text>
-          <BarChart
+          <LineChart
             data={{
               labels: ["Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat.", "Sun."],
               datasets: [
                 {
-                  // data: stress,
                   data: stress,
+                  // data: [0, 0, 0, 0, 0, 4, 0],
+                },
+                {
+                  data: [5],
+                  withDots: false, //a flage to make it hidden
                 },
               ],
             }}
+            bezier
             showValuesOnTopOfBars={true}
             width={Dimensions.get("window").width - 20} // from react-native
             height={220} //adjust the height of the graph
@@ -179,23 +213,29 @@ export default function ProgressScreen() {
               decimalPlaces: 2, // optional, defaults to 2dp
               color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
               labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              formatYLabel: () => hapyLabelIterator.next().value,
+              // formatYLabel: () => hapyLabelIterator.next().value,
             }}
             style={{
               marginVertical: 8,
               borderRadius: 16,
             }}
           />
-          <Text style={styles.TitleText}>Calmness</Text>
-          <BarChart
+          <Text style={styles.TitleText}>Anxiety</Text>
+          <LineChart
             data={{
               labels: ["Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat.", "Sun."],
               datasets: [
                 {
-                  data: calmness,
+                  data: anxiety,
+                  // data: [0, 0, 0, 0, 0, 4, 0],
+                },
+                {
+                  data: [5],
+                  withDots: false, //a flage to make it hidden
                 },
               ],
             }}
+            bezier
             showValuesOnTopOfBars={true}
             width={Dimensions.get("window").width - 20} // from react-native
             height={220} //adjust the height of the graph
@@ -211,7 +251,7 @@ export default function ProgressScreen() {
               decimalPlaces: 2, // optional, defaults to 2dp
               color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
               labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              formatYLabel: () => calmLabelIterator.next().value,
+              // formatYLabel: () => calmLabelIterator.next().value,
             }}
             style={{
               marginVertical: 8,
@@ -219,15 +259,26 @@ export default function ProgressScreen() {
             }}
           />
           <Text style={styles.TitleText}>Sadness</Text>
-          <BarChart
+          <LineChart
             data={{
               labels: ["Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat.", "Sun."],
               datasets: [
                 {
                   data: sadness,
+                  // data: [0, 0, 0, 3, 0, 4, 0],
                 },
+                {
+                  data: [5],
+                  withDots: false,
+                  // data: [0, 0, 0, 3, 0, 4, 0],
+                },
+                // {
+                //   data: [0, 0, 0, 0, 0, 0, 5],
+                //   withDots: false,
+                // },
               ],
             }}
+            bezier
             showValuesOnTopOfBars={true}
             width={Dimensions.get("window").width - 20} // from react-native
             height={220} //adjust the height of the graph
@@ -243,7 +294,7 @@ export default function ProgressScreen() {
               decimalPlaces: 2, // optional, defaults to 2dp
               color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
               labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              formatYLabel: () => sadLabelIterator.next().value,
+              // formatYLabel: () => sadLabelIterator.next().value,
             }}
             style={{
               marginVertical: 8,
