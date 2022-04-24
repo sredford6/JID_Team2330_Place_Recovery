@@ -19,7 +19,7 @@ router.post("/create", verify, async (req, res: Response) => {
     const user: IUser = req.currentUser;
     if (!user.admin) {
       throw {
-        code: 403,
+        httpCode: 403,
         message: `user is not an admin.`,
         error: new Error(`user is not an admin.`),
       };
