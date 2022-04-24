@@ -218,7 +218,7 @@ export default function ProgressScreen() {
               borderRadius: 16,
             }}
           />
-          <Text style={styles.TitleText}>Sadness</Text>
+          <Text style={styles.TitleText}>Happiness</Text>
           <BarChart
             data={{
               labels: ["Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat.", "Sun."],
