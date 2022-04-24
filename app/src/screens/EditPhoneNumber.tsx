@@ -61,6 +61,7 @@ export default function EditPhoneNumberScreen({navigation}) {
 
 
   return (
+  
     <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
@@ -90,6 +91,7 @@ export default function EditPhoneNumberScreen({navigation}) {
       </ScrollView>
     </SafeAreaView>
   );
+ 
   
 }
 

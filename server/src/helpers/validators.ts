@@ -32,10 +32,25 @@ export function validateChoiceQuestion(arg: any): arg is ChoiceQuestion {
   if (
     !(arg as ChoiceQuestion).choices ||
     !Array.isArray((arg as ChoiceQuestion).choices)
-  )
+  ) {
+    throw {
+      httpCode: 400,
+      message: `question format is incorrect. choices undefined in ${arg.id}`,
+      error: new Error(
+        `question format is incorrect. choices undefined in ${arg.id}`
+      ),
+    };
     return false;
+  }
   for (const choice in (arg as ChoiceQuestion).choices) {
     if (typeof choice !== "string") {
+      throw {
+        httpCode: 400,
+        message: `question format is incorrect. choice not a string in ${arg.id}`,
+        error: new Error(
+          `question format is incorrect. choice not a string in ${arg.id}`
+        ),
+      };
       return false;
     }
   }
@@ -51,7 +66,11 @@ export function validateQuestionArray(arg: any): arg is Question[] {
     if (!validateQuestion(question)) {
       return false;
     }
-    if (question.type !== 1 && !validateChoiceQuestion(question)) {
+    if (
+      question.type !== 1 &&
+      question.type !== 4 &&
+      !validateChoiceQuestion(question)
+    ) {
       return false;
     }
     if (questionIds.has(question.id)) {
