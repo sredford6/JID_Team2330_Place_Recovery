@@ -1,14 +1,35 @@
-# PlaceNrecovery App (GT Team 1358)
-<!-- [![license](https://img.shields.io/github/license/dec0dOS/amazing-github-template.svg?style=flat-square)](LICENSE) -->
+<h1 align="center"> 👋PlaceNrecovery(GT Team 1358)👋</h1> <br>
 
-### Project Introduction
+<p align="center">
+  <a href="https://imgur.com/uGnMJIv"><img src="https://i.imgur.com/uGnMJIv.jpg" width ="450" title="source: imgur.com" /></a>
+  </a>
+    <a href="https://github.com/DenverCoder1/readme-typing-svg"><img src="https://readme-typing-svg.herokuapp.com?&font=IBM+Plex+Sans&color=0f0f0f&size=20&lines=Track+Mental+health+Based+On+Neighborhood;Available+for+both+iOS+and+Android+platform" /></a>
+</p>
+
+<p align="center">
+  <a href="https://itunes.apple.com/us/app/gitpoint/id1251245162?mt=8">
+    <img alt="Download on the App Store" title="App Store" src="http://i.imgur.com/0n2zqHD.png" width="140">
+  </a>
+  <a href="https://play.google.com/store/apps/details?id=com.gitpoint">
+    <img alt="Get it on Google Play" title="Google Play" src="http://i.imgur.com/mtGRPuM.png" width="140">
+  </a>
+  </p>
+
+## Table of Contents
+[TOCM]
+- [Project Introduction](#⚡Project Introduction)
+- [Features](#⚡features)
+- [Environment Setup](#⚡Environment Setup)
+- [How To Run ](#How To Run💻)
+- [License](#License)
+
+##⚡Project Introduction
 The project is a mobile application for mental health and risk stratification based on neighborhood characteristics for both Apple and Android platforms. Virtually no research exists examining the daily influence of environmental factors on the development of mental health disorders such as schizophrenia. Our solution is a mobile app that collects real-time data (daily survey) on the status of the user’s mental health such as their feelings and emotions in relation to their location during the day. We can compile and organize this data into a database for our client and other clinicians to analyze and can better treat their own patients and gain knowledge of the development of mental health disorders.
 
-  
-# Release Notes
+**Available for both iOS and Android**.
 
-## Version 1.0.0 
-### Features
+## ⚡Features
+
 - The app can handle multiple free response questions.
 - The Home Screen can show the complete status of the questionnaire and the timeclock for the next questionnaire.
 - The app only allows user to take questionnaire within the available period.
@@ -20,28 +41,22 @@ The project is a mobile application for mental health and risk stratification ba
 - Published the app to Apple App Store.
 - Published the app to Google Play Store.
 
-### Fixed Bugs 
-- Fixed locations not working on Android devices.
-
-
-### Known Issues
-- DateTimePicker has problems on Andriod, work fine on iOS.
-- Haven't tested the case where there is no GPS signals.
-- The notification might not work porperly if the users change the system time. Users can reset notifcation schedules if the notification don't work.
-
-
-# Environment Setup
-- `cd ./app/src`, `npm i`
+#⚡Environment Setup
+- `cd ./app/src`, 
+`npm i`
 - `cd` to `.server_ts`, and follow the instructions in `server_ts/README.md` to run the server.
-- **react-navigation install**: change directory to ```./app/src```, and run ```npm install @react-navigation/native```, ```expo install react-native-screens react-native-safe-area-context```.
-- **react-native-keyboard-aware-scroll-view**: run ```npm i react-native-keyboard-aware-scroll-view --save```
+- **react-navigation install**: change directory to ```./app/src```, and run 
+`npm install @react-navigation/native`, 
+`expo install react-native-screens react-native-safe-area-context`.
+- **react-native-keyboard-aware-scroll-view**: run 
+`npm i react-native-keyboard-aware-scroll-view --save`
 
-# How To Run
+#How To Run 💻
 - TODO
-- ```sh
+- `sh
     $ cd ./app/src
     $ expo start
-    ```
+    `
 
-# License
+#License
 This project is licensed under the [MIT license](LICENSE).
