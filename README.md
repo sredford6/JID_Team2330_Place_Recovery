@@ -1,4 +1,4 @@
-<h1 align="center"> 👋PlaceNrecovery(GT Team 1358)👋</h1> <br>
+<h1 align="center"> 🧠PlaceNrecovery(GT Team 1358)🧠</h1> <br>
 
 <p align="center">
   <a href="https://imgur.com/uGnMJIv"><img src="https://i.imgur.com/uGnMJIv.jpg" width ="450" title="source: imgur.com" /></a>
@@ -16,18 +16,22 @@
   </p>
 
 ## Table of Contents
-[TOCM]
-- [Introduction](#Introduction)
-- [Features](#Features)
-- [Environment Setup](#Environment-Setup)
-- [How To Run ](#How-To-Run)
-- [License](#License)
+
+- [🌟Introduction](#Introduction)
+- [🌟Features](#Features)
+- [🌟Environment Setup](#Environment-Setup)
+- [🌟How To Run ](#How-To-Run)
+- [🌟License](#License)
 
 ## Introduction
 
 The project is a mobile application for mental health and risk stratification based on neighborhood characteristics for both Apple and Android platforms. Virtually no research exists examining the daily influence of environmental factors on the development of mental health disorders such as schizophrenia. Our solution is a mobile app that collects real-time data (daily survey) on the status of the user’s mental health such as their feelings and emotions in relation to their location during the day. We can compile and organize this data into a database for our client and other clinicians to analyze and can better treat their own patients and gain knowledge of the development of mental health disorders.
 
 **Available for both iOS and Android**.
+<p align="center">
+<a href="https://imgur.com/WigKAVH"><img src="https://i.imgur.com/WigKAVH.jpg" width ="300"  title="source: imgur.com" /></a>
+<br>
+</p>
 
 ## Features
 
@@ -41,16 +45,22 @@ The project is a mobile application for mental health and risk stratification ba
 - Client can export user data to csv through links.
 - Published the app to Apple App Store.
 - Published the app to Google Play Store.
+<p align="center">
+<br>
+<a href="https://imgur.com/jpk1OKi"><img src="https://i.imgur.com/jpk1OKi.jpg" width ="450" title="source: imgur.com" /></a>
+<br><br>
+</p>
 
 ## Environment Setup
 - `cd ./app/src`, 
 `npm i`
 - `cd` to `.server_ts`, and follow the instructions in `server_ts/README.md` to run the server.
-- **react-navigation install**: change directory to ```./app/src```, and run 
+- **react-navigation install**: change directory to ```./app/src```, and 
+run 
 `npm install @react-navigation/native`, 
 `expo install react-native-screens react-native-safe-area-context`.
-- **react-native-keyboard-aware-scroll-view**: run 
-`npm i react-native-keyboard-aware-scroll-view --save`
+- **react-native-keyboard-aware-scroll-view**: 
+run `npm i react-native-keyboard-aware-scroll-view --save`
 
 ## How To Run
 - TODO
