@@ -17,18 +17,19 @@
 
 ## Table of Contents
 [TOCM]
-- [Project Introduction](#⚡Project Introduction)
-- [Features](#⚡features)
-- [Environment Setup](#⚡Environment Setup)
-- [How To Run ](#How To Run💻)
+- [Introduction](#Introduction)
+- [Features](#Features)
+- [Environment Setup](#Environment Setup)
+- [How To Run ](#How To Run)
 - [License](#License)
 
-##⚡Project Introduction
+## Introduction
+
 The project is a mobile application for mental health and risk stratification based on neighborhood characteristics for both Apple and Android platforms. Virtually no research exists examining the daily influence of environmental factors on the development of mental health disorders such as schizophrenia. Our solution is a mobile app that collects real-time data (daily survey) on the status of the user’s mental health such as their feelings and emotions in relation to their location during the day. We can compile and organize this data into a database for our client and other clinicians to analyze and can better treat their own patients and gain knowledge of the development of mental health disorders.
 
 **Available for both iOS and Android**.
 
-## ⚡Features
+## Features
 
 - The app can handle multiple free response questions.
 - The Home Screen can show the complete status of the questionnaire and the timeclock for the next questionnaire.
@@ -41,7 +42,7 @@ The project is a mobile application for mental health and risk stratification ba
 - Published the app to Apple App Store.
 - Published the app to Google Play Store.
 
-#⚡Environment Setup
+## Environment Setup
 - `cd ./app/src`, 
 `npm i`
 - `cd` to `.server_ts`, and follow the instructions in `server_ts/README.md` to run the server.
@@ -51,12 +52,12 @@ The project is a mobile application for mental health and risk stratification ba
 - **react-native-keyboard-aware-scroll-view**: run 
 `npm i react-native-keyboard-aware-scroll-view --save`
 
-#How To Run 💻
+## How To Run
 - TODO
 - `sh
     $ cd ./app/src
     $ expo start
     `
 
-#License
+## License
 This project is licensed under the [MIT license](LICENSE).
