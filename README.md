@@ -19,8 +19,8 @@
 [TOCM]
 - [Introduction](#Introduction)
 - [Features](#Features)
-- [Environment Setup](#Environment Setup)
-- [How To Run ](#How To Run)
+- [Environment Setup](#Environment-Setup)
+- [How To Run ](#How-To-Run)
 - [License](#License)
 
 ## Introduction
