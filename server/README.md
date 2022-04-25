@@ -92,9 +92,6 @@
 - Answer [GET]: /api/question/answer/:timeframe?
     - Header
         - authorization
-    - Body
-        - questionnaire
-        - answers
     - Params
         - timeframe: ["thisweek", "frommonday"]
 
