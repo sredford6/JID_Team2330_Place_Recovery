@@ -42,39 +42,33 @@ export default function Questionnaire({ navigation }) {
     []
   );
 
-
   const [location, setLocation] = useState<LocationObject>();
   const [fetching, setFetching] = useState(false);
 
   const { userInfo } = useContext(AuthContext);
 
-  const [permission, setPermission] = useState<Boolean>(false);
   const [blockIdx, setBlockIdx] = useState<number>(-1);
 
   interface answer_type {
     choiceIndex: Number | Array<number>;
-    answer: String | number | Array<String> | Array<number>|multiple_answer;
+    answer: String | number | Array<String> | Array<number> | multiple_answer;
     questionId: String;
   }
 
   interface multiple_answer {
     From: String;
-    To: String
-    Reason: String
+    To: String;
+    Reason: String;
   }
 
-  const [multiple_answers, setmultiple_answer]= useState(
-   {
+  const [multiple_answers, setmultiple_answer] = useState({
     From: String,
     To: String,
-    Reason: String
-   }
-  );
+    Reason: String,
+  });
 
-
-  const GetLocation = async () => {
+  const getLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
-    setPermission(status == "granted");
     if (status !== "granted") {
       goToSettings(
         "Require location sharing",
@@ -83,11 +77,15 @@ export default function Questionnaire({ navigation }) {
       return false;
     }
     // TODO: should probably set timeout?
-    let location = await Location.getCurrentPositionAsync({});
-    let address = await Location.reverseGeocodeAsync(location.coords);
+    let location = await Location.getCurrentPositionAsync({
+      enableHighAccuracy: true,
+      timeInterval: 1000,
+    });
+    console.log(location);
+    // let address = await Location.reverseGeocodeAsync(location.coords);
     setLocation(location);
     return true;
-  };
+  };;
 
   const buttonFunction = (index: number) => {
     setButtonPressed((arr) =>
@@ -206,7 +204,7 @@ export default function Questionnaire({ navigation }) {
       setBlockIdx(idx);
     })();
     loadQuiz();
-    GetLocation();
+    getLocation();
   }, []);
 
   const renderType0 = (i: number, customArray: null | Array<any> = null) => {
@@ -385,14 +383,17 @@ export default function Questionnaire({ navigation }) {
 
   const handleSubmit = async () => {
     // TODO handle submit to endpoints
-
+    console.log(location);
     if (!location) {
-      await GetLocation().then((res) => {
+      console.log("cant get location");
+      await getLocation().then((res) => {
         if (!res) {
           console.log("fail to fetch location");
           // set deafult coordiantes
         }
       });
+    } else {
+      console.log(location);
     }
 
     try {
@@ -400,28 +401,32 @@ export default function Questionnaire({ navigation }) {
       let longitude = 0;
       let latitude = 0;
       let geoid = undefined;
-      if(location?.coords) {
+      if (location?.coords) {
         longitude = location?.coords.longitude;
-        latitude = location?.coords.latitude
-        const geocensus = await axios.get(`https://geocoding.geo.census.gov/geocoder/geographies/coordinates`, {
-          params: {
-            benchmark: 4,
-            vintage: 4,
-            format: "json",
-            x: longitude,
-            y: latitude
+        latitude = location?.coords.latitude;
+        const geocensus = await axios.get(
+          `https://geocoding.geo.census.gov/geocoder/geographies/coordinates`,
+          {
+            params: {
+              benchmark: 4,
+              vintage: 4,
+              format: "json",
+              x: longitude,
+              y: latitude,
+            },
           }
-        });
-        geoid = geocensus.data['result']['geographies']['Census Tracts'][0]['GEOID'];
+        );
+        geoid =
+          geocensus.data["result"]["geographies"]["Census Tracts"][0]["GEOID"];
       }
-      
+
       const res = await axios.post(
         `${backendUrl}/api/question/answer`,
         {
           location: {
             longitude,
             latitude,
-            geoid
+            geoid,
           },
           questionnaire,
           answers: user_answers,

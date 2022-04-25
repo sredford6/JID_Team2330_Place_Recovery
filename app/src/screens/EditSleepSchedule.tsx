@@ -1,88 +1,107 @@
 import React from 'react';
-import { StyleSheet, TextInput, ScrollView, KeyboardAvoidingView, Alert } from 'react-native';
+import {
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  KeyboardAvoidingView,
+  Alert,
+  Platform,
+} from "react-native";
 
-import { Text, View } from '../components/Themed';
-import ButtonDesign from '../components/Button';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import {Picker} from '@react-native-picker/picker';
+import { Text, View } from "../components/Themed";
+import ButtonDesign from "../components/Button";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Picker } from "@react-native-picker/picker";
 
-import {backendUrl} from "../config/config.json";
+import { backendUrl } from "../config/config.json";
 
-import axios from 'axios';
-import { getItemAsync } from 'expo-secure-store';
+import axios from "axios";
+import { getItemAsync } from "expo-secure-store";
 
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from "@react-native-community/datetimepicker";
 
-
-
-export default function EditSleepSchedule({navigation}) {
-    const [sleepTime, setSleepTime] = React.useState(new Date(1598051730000));
-    const [wakeTime, setWakeTime] = React.useState(new Date(23456700000));
-
+export default function EditSleepSchedule({ navigation }) {
+  const [sleepTime, setSleepTime] = React.useState(new Date(1598051730000));
+  const [wakeTime, setWakeTime] = React.useState(new Date(23456700000));
+  const [show, setShow] = React.useState(false);
 
   const changeTime = (event, newTime) => {
+    setShow(false);
     setSleepTime(newTime);
   };
   const changeWakeupTime = (event, newTime) => {
+    setShow(false);
     setWakeTime(newTime);
   };
-   
-    const editSchedule = async (wakeTime, sleepTime) => {
-      const token: string = (await getItemAsync("user_token"))!;
-      axios
-        .put(`${backendUrl}/api/auth/update`, 
+
+  const editSchedule = async (wakeTime, sleepTime) => {
+    const token: string = (await getItemAsync("user_token"))!;
+    axios
+      .put(
+        `${backendUrl}/api/auth/update`,
         {
           wakeTime,
-          sleepTime
+          sleepTime,
         },
         {
           headers: {
             Authorization: token,
-          }
-        })
-        .then((response) => {
-          console.log(response.data);
-          const { message } = response.data;
-          const { status, data } = response;
-          Alert.alert("Your sleep schedule information was updated")
-         
-          navigation.navigate("Profile");
-        })
-        .catch((error) => {
-          console.log(error.message)
-          console.log(error.data)
-        });
-    };
-      
-    
-    
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        const { message } = response.data;
+        const { status, data } = response;
+        Alert.alert("Your sleep schedule information was updated");
+
+        navigation.navigate("Profile");
+      })
+      .catch((error) => {
+        console.log(error.message);
+        console.log(error.data);
+      });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
       >
         <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <Text style = {styles.title}> Sleep Schedule</Text>
-          <Text style = {styles.label}> Wake-up time:</Text>
-        <DateTimePicker style ={{width: 100, backgroundColor: "transparent"}}
-          value={wakeTime}
-          mode={'time'}
-          is24Hour={true}
-          display="default"
-          onChange={changeWakeupTime}
-        />
-          <Text style = {styles.label}> Bedtime:</Text>
-        <DateTimePicker style ={{width: 100, backgroundColor: "transparent"}}
-          value={sleepTime}
-          mode={'time'}
-          is24Hour={true}
-          display="default" 
-          onChange={changeTime}
-        />
+          <Text style={styles.title}> Sleep Schedule</Text>
+          <Text style={styles.label}> Wake-up time:</Text>
+          <View>
+            {Platform.OS == "ios" ? (
+              <DateTimePicker
+                style={{ width: 100, backgroundColor: "transparent" }}
+                value={wakeTime}
+                mode={"time"}
+                is24Hour={true}
+                display="default"
+                onChange={changeWakeupTime}
+              />
+            ) : (
+              <Text>Andriod, replace me</Text>
+            )}
+            <Text style={styles.label}> Bedtime:</Text>
+            {Platform.OS == "ios" ? (
+              <DateTimePicker
+                style={{ width: 100, backgroundColor: "transparent" }}
+                value={sleepTime}
+                mode={"time"}
+                is24Hour={true}
+                display="default"
+                onChange={changeTime}
+              />
+            ) : (
+              <Text>Androidd, replace me</Text>
+            )}
+          </View>
 
           <ButtonDesign
             name="Save"
-            onPress={() => { 
+            onPress={() => {
               {
                 editSchedule(wakeTime, sleepTime);
               }
@@ -92,7 +111,6 @@ export default function EditSleepSchedule({navigation}) {
       </ScrollView>
     </SafeAreaView>
   );
-  
 }
 
 
