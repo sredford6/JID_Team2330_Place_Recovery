@@ -93,7 +93,7 @@ expo start
 cd ./server
 ```
 - Then follow the instructions in `server/README.md` to run the server.
-
+- To submit the app to Apple App Store and Google Play Store, please follow the [EAS Submit](https://docs.expo.dev/submit/introduction/) instructions. 
 
 ## License
 This project is licensed under the [MIT license](LICENSE).
