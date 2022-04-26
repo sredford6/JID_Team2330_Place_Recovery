@@ -74,7 +74,7 @@ The project is a mobile application for mental health and risk stratification ba
 
 
 ## How to Run
-- First, make sure you have installed [Node 14 LTS](https://nodejs.org/en/download/) or greater installed.
+- First, make sure you have installed [Node 16 LTS](https://nodejs.org/en/download/) or greater installed.
 - Install [Visual Studio Code](https://code.visualstudio.com/download)
 - On Visual Studio Code: Create a new terminal via the Terminal menu with Terminal > New Terminal.
 - Install the latest verion of Expo CLI: 
