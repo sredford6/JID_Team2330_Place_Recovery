@@ -24,17 +24,13 @@
 
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
-- [Introduction](#introduction)
-- [Features](#features)
-  - [Version 1.0.0](#version-100)
-- [Known Issues](#known-issues)
-  - [Version 1.0.0](#version-100-1)
-- [Fixed Bugs](#fixed-bugs)
-  - [Version 1.0.0](#version-100-2)
-- [How to Run](#how-to-run)
-- [Languages-and-Tools](#languages-and-tools)
-- [License](#license)
+- [📖 Introduction](#Introduction)
+- [🌟 Features](#Features)
+- [❓Known Issues](#Known-Issues)
+- [⚙️ Fixed Bugs](#Fixed-Bugs)
+- [💻 How To Run ](#How-To-Run)
+- [⚡Languages and Tools](#Languages-and-Tools)
+- [📄 License](#License)
 
 
 ## Introduction
