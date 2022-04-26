@@ -97,8 +97,11 @@ cd ./server
 - Then follow the instructions in `server/README.md` to run the server.
 - To submit the app to Apple App Store and Google Play Store, please follow the [EAS Submit](https://docs.expo.dev/submit/introduction/) instructions. 
 
+<img align='right' src='https://media.giphy.com/media/bcKmIWkUMCjVm/giphy.gif' width='200"'>
+
 ## Languages-and-Tools
 <p align="center">
+
 <a href="https://imgur.com/yq3HCqb"><img src="https://i.imgur.com/yq3HCqb.png" title="source: imgur.com" width="40" height="40"/></a>  <a href="https://imgur.com/vhKEVIX"><img src="https://i.imgur.com/vhKEVIX.png" title="source: imgur.com"  width="40" height="40"/></a> <a href="https://imgur.com/9FCPyh8"><img src="https://i.imgur.com/9FCPyh8.png" title="source: imgur.com" width="40" height="40"/></a>  <a href="https://imgur.com/cACDNTD"><img src="https://i.imgur.com/cACDNTD.png" title="source: imgur.com" width="40" height="40"/></a>
 </p>
 
