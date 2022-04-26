@@ -1,7 +1,7 @@
 <h1 align="center">PlaceNrecovery🧠 (GT Team 1358)</h1> <br>
 
 <p align="center">
-  <a href="https://imgur.com/uGnMJIv"><img src="https://i.imgur.com/uGnMJIv.jpg" width ="450" title="source: imgur.com" /></a>
+  <a href=""><img src="https://i.imgur.com/uGnMJIv.jpg" width ="450" title="source: imgur.com" /></a>
   </p>
 <p align="center">
   <a href="https://github.com/DenverCoder1/readme-typing-svg"><img src="https://readme-typing-svg.herokuapp.com?&font=IBM+Plex+Sans&color=0f0f0f&size=20&lines=Track+Mental+health+Based+On+Neighborhood;Available+for+both+iOS+and+Android+platform" /></a>
@@ -39,7 +39,7 @@ The project is a mobile application for mental health and risk stratification ba
 
 **The app is available for both iOS and Android platforms.**
 <p align="center">
-<a href="https://imgur.com/WigKAVH"><img src="https://i.imgur.com/WigKAVH.jpg" width ="300"  title="source: imgur.com" /></a>
+<a href=""><img src="https://i.imgur.com/WigKAVH.jpg" width ="300"  title="source: imgur.com" /></a>
 <br>
 </p>
 
@@ -57,7 +57,7 @@ The project is a mobile application for mental health and risk stratification ba
 - Published the app to Google Play Store.
 <p align="center">
 <br>
-<a href="https://imgur.com/jpk1OKi"><img src="https://i.imgur.com/jpk1OKi.jpg" width ="450" title="source: imgur.com" /></a>
+<a href=""><img src="https://i.imgur.com/jpk1OKi.jpg" width ="450" title="source: imgur.com" /></a>
 <br><br>
 </p>
 
