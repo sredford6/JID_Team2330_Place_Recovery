@@ -80,7 +80,7 @@ The project is a mobile application for mental health and risk stratification ba
 npm i -g expo-cli
 ```
 
-- Go under the project directory, and install all dependencies:
+- Make sure you have downloaded the project files. Go under the project directory, and install all dependencies:
 ```bash
 cd ./app/src
 npm i
