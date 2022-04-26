@@ -109,3 +109,14 @@ cd ./server
 
 ## License
 This project is licensed under the [MIT license](LICENSE).
+
+## Troubleshooting
+1.	Users can’t receive notification.
+- Notification seems to have bugs after we did beta testing on Apple TestFlight. Users can try to reset their notification schedules by long pressing the “Not Available” or “Start” button on the home screen. There will be an option to reset the notification. Please reload the app after reset.
+2.	The app can’t automatically sign in or can’t load the questionnaire. 
+- When opening the app, the app should be able to automatically sign users in if they have signed in before. However, the app currently doesn’t have a loading screen, so the users might need to wait a few seconds depending on the network conditions.
+3.	Users can’t submit the questionnaire.
+- The app will fetch users’ location when they are answering the questionnaire. When the click “Submit”, the app will check if the location is fetched. If not, it might take a few seconds to fetch the location again and upload the answers to backend (which can also take a few seconds depending on the network conditions). Users can wait a few seconds and the answers should be recorded automatically. 
+4.	Some Android users might can’t submit questionnaire.
+- This is a problem of expo-location (a package we used) on some Android devices. During our beta testing, we identified the problem and tried to fix it, and the location services worked on the Android device we used. However, there might be some edge cases for other Android devices that we haven’t tested on. GitHub Issue of expo-location: https://github.com/expo/expo/issues/946 ; Possible solution: https://docs.google.com/document/d/1emsj507egcqQrHfAA-i4lf_f0Vk_tf7zZ1jwkaFZBGA/edit 
+
