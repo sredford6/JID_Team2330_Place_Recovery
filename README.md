@@ -24,12 +24,18 @@
 
 ## Table of Contents
 
-- [📖 Introduction](#Introduction)
-- [🌟 Features](#Features)
-- [❓Known Issues](#Known-Issues)
-- [⚙️ Fixed Bugs](#Fixed-Bugs)
-- [💻 How To Run ](#How-To-Run)
-- [📄 License](#License)
+- [Table of Contents](#table-of-contents)
+- [Introduction](#introduction)
+- [Features](#features)
+  - [Version 1.0.0](#version-100)
+- [Known Issues](#known-issues)
+  - [Version 1.0.0](#version-100-1)
+- [Fixed Bugs](#fixed-bugs)
+  - [Version 1.0.0](#version-100-2)
+- [How to Run](#how-to-run)
+- [Languages-and-Tools](#languages-and-tools)
+- [License](#license)
+
 
 ## Introduction
 
@@ -94,6 +100,11 @@ cd ./server
 ```
 - Then follow the instructions in `server/README.md` to run the server.
 - To submit the app to Apple App Store and Google Play Store, please follow the [EAS Submit](https://docs.expo.dev/submit/introduction/) instructions. 
+
+## Languages-and-Tools
+<p align="center">
+<a href="https://imgur.com/yq3HCqb"><img src="https://i.imgur.com/yq3HCqb.png" title="source: imgur.com" width="40" height="40"/></a>  <a href="https://imgur.com/vhKEVIX"><img src="https://i.imgur.com/vhKEVIX.png" title="source: imgur.com"  width="40" height="40"/></a> <a href="https://imgur.com/9FCPyh8"><img src="https://i.imgur.com/9FCPyh8.png" title="source: imgur.com" width="40" height="40"/></a>  <a href="https://imgur.com/cACDNTD"><img src="https://i.imgur.com/cACDNTD.png" title="source: imgur.com" width="40" height="40"/></a>
+</p>
 
 ## License
 This project is licensed under the [MIT license](LICENSE).
