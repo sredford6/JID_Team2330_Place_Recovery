@@ -353,7 +353,7 @@ export default function RegistrationScreen({ navigation }) {
 
           <Text style={styles.label}>
             By registering, you automatically accept the Terms and Conditions of
-            PlaceNrecovery.
+            Place&Recovery.
           </Text>
 
           <TouchableOpacity
