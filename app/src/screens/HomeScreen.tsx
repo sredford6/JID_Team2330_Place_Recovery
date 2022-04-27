@@ -454,7 +454,7 @@ export default function HomeScreen({
           </View>
           <View style={[styles.frameContainer, styles.shadowProp]}>
             <Text style={styles.title}>
-              Questionnaire status, {schedules ? schedules[0].date : ""}
+              Questionnaire status: {schedules ? schedules[0].date : ""}
             </Text>
             <LinearGradient
               colors={statusColor(status.q1)}
