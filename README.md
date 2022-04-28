@@ -1,7 +1,7 @@
-<h1 align="center">PlaceNrecovery🧠 (GT Team 1358)</h1> <br>
+<h1 align="center">Place&Recovery🧠 (GT Team 1358)</h1> <br>
 
 <p align="center">
-  <a href="https://imgur.com/uGnMJIv"><img src="https://i.imgur.com/uGnMJIv.jpg" width ="450" title="source: imgur.com" /></a>
+  <a href=""><img src="https://i.imgur.com/uGnMJIv.jpg" width ="450" title="source: imgur.com" /></a>
   </p>
 <p align="center">
   <a href="https://github.com/DenverCoder1/readme-typing-svg"><img src="https://readme-typing-svg.herokuapp.com?&font=IBM+Plex+Sans&color=0f0f0f&size=20&lines=Track+Mental+health+Based+On+Neighborhood;Available+for+both+iOS+and+Android+platform" /></a>
@@ -29,7 +29,9 @@
 - [❓Known Issues](#Known-Issues)
 - [⚙️ Fixed Bugs](#Fixed-Bugs)
 - [💻 How To Run ](#How-To-Run)
+- [🔧 Frameworks and Tools](#Frameworks,-Tools,-and-Coding-Languages)
 - [📄 License](#License)
+
 
 ## Introduction
 
@@ -37,7 +39,7 @@ The project is a mobile application for mental health and risk stratification ba
 
 **The app is available for both iOS and Android platforms.**
 <p align="center">
-<a href="https://imgur.com/WigKAVH"><img src="https://i.imgur.com/WigKAVH.jpg" width ="300"  title="source: imgur.com" /></a>
+<a href=""><img src="https://i.imgur.com/WigKAVH.jpg" width ="300"  title="source: imgur.com" /></a>
 <br>
 </p>
 
@@ -55,7 +57,7 @@ The project is a mobile application for mental health and risk stratification ba
 - Published the app to Google Play Store.
 <p align="center">
 <br>
-<a href="https://imgur.com/jpk1OKi"><img src="https://i.imgur.com/jpk1OKi.jpg" width ="450" title="source: imgur.com" /></a>
+<a href=""><img src="https://i.imgur.com/jpk1OKi.jpg" width ="450" title="source: imgur.com" /></a>
 <br><br>
 </p>
 
@@ -72,13 +74,15 @@ The project is a mobile application for mental health and risk stratification ba
 
 
 ## How to Run
-- First, make sure you have installed [Node 14 LTS](https://nodejs.org/en/download/) or greater installed.
+- First, make sure you have installed [Node 16 LTS](https://nodejs.org/en/download/) or greater installed.
+- Install [Visual Studio Code](https://code.visualstudio.com/download)
+- On Visual Studio Code: Create a new terminal via the Terminal menu with Terminal > New Terminal.
 - Install the latest verion of Expo CLI: 
 ```bash 
 npm i -g expo-cli
 ```
 
-- Go under the project directory, and install all dependencies:
+- Make sure you have downloaded the project files. Go under the project directory, and install all dependencies:
 ```bash
 cd ./app/src
 npm i
@@ -93,7 +97,26 @@ expo start
 cd ./server
 ```
 - Then follow the instructions in `server/README.md` to run the server.
+- To submit the app to Apple App Store and Google Play Store, please follow the [EAS Submit](https://docs.expo.dev/submit/introduction/) instructions. 
 
+<img align='right' src='https://media.giphy.com/media/bcKmIWkUMCjVm/giphy.gif' width='200"'>
+
+## Frameworks, Tools, and Coding Languages
+<p align="center">
+
+<a href="https://reactnative.dev"><img src="https://i.imgur.com/yAVbmC7.png" title="source: imgur.com" width="50" height="40"/></a><a href="https://www.typescriptlang.org"><img src="https://i.imgur.com/yq3HCqb.png" title="source: imgur.com" width="40" height="40"/></a>  <a href="https://www.javascript.com"><img src="https://i.imgur.com/vhKEVIX.png" title="source: imgur.com"  width="40" height="40"/></a> <a href="https://www.mongodb.com"><img src="https://i.imgur.com/9FCPyh8.png" title="source: imgur.com" width="40" height="40"/></a>  <a href="https://nodejs.org/en/"><img src="https://i.imgur.com/cACDNTD.png" title="source: imgur.com" width="40" height="40"/></a>
+</p>
 
 ## License
 This project is licensed under the [MIT license](LICENSE).
+
+## Troubleshooting
+1.	Users can’t receive notification.
+- Notification seems to have bugs after we did beta testing on Apple TestFlight. Users can try to reset their notification schedules by long pressing the “Not Available” or “Start” button on the home screen. There will be an option to reset the notification. Please reload the app after reset.
+2.	The app can’t automatically sign in or can’t load the questionnaire. 
+- When opening the app, the app should be able to automatically sign users in if they have signed in before. However, the app currently doesn’t have a loading screen, so the users might need to wait a few seconds depending on the network conditions.
+3.	Users can’t submit the questionnaire.
+- The app will fetch users’ location when they are answering the questionnaire. When the click “Submit”, the app will check if the location is fetched. If not, it might take a few seconds to fetch the location again and upload the answers to backend (which can also take a few seconds depending on the network conditions). Users can wait a few seconds and the answers should be recorded automatically. 
+4.	Some Android users might can’t submit questionnaire.
+- This is a problem of expo-location (a package we used) on some Android devices. During our beta testing, we identified the problem and tried to fix it, and the location services worked on the Android device we used. However, there might be some edge cases for other Android devices that we haven’t tested on. GitHub Issue of expo-location: https://github.com/expo/expo/issues/946 ; Possible solution: https://docs.google.com/document/d/1emsj507egcqQrHfAA-i4lf_f0Vk_tf7zZ1jwkaFZBGA/edit 
+

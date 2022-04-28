@@ -21,7 +21,7 @@ export default function TermsAndConditions({ navigation }) {
           {"\n\n"}
           If I agree to participate, what information do I need to provide?{" "}
           {"\n\n"}
-          When you first use the Recovery and Place app, you will be asked to
+          When you first use the Place&Recovery app, you will be asked to
           complete an initial questionnaire about your age, gender, and other
           demographic information. You will then be asked to answer questions
           about your current environment, feelings, thoughts and behavior, 3
@@ -30,7 +30,7 @@ export default function TermsAndConditions({ navigation }) {
           We will acquire information about your geographical location using the
           GPS sensor on your mobile phone. You can opt out of this feature if
           you prefer. We will ask for your consent to provide your geographical
-          location data when you first use the Place and Recovery app.  {"\n\n"}
+          location data when you first use the Place&Recovery app.  {"\n\n"}
           In order to participate in this study, we ask for your consent to our
           Privacy Policy. Please take a minute to read our Privacy Policy.{" "}
           {"\n\n"}
@@ -47,7 +47,7 @@ export default function TermsAndConditions({ navigation }) {
           agree to take part in the study. {"\n\n"}• I understand that my
           participation is voluntary and that I am free to withdraw from the
           research study at any time before the final assessment. {"\n\n"}• I
-          have read, understood, and consent to the Place and Recovery Privacy
+          have read, understood, and consent to the Place&Recovery Privacy
           Policy. {"\n\n"}• This is my mobile device. {"\n\n"}
         </Text>
       </ScrollView>

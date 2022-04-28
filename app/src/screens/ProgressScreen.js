@@ -11,6 +11,7 @@ import {
 } from "react-native";
 
 import { BarChart, LineChart } from "react-native-chart-kit";
+import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 import { getItemAsync } from "expo-secure-store";
 import { backendUrl } from "../config/config.json";
@@ -28,6 +29,8 @@ export default function ProgressScreen() {
   const [anxiety, setanxiety] = useState([0, 0, 0, 0, 0, 0, 0]);
   const [stress, setstress] = useState([0, 0, 0, 0, 0, 0, 0]);
   const appState = useRef(AppState.currentState);
+  const [counter, setCounter] = React.useState(0);
+  const isFocused = useIsFocused();
 
   // const [appStateVisible, setAppStateVisible] = useState(appState.current);
   // const handleAppStateChange = (state) => {
@@ -163,12 +166,16 @@ export default function ProgressScreen() {
   };
 
   useEffect(() => {
-    (async () => {
-      await getResult();
-    })();
+      
+      (async () => {
+        await getResult();
+      })();
+  
+      
+       
     // console.log(stress);
     // console.log(sadness);
-  }, []);
+  }, [isFocused]);
 
   function* hapYLabel() {
     yield* [0, 1, 2, 3, 4, 5];
