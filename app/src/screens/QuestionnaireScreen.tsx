@@ -430,6 +430,7 @@ export default function Questionnaire({ navigation }) {
           },
           questionnaire,
           answers: user_answers,
+          blockIndex: blockIdx,
         },
         {
           headers: {
