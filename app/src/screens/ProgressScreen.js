@@ -166,13 +166,10 @@ export default function ProgressScreen() {
   };
 
   useEffect(() => {
-      
-      (async () => {
-        await getResult();
-      })();
-  
-      
-       
+    (async () => {
+      await getResult();
+    })();
+
     // console.log(stress);
     // console.log(sadness);
   }, [isFocused]);
@@ -277,7 +274,7 @@ export default function ProgressScreen() {
               borderRadius: 16,
             }}
           />
-          <Text style={styles.TitleText}>Happiness</Text>
+          <Text style={styles.TitleText}>Sadness</Text>
           <LineChart
             data={{
               labels: ["Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat.", "Sun."],

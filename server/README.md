@@ -89,6 +89,7 @@
         - questionnaire
         - answers
         - location
+        - blockIndex
 - Answer [GET]: /api/question/answer/:timeframe?
     - Header
         - authorization
@@ -105,6 +106,8 @@
 - Answer [GET]: /api/data/myuser
     - Header
         - authorization
+- Delete Users [DELETE]: /api/data/deleteAllUsers
+- Delete Answers [DELETE]: /api/data/deleteAllAnswers
 
 ## Endpoints to add
 
