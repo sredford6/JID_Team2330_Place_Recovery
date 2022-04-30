@@ -89,7 +89,7 @@ export default function ProgressScreen() {
       })
       .then((response) => {
         let count = [0, 0, 0, 0, 0, 0, 0];
-        // console.log("======================");
+        // console.log(response);
         // per questionnaire
         for (let i = 0; i < response.data.answers.length; i++) {
           // This is the questionnaire
@@ -106,38 +106,41 @@ export default function ProgressScreen() {
           let day = d.getDay();
           count[day] = count[day] + 1;
 
-          // monday
-          if (day == 0) {
-            // add results to the array
-            updateSadness(0, questions[0].choiceIndex + 1);
-            updateAnxiety(0, questions[1].choiceIndex + 1);
-            updateStress(0, questions[2].choiceIndex + 1);
-            // tuesday
-          } else if (day == 1) {
-            updateSadness(1, questions[0].choiceIndex + 1);
-            updateAnxiety(1, questions[1].choiceIndex + 1);
-            updateStress(1, questions[2].choiceIndex + 1);
-          } else if (day == 2) {
-            updateSadness(2, questions[0].choiceIndex + 1);
-            updateAnxiety(2, questions[1].choiceIndex + 1);
-            updateStress(2, questions[2].choiceIndex + 1);
-          } else if (day == 3) {
-            updateSadness(3, questions[0].choiceIndex + 1);
-            updateAnxiety(3, questions[1].choiceIndex + 1);
-            updateStress(3, questions[2].choiceIndex + 1);
-          } else if (day == 4) {
-            updateSadness(4, questions[0].choiceIndex + 1);
-            updateAnxiety(4, questions[1].choiceIndex + 1);
-            updateStress(4, questions[2].choiceIndex + 1);
-          } else if (day == 5) {
-            updateSadness(5, questions[0].choiceIndex + 1);
-            updateAnxiety(5, questions[1].choiceIndex + 1);
-            updateStress(5, questions[2].choiceIndex + 1);
-          } else if (day == 6) {
-            updateSadness(6, questions[0].choiceIndex + 1);
-            updateAnxiety(6, questions[1].choiceIndex + 1);
-            updateStress(6, questions[2].choiceIndex + 1);
-          }
+          updateSadness(day, questions[0].choiceIndex + 1);
+          updateAnxiety(day, questions[1].choiceIndex + 1);
+          updateStress(day, questions[2].choiceIndex + 1);
+          // // monday
+          // if (day == 0) {
+          //   // add results to the array
+          //   updateSadness(0, questions[0].choiceIndex + 1);
+          //   updateAnxiety(0, questions[1].choiceIndex + 1);
+          //   updateStress(0, questions[2].choiceIndex + 1);
+          //   // tuesday
+          // } else if (day == 1) {
+          //   updateSadness(1, questions[0].choiceIndex + 1);
+          //   updateAnxiety(1, questions[1].choiceIndex + 1);
+          //   updateStress(1, questions[2].choiceIndex + 1);
+          // } else if (day == 2) {
+          //   updateSadness(2, questions[0].choiceIndex + 1);
+          //   updateAnxiety(2, questions[1].choiceIndex + 1);
+          //   updateStress(2, questions[2].choiceIndex + 1);
+          // } else if (day == 3) {
+          //   updateSadness(3, questions[0].choiceIndex + 1);
+          //   updateAnxiety(3, questions[1].choiceIndex + 1);
+          //   updateStress(3, questions[2].choiceIndex + 1);
+          // } else if (day == 4) {
+          //   updateSadness(4, questions[0].choiceIndex + 1);
+          //   updateAnxiety(4, questions[1].choiceIndex + 1);
+          //   updateStress(4, questions[2].choiceIndex + 1);
+          // } else if (day == 5) {
+          //   updateSadness(5, questions[0].choiceIndex + 1);
+          //   updateAnxiety(5, questions[1].choiceIndex + 1);
+          //   updateStress(5, questions[2].choiceIndex + 1);
+          // } else if (day == 6) {
+          //   updateSadness(6, questions[0].choiceIndex + 1);
+          //   updateAnxiety(6, questions[1].choiceIndex + 1);
+          //   updateStress(6, questions[2].choiceIndex + 1);
+          // }
         }
         for (let i = 0; i < 7; i++) {
           if (count[i] != 0) {

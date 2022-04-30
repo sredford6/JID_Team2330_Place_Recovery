@@ -80,9 +80,7 @@ const AuthenticationStackNavigator = () => {
 };
 
 export default function App() {
-  const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
-  const AuthStack = createNativeStackNavigator();
 
   const [isLoading, setIsLoading] = React.useState(true);
   const [authValid, setAuthValid] = React.useState(false);
@@ -100,8 +98,8 @@ export default function App() {
     }
   };
 
-  const verifyToken = () => {
-    SecureStore.getItemAsync("user_token").then((token) => {
+  const verifyToken = async () => {
+    await SecureStore.getItemAsync("user_token").then((token) => {
       // console.log(token);
       axios
         .get(`${backendUrl}/api/auth/jwt-test`, {
@@ -116,6 +114,7 @@ export default function App() {
             lastName: response.data["lastName"],
           });
           setAuthValid(true);
+          console.log(userInfo);
         })
         .catch((error) => {
           console.log("Your are not logged in!"); // token error
@@ -123,12 +122,12 @@ export default function App() {
           setAuthValid(false);
         });
     });
+    setIsLoading(false);
   };
 
   const authContext = React.useMemo(() => {
     return {
       signIn: (token: string) => {
-        setIsLoading(false);
         setItem("user_token", token);
         verifyToken();
       },
@@ -138,18 +137,17 @@ export default function App() {
       //   verifyToken();
       // },
       signOut: () => {
-        setIsLoading(false);
         setAuthValid(false);
         setItem("user_token", "");
       },
     };
   }, []);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 500);
+  // }, []);
 
   useEffect(() => {
     retrieveDataString("is_first_time").then((first) => {
@@ -161,11 +159,12 @@ export default function App() {
     });
 
     verifyToken();
+    setIsLoading(false);
   }, []);
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
 
   return (
     <AuthContext.Provider
@@ -176,6 +175,8 @@ export default function App() {
           <WelcomeContext.Provider value={{ isFirstTime, setIsFirstTime }}>
             <WelcomeStackNavigator />
           </WelcomeContext.Provider>
+        ) : isLoading ? (
+          <Loading />
         ) : authValid ? (
           <HomeNavigation />
         ) : (

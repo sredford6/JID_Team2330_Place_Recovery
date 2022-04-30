@@ -38,6 +38,7 @@ export default function Questionnaire({ navigation }) {
   );
   const questionnaire = "sampleq1";
 
+  const [submitted, setSubmitted] = useState(false);
   const [user_answers, setUserAnswers]: [answer_type[], Function] = useState(
     []
   );
@@ -85,7 +86,7 @@ export default function Questionnaire({ navigation }) {
     // let address = await Location.reverseGeocodeAsync(location.coords);
     setLocation(location);
     return true;
-  };;
+  };
 
   const buttonFunction = (index: number) => {
     setButtonPressed((arr) =>
@@ -375,27 +376,37 @@ export default function Questionnaire({ navigation }) {
 
   const renderSubmit = () => {
     return (
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Submit</Text>
+      <TouchableOpacity
+        style={submitted ? styles.disabledButton : styles.button}
+        disabled={submitted}
+        onPress={
+          submitted
+            ? () => {
+                console.log("waiting");
+              }
+            : handleSubmit
+        }
+      >
+        <Text style={styles.buttonText}> {submitted ? "Wait" : "Submit"}</Text>
       </TouchableOpacity>
     );
   };
 
   const handleSubmit = async () => {
     // TODO handle submit to endpoints
-    console.log(location);
+    // console.log("-------_***********_---------");
+    setSubmitted(true);
     if (!location) {
       console.log("cant get location");
       await getLocation().then((res) => {
         if (!res) {
           console.log("fail to fetch location");
           // set deafult coordiantes
+        } else {
+          console.log("location is :", location);
         }
       });
-    } else {
-      console.log(location);
     }
-
     try {
       const token: string = (await getItemAsync("user_token"))!;
       let longitude = 0;
@@ -439,22 +450,27 @@ export default function Questionnaire({ navigation }) {
         }
       );
       console.log(res.data);
+      // console.log("submit");
+      // console.log(blockIdx + " block");
+      console.log(location);
+      let sche: Array<DaySchedule> = JSON.parse(
+        (await retrieveDataString(userInfo.email + "_schedules"))!
+      );
+
+      sche[0].timeBlocks[blockIdx].completed = true;
+      sche[0].completed[blockIdx] = true;
+
+      await storeDataString(
+        userInfo.email + "_schedules",
+        JSON.stringify(sche)
+      );
+      navigation.navigate("Home");
     } catch (error: any) {
       console.error("error:", error);
       console.error("error.data:", error.data);
+      setSubmitted(false);
     }
-    console.log("submit");
-    console.log(blockIdx + " block");
-    console.log(location);
-    let sche: Array<DaySchedule> = JSON.parse(
-      (await retrieveDataString(userInfo.email + "_schedules"))!
-    );
-
-    sche[0].timeBlocks[blockIdx].completed = true;
-    sche[0].completed[blockIdx] = true;
-
-    storeDataString(userInfo.email + "_schedules", JSON.stringify(sche));
-    navigation.navigate("Home");
+    console.log("after try");
   };
 
   return (
