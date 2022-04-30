@@ -149,11 +149,14 @@ export default function RegistrationScreen({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
-      <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset={100}>
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior="padding"
+        keyboardVerticalOffset={100}
       >
-        
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+        >
           <Text style={styles.title}>Register</Text>
           {showErrorMessage ? (
             <Text style={styles.errorMessage}>{error}</Text>
@@ -181,10 +184,11 @@ export default function RegistrationScreen({ navigation }) {
             maxLength={30}
             onChangeText={(inp) => setEmail(inp)}
             value={email}
+            textContentType={"username"}
           />
           <Text style={styles.password}>
-            *Password must be more than 6 characters long and contain at
-            least one number
+            *Password must be more than 6 characters long and contain at least
+            one number
           </Text>
           <TextInput
             style={styles.input}
@@ -195,6 +199,7 @@ export default function RegistrationScreen({ navigation }) {
             onChangeText={(inp) => setPassword(inp)}
             value={password}
             secureTextEntry={true}
+            textContentType={"password"}
           />
 
           <TextInput
@@ -262,7 +267,13 @@ export default function RegistrationScreen({ navigation }) {
 
           <Text style={styles.label2}>Date of Birth(Optional)</Text>
           <DateTimePicker
-            style={{ width: 130, backgroundColor: "transparent", marginBottom: 22, alignContent:'center', alignSelf:'center' }}
+            style={{
+              width: 130,
+              backgroundColor: "transparent",
+              marginBottom: 22,
+              alignContent: "center",
+              alignSelf: "center",
+            }}
             value={birthday}
             mode={"date"}
             is24Hour={false}
@@ -273,28 +284,36 @@ export default function RegistrationScreen({ navigation }) {
           <Text style={styles.label2}>Gender(Optional)</Text>
 
           <Picker
-            style={{ width: 372, height: 200,marginTop: -31, alignContent:'center', alignSelf:'center' }}
+            style={{
+              width: 372,
+              height: 200,
+              marginTop: -31,
+              alignContent: "center",
+              alignSelf: "center",
+            }}
             selectedValue={gender}
             onValueChange={(gen, itemIndex) => setGender(gen)}
           >
-             <Picker.Item label="Prefer not to say" value="Prefer not to say" />
+            <Picker.Item label="Prefer not to say" value="Prefer not to say" />
             <Picker.Item label="Male" value="Male" />
             <Picker.Item label="Female" value="Female" />
             <Picker.Item label="Other" value="Other" />
-            
           </Picker>
 
           <Text style={styles.label2}>Race/Ethnicity(Optional)</Text>
 
           <Picker
-            style={{ width: 372, height: 200, marginTop: -31,alignContent:'center', alignSelf:'center' }}
+            style={{
+              width: 372,
+              height: 200,
+              marginTop: -31,
+              alignContent: "center",
+              alignSelf: "center",
+            }}
             selectedValue={race}
             onValueChange={(race, itemIndex) => setRace(race)}
           >
-             <Picker.Item 
-            label="Prefer not to say" 
-            value="Prefer not to say" 
-            />
+            <Picker.Item label="Prefer not to say" value="Prefer not to say" />
             <Picker.Item
               label="Asian or Pacific Islander"
               value="Asian or Pacific Islander"
@@ -311,21 +330,19 @@ export default function RegistrationScreen({ navigation }) {
               label="White or Caucasian"
               value="White or Caucasian"
             />
-            <Picker.Item
-              label="Two or more races"
-              value="Two or more races"
-            />
-            <Picker.Item 
-            label="Other" 
-            value="Other" 
-            />
-           
+            <Picker.Item label="Two or more races" value="Two or more races" />
+            <Picker.Item label="Other" value="Other" />
           </Picker>
 
           <Text style={styles.header}> Sleep Schedule</Text>
           <Text style={styles.textName}> Wake-up time:</Text>
           <DateTimePicker
-            style={{ width: 100, backgroundColor: "transparent", alignContent:'center', alignSelf:'center'  }}
+            style={{
+              width: 100,
+              backgroundColor: "transparent",
+              alignContent: "center",
+              alignSelf: "center",
+            }}
             value={wakeTime}
             mode={"time"}
             is24Hour={true}
@@ -334,7 +351,12 @@ export default function RegistrationScreen({ navigation }) {
           />
           <Text style={styles.textName}> Bedtime:</Text>
           <DateTimePicker
-            style={{ width: 100, backgroundColor: "transparent", alignContent:'center', alignSelf:'center'   }}
+            style={{
+              width: 100,
+              backgroundColor: "transparent",
+              alignContent: "center",
+              alignSelf: "center",
+            }}
             value={sleepTime}
             mode={"time"}
             is24Hour={true}
@@ -367,8 +389,7 @@ export default function RegistrationScreen({ navigation }) {
               View Terms and Conditions
             </Text>
           </TouchableOpacity>
-        
-      </ScrollView>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

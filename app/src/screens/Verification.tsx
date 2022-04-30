@@ -90,6 +90,7 @@ export default function Verification({ route, navigation }) {
             onChangeText={(inp) => setPassword(inp)}
             value={password}
             secureTextEntry={true}
+            textContentType={"password"}
           />
 
           <TextInput
@@ -101,10 +102,7 @@ export default function Verification({ route, navigation }) {
             secureTextEntry={true}
           />
 
-          <ButtonDesign
-            name="Confirm"
-            onPress={() => passwordMatchCheck()}
-          />
+          <ButtonDesign name="Confirm" onPress={() => passwordMatchCheck()} />
           {showErrorMessage ? (
             <Text style={styles.errorMessage}>{error}</Text>
           ) : null}

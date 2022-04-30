@@ -76,6 +76,7 @@ export default function LoginScreen({ navigation }) {
                 autoCapitalize="none"
                 autoCorrect={false}
                 placeholderTextColor="#BEBEBE"
+                textContentType={"username"}
                 value={email}
                 onChangeText={(text) => setEmail(text)}
               />
@@ -87,7 +88,8 @@ export default function LoginScreen({ navigation }) {
                 autoCapitalize="none"
                 autoCorrect={false}
                 placeholderTextColor="#BEBEBE"
-                secureTextEntry
+                secureTextEntry={true}
+                textContentType={"password"}
                 value={password}
                 onChangeText={(text) => setPassword(text)}
               />
