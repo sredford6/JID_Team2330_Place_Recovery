@@ -184,7 +184,7 @@ export default function RegistrationScreen({ navigation }) {
             maxLength={30}
             onChangeText={(inp) => setEmail(inp)}
             value={email}
-            textContentType={"username"}
+            textContentType="username"
           />
           <Text style={styles.password}>
             *Password must be more than 6 characters long and contain at least
@@ -199,7 +199,7 @@ export default function RegistrationScreen({ navigation }) {
             onChangeText={(inp) => setPassword(inp)}
             value={password}
             secureTextEntry={true}
-            textContentType={"password"}
+            textContentType="password"
           />
 
           <TextInput

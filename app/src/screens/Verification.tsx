@@ -90,7 +90,7 @@ export default function Verification({ route, navigation }) {
             onChangeText={(inp) => setPassword(inp)}
             value={password}
             secureTextEntry={true}
-            textContentType={"password"}
+            textContentType="newPassword"
           />
 
           <TextInput

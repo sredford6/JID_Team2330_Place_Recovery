@@ -122,7 +122,11 @@ export default function App() {
           setAuthValid(false);
         });
     });
-    setIsLoading(false);
+    // setTimeout(() => {
+    //   setIsLoading(false);
+    // }, 1000);
+
+    // setIsLoading(false);
   };
 
   const authContext = React.useMemo(() => {
@@ -143,11 +147,17 @@ export default function App() {
     };
   }, []);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setIsLoading(false);
-  //   }, 500);
-  // }, []);
+  useEffect(() => {
+    (async () => {
+      let token = await SecureStore.getItemAsync("user_token");
+      if (!token) {
+        setIsLoading(false);
+      }
+    })();
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2500);
+  }, []);
 
   useEffect(() => {
     retrieveDataString("is_first_time").then((first) => {
@@ -159,12 +169,11 @@ export default function App() {
     });
 
     verifyToken();
-    setIsLoading(false);
   }, []);
 
-  // if (isLoading) {
-  //   return <Loading />;
-  // }
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <AuthContext.Provider
@@ -175,8 +184,6 @@ export default function App() {
           <WelcomeContext.Provider value={{ isFirstTime, setIsFirstTime }}>
             <WelcomeStackNavigator />
           </WelcomeContext.Provider>
-        ) : isLoading ? (
-          <Loading />
         ) : authValid ? (
           <HomeNavigation />
         ) : (
