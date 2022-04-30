@@ -23,16 +23,37 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 export default function EditSleepSchedule({ navigation }) {
   const [sleepTime, setSleepTime] = React.useState(new Date(1598051730000));
   const [wakeTime, setWakeTime] = React.useState(new Date(23456700000));
-  const [show, setShow] = React.useState(false);
+  const [showWakeTime, setShowWakeTime] = React.useState(false);
+  const [showSleepTime, setShowSleepTime] = React.useState(false);
+  
 
   const changeTime = (event, newTime) => {
-    setShow(false);
-    setSleepTime(newTime);
+    setSleepTime(newTime)
   };
   const changeWakeupTime = (event, newTime) => {
-    setShow(false);
     setWakeTime(newTime);
   };
+
+
+  const changeTimeAndroid = (event, newTime) => {
+    let newSleep = newTime || sleepTime
+    setSleepTime(newSleep)
+    setShowSleepTime(false)
+  }
+
+  const changeWakeUpTimeAndroid = (event, newTime) => {
+    let newWake = newTime || wakeTime
+    setWakeTime(newWake);
+    setShowWakeTime(false)
+  } 
+
+  const showSleep = () => {
+    setShowSleepTime(true);
+  }
+
+  const showWake = () => {
+    setShowWakeTime(true);
+  }
 
   const editSchedule = async (wakeTime, sleepTime) => {
     const token: string = (await getItemAsync("user_token"))!;
@@ -69,9 +90,10 @@ export default function EditSleepSchedule({ navigation }) {
         contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
       >
         <KeyboardAvoidingView style={styles.container} behavior="padding">
-          <Text style={styles.title}> Sleep Schedule</Text>
-          <Text style={styles.label}> Wake-up time:</Text>
-          <View>
+
+            <Text style={styles.title}> Sleep Schedule</Text>
+            <Text style={styles.label}> Wake-up time:</Text>
+          
             {Platform.OS == "ios" ? (
               <DateTimePicker
                 style={{ width: 100, backgroundColor: "transparent" }}
@@ -81,8 +103,9 @@ export default function EditSleepSchedule({ navigation }) {
                 display="default"
                 onChange={changeWakeupTime}
               />
+              
             ) : (
-              <Text>Andriod, replace me</Text>
+              <ButtonDesign name = "Wake-up time" onPress = {() => showWake()}></ButtonDesign>
             )}
             <Text style={styles.label}> Bedtime:</Text>
             {Platform.OS == "ios" ? (
@@ -95,14 +118,34 @@ export default function EditSleepSchedule({ navigation }) {
                 onChange={changeTime}
               />
             ) : (
-              <Text>Androidd, replace me</Text>
+              <ButtonDesign name = "Bedtime" onPress = {() => showSleep()}></ButtonDesign>
             )}
-          </View>
-
+         
+          {showWakeTime && (
+            <DateTimePicker
+            style={{ width: 100, backgroundColor: "transparent" }}
+            value={wakeTime}
+            mode={"time"}
+            is24Hour={true}
+            display="default"
+            onChange={changeWakeUpTimeAndroid}
+          />
+          )}
+          {showSleepTime && (
+            <DateTimePicker
+            style={{ width: 100, backgroundColor: "transparent" }}
+            value={wakeTime}
+            mode={"time"}
+            is24Hour={true}
+            display="default"
+            onChange={changeTimeAndroid}
+          />
+          )}
           <ButtonDesign
             name="Save"
             onPress={() => {
               {
+                
                 editSchedule(wakeTime, sleepTime);
               }
             }}
