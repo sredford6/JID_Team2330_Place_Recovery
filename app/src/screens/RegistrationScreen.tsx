@@ -37,6 +37,10 @@ export default function RegistrationScreen({ navigation }) {
   const [Other, setOther] = React.useState(false);
   const [Prefer, setPrefer] = React.useState(false);
 
+  const [showWakeTime, setShowWakeTime] = React.useState(false);
+  const [showSleepTime, setShowSleepTime] = React.useState(false);
+  const [showBirthday, setShowBirthday] = React.useState(false);
+
   const addRace = (arrayName, condition, raceName) => {
     if (condition) {
       arrayName.push(raceName);
@@ -78,6 +82,36 @@ export default function RegistrationScreen({ navigation }) {
   };
   const changeWakeupTime = (event, newTime) => {
     setWakeTime(newTime);
+  };
+
+  const changeTimeAndroid = (event, newTime) => {
+    let newSleep = newTime || sleepTime
+    setSleepTime(newSleep)
+    setShowSleepTime(false)
+  }
+
+  const changeWakeUpTimeAndroid = (event, newTime) => {
+    let newWake = newTime || wakeTime
+    setWakeTime(newWake);
+    setShowWakeTime(false)
+  } 
+
+  const showSleep = () => {
+    setShowSleepTime(true);
+  }
+
+  const showWake = () => {
+    setShowWakeTime(true);
+  }
+
+  const showBirthDate = () => {
+    setShowBirthday(true);
+  }
+
+  const changeBirthdayAndroid = (event, newDate) => {
+    let newBirthday = newDate || birthday
+    setBirthday(newBirthday);
+    setShowBirthday(false)
   };
 
   const passwordMatchCheck = () => {
@@ -266,21 +300,43 @@ export default function RegistrationScreen({ navigation }) {
           />
 
           <Text style={styles.label2}>Date of Birth(Optional)</Text>
-          <DateTimePicker
-            style={{
-              width: 130,
-              backgroundColor: "transparent",
-              marginBottom: 22,
-              alignContent: "center",
-              alignSelf: "center",
-            }}
-            value={birthday}
-            mode={"date"}
-            is24Hour={false}
-            display="default"
-            onChange={changeBirthday}
-          />
 
+          {Platform.OS == "ios" ? (
+              <DateTimePicker
+              style={{
+                width: 130,
+                backgroundColor: "transparent",
+                marginBottom: 22,
+                alignContent: "center",
+                alignSelf: "center",
+              }}
+              value={birthday}
+              mode={"date"}
+              is24Hour={false}
+              display="default"
+              onChange={changeBirthday}
+            />
+              
+            ) : (
+              <ButtonDesign name = "Select Date" onPress = {() => showBirthDate()}></ButtonDesign>
+            )}
+
+          {showBirthday && (
+           <DateTimePicker
+           style={{
+             width: 130,
+             backgroundColor: "transparent",
+             marginBottom: 22,
+             alignContent: "center",
+             alignSelf: "center",
+           }}
+           value={birthday}
+           mode={"date"}
+           is24Hour={false}
+           display="default"
+           onChange={changeBirthdayAndroid}
+         />
+          )}
           <Text style={styles.label2}>Gender(Optional)</Text>
 
           <Picker
@@ -335,34 +391,55 @@ export default function RegistrationScreen({ navigation }) {
           </Picker>
 
           <Text style={styles.header}> Sleep Schedule</Text>
-          <Text style={styles.textName}> Wake-up time:</Text>
-          <DateTimePicker
-            style={{
-              width: 100,
-              backgroundColor: "transparent",
-              alignContent: "center",
-              alignSelf: "center",
-            }}
+          <Text style={styles.label}> Wake-up time:</Text>
+          
+            {Platform.OS == "ios" ? (
+              <DateTimePicker
+                style={{ width: 100, backgroundColor: "transparent" ,  alignContent: "center", alignSelf: "center"}}
+                value={wakeTime}
+                mode={"time"}
+                is24Hour={true}
+                display="default"
+                onChange={changeWakeupTime}
+              />
+              
+            ) : (
+              <ButtonDesign name = "Wake-up time" onPress = {() => showWake()}></ButtonDesign>
+            )}
+            <Text style={styles.label}> Bedtime:</Text>
+            {Platform.OS == "ios" ? (
+              <DateTimePicker
+                style={{ width: 100, backgroundColor: "transparent",  alignContent: "center", alignSelf: "center" }}
+                value={sleepTime}
+                mode={"time"}
+                is24Hour={true}
+                display="default"
+                onChange={changeTime}
+              />
+            ) : (
+              <ButtonDesign name = "Bedtime" onPress = {() => showSleep()}></ButtonDesign>
+            )}
+         
+          {showWakeTime && (
+            <DateTimePicker
+            style={{ width: 100, backgroundColor: "transparent" }}
             value={wakeTime}
             mode={"time"}
             is24Hour={true}
             display="default"
-            onChange={changeWakeupTime}
+            onChange={changeWakeUpTimeAndroid}
           />
-          <Text style={styles.textName}> Bedtime:</Text>
-          <DateTimePicker
-            style={{
-              width: 100,
-              backgroundColor: "transparent",
-              alignContent: "center",
-              alignSelf: "center",
-            }}
-            value={sleepTime}
+          )}
+          {showSleepTime && (
+            <DateTimePicker
+            style={{ width: 100, backgroundColor: "transparent" }}
+            value={wakeTime}
             mode={"time"}
             is24Hour={true}
             display="default"
-            onChange={changeTime}
+            onChange={changeTimeAndroid}
           />
+          )}
 
           <ButtonDesign
             name="Register"
