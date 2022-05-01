@@ -22,6 +22,7 @@ import { backendUrl } from "./config/config.json";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
 import { retrieveDataString, storeDataString } from "./components/Helpers";
+import { Alert } from "react-native";
 
 const AuthStack = createNativeStackNavigator();
 const WelcomeStack = createNativeStackNavigator();
@@ -108,17 +109,21 @@ export default function App() {
           },
         })
         .then((response) => {
-          setUserInfo({
+          let info = {
             email: response.data["email"],
             firstName: response.data["firstName"],
             lastName: response.data["lastName"],
-          });
+          };
+          setUserInfo(info);
+          storeDataString("last_info", JSON.stringify(info));
           setAuthValid(true);
           console.log(userInfo);
         })
         .catch((error) => {
           console.log("Your are not logged in!"); // token error
-          // Alert.alert("Connection failed. Please log in again.");
+          if (authValid) {
+            Alert.alert("Login is expired. Please log in again.");
+          }
           setAuthValid(false);
         });
     });
@@ -151,12 +156,16 @@ export default function App() {
     (async () => {
       let token = await SecureStore.getItemAsync("user_token");
       if (!token) {
-        setIsLoading(false);
+        setAuthValid(false);
+      } else {
+        let info = await retrieveDataString("last_info");
+        setUserInfo(JSON.stringify(info));
+        setAuthValid(true);
       }
     })();
     setTimeout(() => {
       setIsLoading(false);
-    }, 2500);
+    }, 500);
   }, []);
 
   useEffect(() => {
