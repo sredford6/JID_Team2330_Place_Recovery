@@ -2,9 +2,9 @@
   "expo": {
     "name": "PlaceNrecovery",
     "slug": "placenrecovery",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/logo.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -20,7 +20,9 @@
       "supportsTablet": true,
       "userInterfaceStyle": "light",
       "bundleIdentifier": "com.placenrecovery.placenrecovery",
-      "associatedDomains": ["applinks:https://placenrecovery.herokuapp.com/"]
+      "associatedDomains": [
+        "webcredentials:https://placenrecovery.herokuapp.com/"
+      ]
     },
     "android": {
       "userInterfaceStyle": "light",
@@ -28,7 +30,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.placenrecovery.placenrecovery"
+      "package": "com.placenrecovery.placenrecovery",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/images/favicon.png"

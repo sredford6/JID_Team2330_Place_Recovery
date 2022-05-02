@@ -89,7 +89,7 @@ export default function ProgressScreen() {
       })
       .then((response) => {
         let count = [0, 0, 0, 0, 0, 0, 0];
-        // console.log(response);
+        console.log(response);
         // per questionnaire
         for (let i = 0; i < response.data.answers.length; i++) {
           // This is the questionnaire
