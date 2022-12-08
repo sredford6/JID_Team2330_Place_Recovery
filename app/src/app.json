@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Place&Recovery",
-    "slug": "placeandrecovery",
+    "name": "PlaceRecovery2",
+    "slug": "placerecovery2",
     "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
@@ -41,7 +41,7 @@
     "description": "",
     "extra": {
       "eas": {
-        "projectId": "50c07762-cb58-4d31-b239-769f72274bd6"
+        "projectId": "92c99427-42d8-4d5b-ba4a-92d54b1c8233"
       }
     },
     "owner": "gingirvitis"
