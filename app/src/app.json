@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "PlaceNrecovery",
-    "slug": "placenrecovery",
+    "name": "Place&Recovery",
+    "slug": "placeandrecovery",
     "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
@@ -15,7 +15,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "userInterfaceStyle": "light",
@@ -36,6 +38,12 @@
     "web": {
       "favicon": "./assets/images/favicon.png"
     },
-    "description": ""
+    "description": "",
+    "extra": {
+      "eas": {
+        "projectId": "50c07762-cb58-4d31-b239-769f72274bd6"
+      }
+    },
+    "owner": "gingirvitis"
   }
 }
