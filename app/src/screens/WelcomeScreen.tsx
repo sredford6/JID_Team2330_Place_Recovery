@@ -27,9 +27,6 @@ import { convertTime, goToSettings } from "../components/Helpers";
 
 export default function WelcomeScreen() {
 
-
-  askasdlkasdklasklasd;
-
   const [location, setLocation] = useState<LocationObject>();
   const [errorMsg, setErrorMsg] = useState<string>();
   const [address, setAddress] = useState<LocationGeocodedAddress>();
