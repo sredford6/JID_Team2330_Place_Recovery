@@ -1,4 +1,4 @@
-<h1 align="center">Place&Recovery🧠 (GT Team 1358)</h1> <br>
+<h1 align="center">Place&Recovery🧠 (GT Team 135)</h1> <br>
 
 <p align="center">
   <a href=""><img src="https://i.imgur.com/uGnMJIv.jpg" width ="450" title="source: imgur.com" /></a>
