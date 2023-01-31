@@ -43,8 +43,20 @@ The project is a mobile application for mental health and risk stratification ba
 <br>
 </p>
 
-## Features
-### Version 1.0.0
+## Version 1.1.0
+### Features
+- N/A for Sprint 1  (mainly focused on getting the app functioning)
+### Known Issues
+- 54  packages in need of updates were identified.
+- 47 vulnerabilities of varying criticality (3 low, 31 high, 5 critical)  were identified, and 17 were resolved. 30 vulnerabilities remain to be fixed.
+- We were unable to run Heroku, which is necessary to run the app.
+- Our team plans to resolve such compatibility and dependency issues with the outdated packages, libraries, and vulnerabilities within the next sprint.
+### Fixed Bugs
+- 17 vulnerabilities were resolved within this sprint, leaving 30 vulnerabilities for manual review in the next sprint.
+- Issues regarding accessing MongoDB were resolved.
+
+## Version 1.0.0
+### Features
 - The app can handle multiple free-response questions.
 - The Home Screen can show the complete status of the questionnaire and the timeclock for the next questionnaire.
 - The app only allows users to take questionnaires within the available period.
@@ -61,15 +73,13 @@ The project is a mobile application for mental health and risk stratification ba
 <br><br>
 </p>
 
-## Known Issues
-### Version 1.0.0
+### Known Issues
 - DateTimePicker has problems on Android, work fine on iOS.
 - Haven't tested the case where there are no GPS signals.
 - The notification might not work properly if the users change the system time. Users can reset notification schedules if the notification don't work.
 - The notification works on Expo Go but seems have problem on iOS.
 
-## Fixed Bugs
-### Version 1.0.0
+### Fixed Bugs
 - Fixed locations not working on Android devices.
 
 
