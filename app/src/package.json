@@ -33,6 +33,7 @@
     "expo-secure-store": "~12.0.0",
     "expo-splash-screen": "~0.17.5",
     "expo-status-bar": "~1.4.2",
+    "expo-updates": "^0.15.6",
     "expo-web-browser": "~12.0.0",
     "react": "18.1.0",
     "react-base": "^0.2.0",
