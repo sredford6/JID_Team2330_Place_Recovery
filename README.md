@@ -43,14 +43,14 @@ The project is a mobile application for mental health and risk stratification ba
 <br>
 </p>
 
-##Version 1.2.0
-###Features
--N/A for Sprint 2 (mainly focused on getting the app functioning)
-###Known Issues
--Heroku web server still does not run (will be fixed as soon as possible, allowing for complete functionality of the app)
-###Fixed Bugs
--Outdated libraries and packages are still there but are no longer a breaking issue
--Got remaining vulnerabilities down to 19 from 30
+## Version 1.2.0
+### Features
+- N/A for Sprint 2 (mainly focused on getting the app functioning)
+### Known Issues
+- Heroku web server still does not run (will be fixed as soon as possible, allowing for complete functionality of the app)
+### Fixed Bugs
+- Outdated libraries and packages are still there but are no longer a breaking issue
+- Got remaining vulnerabilities down to 19 from 30
 
 ## Version 1.1.0
 ### Features
