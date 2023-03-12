@@ -134,7 +134,7 @@ export default function App() {
     // setIsLoading(false);
   };
 
-  const authContext = React.createContext(() => {
+  const authContext = React.useMemo(() => {
     return {
       signIn: (token: string) => {
         setItem("user_token", token);
@@ -184,37 +184,19 @@ export default function App() {
     return <Loading />;
   }
 
-  // return (
-  //   <AuthContext.Provider
-  //     value={{ authFunctions: authContext, userInfo: userInfo }}
-  //   >
-  //     <NavigationContainer>
-  //       {isFirstTime ? (
-  //         <WelcomeContext.Provider value={{ isFirstTime, setIsFirstTime }}>
-  //           <WelcomeStackNavigator />
-  //         </WelcomeContext.Provider>
-  //       ) : authValid ? (
-  //         <HomeNavigation />
-  //       ) : (
-  //         <AuthenticationStackNavigator />
-  //       )}
-  //     </NavigationContainer>
-  //   </AuthContext.Provider>
-  // );
-
-  // authFunctions: {
-  //   signIn: (token: string) => {},
-  //   signOut: () => {},
-  // },
-  // userInfo: { email: "", firstName: "", lastName: "" },
-
   return (
     <AuthContext.Provider
-      value={{ authFunctions: authContext, userInfo: { email: "alexberezovsky123@gmail.com", firstName: "Alex", lastName: "Berezovsky" } }}
+      value={{ authFunctions: authContext, userInfo: userInfo }}
     >
       <NavigationContainer>
-        {(
+        {isFirstTime ? (
+          <WelcomeContext.Provider value={{ isFirstTime, setIsFirstTime }}>
+            <WelcomeStackNavigator />
+          </WelcomeContext.Provider>
+        ) : authValid ? (
           <HomeNavigation />
+        ) : (
+          <AuthenticationStackNavigator />
         )}
       </NavigationContainer>
     </AuthContext.Provider>
