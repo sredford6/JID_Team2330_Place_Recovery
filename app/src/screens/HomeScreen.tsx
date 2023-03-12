@@ -362,6 +362,9 @@ export default function HomeScreen({
         );
         return false;
       }
+
+      let backPerm = await Location.requestBackgroundPermissionsAsync();
+      console.log(backPerm);
     })();
   }, []);
 
