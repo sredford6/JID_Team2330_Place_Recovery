@@ -43,6 +43,16 @@ The project is a mobile application for mental health and risk stratification ba
 <br>
 </p>
 
+## Version 1.3.0
+### Features
+- Background location tracking permissions functionality added
+### Known Issues
+- Background location tracking on newer iPhone versions may fail under certain instances
+### Fixed Bugs
+- Heroku is now working properly and up and running
+- Accessing the app has been fixed and login functionality has been restored
+- Unrecognized Nodejs version for package.json fixed
+
 ## Version 1.2.0
 ### Features
 - N/A for Sprint 2 (mainly focused on getting the app functioning)
