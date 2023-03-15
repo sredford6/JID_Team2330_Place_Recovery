@@ -47,6 +47,7 @@ The project is a mobile application for mental health and risk stratification ba
 ### Features
 - Background location tracking permissions functionality added
 ### Known Issues
+- Nodejs build failing on github workflow
 - Background location tracking on newer iPhone versions may fail under certain instances
 ### Fixed Bugs
 - Heroku is now working properly and up and running
