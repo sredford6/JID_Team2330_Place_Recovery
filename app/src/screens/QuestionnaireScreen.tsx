@@ -154,6 +154,10 @@ export default function Questionnaire({ navigation }) {
       } else {
         setNextButton(false);
         setBackButton(false);
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
       }
     }
   };
