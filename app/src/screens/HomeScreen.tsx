@@ -189,7 +189,8 @@ export default function HomeScreen({
 
   const ready = () => {
     return (
-      isAvailable != -1 && schedules && !schedules[0].completed[isAvailable]
+            //isAvailable != -1 && schedules && !schedules[0].completed[isAvailable]
+            true
     );
   };
   /**
