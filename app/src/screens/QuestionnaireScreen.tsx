@@ -28,13 +28,11 @@ import { DaySchedule } from "../components/types";
 
 export default function Questionnaire({ navigation }) {
   const { useState } = React;
-  const [txt, setTxt] = useState('');
   const [questions, setQuestions] = useState();
   const [length, setLength] = useState(0);
   const [index, setIndex] = useState(-1);
   const [prevIndex, setPrevIndex] = useState(-1);
   const [nextButton, setNextButton] = useState(true);
-  const [backButton, setBackButton] = useState(true);
   const [buttonPressed, setButtonPressed] = useState(
     Array.from({ length: 20 }, (i) => false)
   );
@@ -111,13 +109,6 @@ export default function Questionnaire({ navigation }) {
     } else {
       setNextButton(false);
     }
-
-    console.log(backButton);
-    if (index < 0) {
-      setBackButton(true);
-    } else {
-      setBackButton(false);
-    }
   };
 
   const multipleButtonFunction = (index: number) => {
@@ -144,18 +135,13 @@ export default function Questionnaire({ navigation }) {
     //console.log(nextButton)
     if (index < 0) {
       setNextButton(true);
-      setBackButton(true);
     } else {
       if (count == 19 && index == checkBool) {
         console.log("here");
         setNextButton(true);
         console.log(nextButton);
-        setBackButton(true);
-        console.log(backButton);
-      
       } else {
         setNextButton(false);
-        setBackButton(false);
       }
     }
   };
@@ -198,7 +184,6 @@ export default function Questionnaire({ navigation }) {
   };
 
   const decrease = () => {
-    setBackButton(true);
     if (index > 0) {
       setIndex(index - 1);
     }
@@ -222,7 +207,6 @@ export default function Questionnaire({ navigation }) {
     loadQuiz();
     getLocation();
   }, []);
-  
 
   const renderType0 = (i: number, customArray: null | Array<any> = null) => {
     return (customArray ? customArray : questions[i]["choices"]).map(
@@ -263,19 +247,14 @@ export default function Questionnaire({ navigation }) {
         {renderType0(i)}
         <TextInput
           style={styles.input}
-          placeholder="Other: (Numbers and Letters Only)"
+          placeholder="other:"
           onChangeText={(freeText) => {
             let temp_answers = user_answers;
-            // onInputChange(freeText);
-            //freeText.replace(/[^0-9]/, '');
-            //freeText.replace(/^[A-Za-z]+$/, '');
-            freeText = freeText.replace(/[^0-9a-z-A-Z ]/g, "").replace(/ +/, " ");
             temp_answers[i].answer = freeText;
-            
             temp_answers[i].choiceIndex = questions[i]["choices"].length;
             setUserAnswers(temp_answers);
 
-            console.log(freeText);
+            //console.log(user_answers);
           }}
         />
       </View>
@@ -331,56 +310,42 @@ export default function Questionnaire({ navigation }) {
           style={styles.input}
           placeholder="From:"
           onChangeText={(freeText) => {
-            freeText = freeText.replace(/[^0-9a-z-A-Z ]/g, "").replace(/ +/, " ");
             temp_interface.From = freeText;
             let temp_answers = user_answers;
             temp_answers[i].answer = temp_interface;
             temp_answers[i].choiceIndex = questions[i]["choices"].length;
             setUserAnswers(temp_answers);
-            console.log(freeText);
+            console.log(user_answers);
           }}
         />
         <TextInput
           style={styles.input}
           placeholder="To:"
           onChangeText={(freeText) => {
-            freeText = freeText.replace(/[^0-9a-z-A-Z ]/g, "").replace(/ +/, " ");
             temp_interface.To = freeText;
             let temp_answers = user_answers;
             temp_answers[i].answer = temp_interface;
             temp_answers[i].choiceIndex = questions[i]["choices"].length;
             setUserAnswers(temp_answers);
-            console.log(freeText);
+            console.log(user_answers);
           }}
         />
         <TextInput
           style={styles.input}
           placeholder="Reason:"
           onChangeText={(freeText) => {
-            freeText = freeText.replace(/[^0-9a-z-A-Z ]/g, "").replace(/ +/, " ");
             temp_interface.Reason = freeText;
             let temp_answers = user_answers;
             temp_answers[i].answer = temp_interface;
             temp_answers[i].choiceIndex = questions[i]["choices"].length;
             setUserAnswers(temp_answers);
             // console.log("user_answers is ");
-            console.log(freeText);
+            console.log(user_answers);
           }}
         />
       </View>
     );
   };
-
-    const onInputChange = e => {
-      const { value } = e.target;
-      console.log('Input value: ', value);
-   
-      const re1 = /^[A-Za-z]+$/;
-      const re2 = /[^0-9]/g;
-      if (value === "" || re1.test(value) || re2.test(value)) {
-        setTxt(value);
-      }
-    }
 
   const renderQuestionList = (i: number) => {
     let type = questions[i]["type"];
@@ -539,18 +504,6 @@ export default function Questionnaire({ navigation }) {
             )}
             {index == length - 1 ? renderSubmit() : null}
           </View>
-
-          <View style={styles.bottom}>
-            {index == length ? null : (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={decrease}
-              >
-                <Text style={styles.buttonText}>BACK</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-
         </View>
       )}
     </View>
@@ -582,7 +535,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 16,
     alignItems: "center",
-    marginTop: -30,
     marginBottom: 30,
     width: 100,
     height: 45,
@@ -593,7 +545,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 16,
     alignItems: "center",
-    marginTop: -30,
     marginBottom: 30,
     opacity: 0.2,
     width: 100,
