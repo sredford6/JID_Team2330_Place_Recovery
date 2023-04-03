@@ -120,9 +120,12 @@ export default function HomeScreen({
     if (schedules) {
       let currentHour = new Date().getHours();
       let status = {
-        q1: checkStatus(0, currentHour),
-        q2: checkStatus(1, currentHour),
-        q3: checkStatus(2, currentHour),
+        //q1: checkStatus(0, currentHour),
+        //q2: checkStatus(1, currentHour),
+        //q3: checkStatus(2, currentHour),
+        q1: 2,
+        q2: 2,
+        q3: 2,
       };
       setStatus(status);
     } else {
