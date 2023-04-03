@@ -49,7 +49,7 @@ export default function Questionnaire({ navigation }) {
 
   const { userInfo } = useContext(AuthContext);
 
-  const [blockIdx, setBlockIdx] = useState<number>(-1);
+  const [blockIdx, setBlockIdx] = useState<number>(1); //changed from -1 for testing // why is it initially set to -1?
 
   interface answer_type {
     choiceIndex: Number | Array<number>;
@@ -480,8 +480,10 @@ export default function Questionnaire({ navigation }) {
 
       console.log("ADD EDIT--------------------");
       console.log("sche object:", sche);
+      console.log(blockIdx + " block");
 
       //sche[0].timeBlocks[blockIdx].completed = true;
+
       if (blockIdx >= 0 && blockIdx < sche[0].timeBlocks.length) {
         sche[0].timeBlocks[blockIdx].completed = true;
       } else {
