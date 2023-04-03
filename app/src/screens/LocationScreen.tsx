@@ -39,6 +39,9 @@ export default function LocationScreen() {
     setAddress(address[0]);
     setTimestamp(location.timestamp);
     setLocalTime(convertTime(new Date(location.timestamp)));
+
+    let backPerm = await Location.requestBackgroundPermissionsAsync();
+    console.log(backPerm);
   };
 
   const FormatInfo = () => {

@@ -43,8 +43,40 @@ The project is a mobile application for mental health and risk stratification ba
 <br>
 </p>
 
-## Features
-### Version 1.0.0
+## Version 1.3.0
+### Features
+- Background location tracking permissions functionality added
+### Known Issues
+- Nodejs build failing on github workflow
+- Background location tracking on newer iPhone versions may fail under certain instances
+### Fixed Bugs
+- Heroku is now working properly and up and running
+- Accessing the app has been fixed and login functionality has been restored
+- Unrecognized Nodejs version for package.json fixed
+
+## Version 1.2.0
+### Features
+- N/A for Sprint 2 (mainly focused on getting the app functioning)
+### Known Issues
+- Heroku web server still does not run (will be fixed as soon as possible, allowing for complete functionality of the app)
+### Fixed Bugs
+- Outdated libraries and packages are still there but are no longer a breaking issue
+- Got remaining vulnerabilities down to 19 from 30
+
+## Version 1.1.0
+### Features
+- N/A for Sprint 1  (mainly focused on getting the app functioning)
+### Known Issues
+- 54  packages in need of updates were identified.
+- 47 vulnerabilities of varying criticality (3 low, 31 high, 5 critical)  were identified, and 17 were resolved. 30 vulnerabilities remain to be fixed.
+- We were unable to run Heroku, which is necessary to run the app.
+- Our team plans to resolve such compatibility and dependency issues with the outdated packages, libraries, and vulnerabilities within the next sprint.
+### Fixed Bugs
+- 17 vulnerabilities were resolved within this sprint, leaving 30 vulnerabilities for manual review in the next sprint.
+- Issues regarding accessing MongoDB were resolved.
+
+## Version 1.0.0
+### Features
 - The app can handle multiple free-response questions.
 - The Home Screen can show the complete status of the questionnaire and the timeclock for the next questionnaire.
 - The app only allows users to take questionnaires within the available period.
@@ -61,15 +93,13 @@ The project is a mobile application for mental health and risk stratification ba
 <br><br>
 </p>
 
-## Known Issues
-### Version 1.0.0
+### Known Issues
 - DateTimePicker has problems on Android, work fine on iOS.
 - Haven't tested the case where there are no GPS signals.
 - The notification might not work properly if the users change the system time. Users can reset notification schedules if the notification don't work.
 - The notification works on Expo Go but seems have problem on iOS.
 
-## Fixed Bugs
-### Version 1.0.0
+### Fixed Bugs
 - Fixed locations not working on Android devices.
 
 
