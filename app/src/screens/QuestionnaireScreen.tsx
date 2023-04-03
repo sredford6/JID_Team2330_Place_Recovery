@@ -478,7 +478,15 @@ export default function Questionnaire({ navigation }) {
         (await retrieveDataString(userInfo.email + "_schedules"))!
       );
 
-      sche[0].timeBlocks[blockIdx].completed = true;
+      console.log("ADD EDIT--------------------");
+      console.log("sche object:", sche);
+
+      //sche[0].timeBlocks[blockIdx].completed = true;
+      if (blockIdx >= 0 && blockIdx < sche[0].timeBlocks.length) {
+        sche[0].timeBlocks[blockIdx].completed = true;
+      } else {
+        console.error("Invalid blockIdx value:", blockIdx);
+      }
       sche[0].completed[blockIdx] = true;
 
       await storeDataString(
