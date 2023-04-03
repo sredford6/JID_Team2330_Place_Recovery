@@ -94,9 +94,11 @@ export default function ProfileScreen({
         >
           <Text style={styles.label}>
             {" "}
-            Name:{" "}
+            <Text style={styles.subtitle}> 
+              Name{" "}
+            </Text>
             <Text style={styles.info}>
-              {userInfo.firstName} {userInfo.lastName}
+              : {userInfo.firstName} {userInfo.lastName}
             </Text>{" "}
           </Text>
         </TouchableOpacity>
@@ -108,7 +110,10 @@ export default function ProfileScreen({
         >
           <Text style={styles.label}>
             {" "}
-            Email: <Text style={styles.info}>{userInfo.email} </Text>
+            <Text style={styles.subtitle}> 
+              Email
+            </Text>
+            <Text style={styles.info}>: {userInfo.email} </Text>
           </Text>
         </TouchableOpacity>
 
@@ -117,7 +122,11 @@ export default function ProfileScreen({
           //onPress={() => navigation.navigate("Gender")}
           activeOpacity={0.85}
         >
-          <Text style={styles.label}> Gender: {gender}</Text>
+          <Text style={styles.label}> 
+            <Text style={styles.subtitle}> 
+               Gender
+            </Text>
+          : {gender}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -125,7 +134,11 @@ export default function ProfileScreen({
           //onPress={() => navigation.navigate("Ethnicity")}
           activeOpacity={0.85}
         >
-          <Text style={styles.label}> Race/Ethnicity: {race}</Text>
+          <Text style={styles.label}>
+            <Text style={styles.subtitle}> 
+              Race/Ethnicity
+            </Text>
+          : {race}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -135,7 +148,10 @@ export default function ProfileScreen({
         >
           <Text style={styles.label}>
             {" "}
-            Phone Number: {phoneNumber}{" "}
+            <Text style={styles.subtitle}> 
+              Phone Number
+            </Text>
+            : {phoneNumber}{" "}
             <Text style={styles.editText}>[Edit]</Text>
           </Text>
         </TouchableOpacity>
@@ -146,7 +162,10 @@ export default function ProfileScreen({
           activeOpacity={0.85}
         >
           <Text style={styles.label}>
-            Address: {address}, {city}, {state} {zip}{" "}
+            <Text style={styles.subtitle}> 
+              Address
+            </Text>
+            : {address}, {city}, {state} {zip}{" "}
             <Text style={styles.editText}>[Edit]</Text>
           </Text>
         </TouchableOpacity>
@@ -158,7 +177,10 @@ export default function ProfileScreen({
         >
           <Text style={styles.label}>
             {" "}
-            Sleep Schedule <Text style={styles.editText}>[Edit]</Text>
+            <Text style={styles.subtitle}> 
+              Sleep Schedule
+            </Text>
+            <Text style={styles.editText}> [Edit]</Text>
           </Text>
         </TouchableOpacity>
 
@@ -171,7 +193,13 @@ export default function ProfileScreen({
           }}
           activeOpacity={0.85}
         >
-          <Text style={styles.label}> Additional Demographics</Text>
+          <Text style={styles.label}>
+            <Text style={styles.subtitle}> 
+              Additional Demographics
+            </Text>
+            <Text style={styles.editText}> [Edit]</Text>
+          </Text>
+
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -219,10 +247,11 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     backgroundColor: "#DBECEE",
     paddingHorizontal: 15,
-    borderRadius: 4,
+    borderRadius: 10,
     justifyContent: "center",
     borderColor: "#184E77",
     borderWidth: 1,
+    marginTop: 10,
   },
   buttonComponent: {
     justifyContent: "flex-end",
@@ -234,6 +263,13 @@ const styles = StyleSheet.create({
     marginLeft: -3,
     flexWrap: "wrap",
     fontSize: 15,
+    color: "#072B4F",
+  },
+  subtitle: {
+    margin: 20,
+    fontWeight: "bold",
+    fontSize: 15,
+    color: "#072B4F",
   },
   info: {
     textAlign: "right",
@@ -241,9 +277,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   account: {
-    margin: 18,
+    margin: 20,
     fontWeight: "bold",
-    fontSize: 17,
+    fontSize: 20,
   },
   editText: {
     fontSize: 13,
