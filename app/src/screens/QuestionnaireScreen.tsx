@@ -28,6 +28,7 @@ import { DaySchedule } from "../components/types";
 
 export default function Questionnaire({ navigation }) {
   const { useState } = React;
+  const [txt, setTxt] = useState('');
   const [questions, setQuestions] = useState();
   const [length, setLength] = useState(0);
   const [index, setIndex] = useState(-1);
@@ -207,6 +208,7 @@ export default function Questionnaire({ navigation }) {
     loadQuiz();
     getLocation();
   }, []);
+  
 
   const renderType0 = (i: number, customArray: null | Array<any> = null) => {
     return (customArray ? customArray : questions[i]["choices"]).map(
@@ -247,14 +249,19 @@ export default function Questionnaire({ navigation }) {
         {renderType0(i)}
         <TextInput
           style={styles.input}
-          placeholder="other:"
+          placeholder="Other: (Numbers and Letters Only)"
           onChangeText={(freeText) => {
             let temp_answers = user_answers;
+            // onInputChange(freeText);
+            //freeText.replace(/[^0-9]/, '');
+            //freeText.replace(/^[A-Za-z]+$/, '');
+            freeText = freeText.replace(/[^0-9a-z-A-Z ]/g, "").replace(/ +/, " ");
             temp_answers[i].answer = freeText;
+            
             temp_answers[i].choiceIndex = questions[i]["choices"].length;
             setUserAnswers(temp_answers);
 
-            //console.log(user_answers);
+            console.log(freeText);
           }}
         />
       </View>
@@ -310,42 +317,56 @@ export default function Questionnaire({ navigation }) {
           style={styles.input}
           placeholder="From:"
           onChangeText={(freeText) => {
+            freeText = freeText.replace(/[^0-9a-z-A-Z ]/g, "").replace(/ +/, " ");
             temp_interface.From = freeText;
             let temp_answers = user_answers;
             temp_answers[i].answer = temp_interface;
             temp_answers[i].choiceIndex = questions[i]["choices"].length;
             setUserAnswers(temp_answers);
-            console.log(user_answers);
+            console.log(freeText);
           }}
         />
         <TextInput
           style={styles.input}
           placeholder="To:"
           onChangeText={(freeText) => {
+            freeText = freeText.replace(/[^0-9a-z-A-Z ]/g, "").replace(/ +/, " ");
             temp_interface.To = freeText;
             let temp_answers = user_answers;
             temp_answers[i].answer = temp_interface;
             temp_answers[i].choiceIndex = questions[i]["choices"].length;
             setUserAnswers(temp_answers);
-            console.log(user_answers);
+            console.log(freeText);
           }}
         />
         <TextInput
           style={styles.input}
           placeholder="Reason:"
           onChangeText={(freeText) => {
+            freeText = freeText.replace(/[^0-9a-z-A-Z ]/g, "").replace(/ +/, " ");
             temp_interface.Reason = freeText;
             let temp_answers = user_answers;
             temp_answers[i].answer = temp_interface;
             temp_answers[i].choiceIndex = questions[i]["choices"].length;
             setUserAnswers(temp_answers);
             // console.log("user_answers is ");
-            console.log(user_answers);
+            console.log(freeText);
           }}
         />
       </View>
     );
   };
+
+    const onInputChange = e => {
+      const { value } = e.target;
+      console.log('Input value: ', value);
+   
+      const re1 = /^[A-Za-z]+$/;
+      const re2 = /[^0-9]/g;
+      if (value === "" || re1.test(value) || re2.test(value)) {
+        setTxt(value);
+      }
+    }
 
   const renderQuestionList = (i: number) => {
     let type = questions[i]["type"];
