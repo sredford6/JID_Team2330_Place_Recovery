@@ -252,13 +252,16 @@ export default function Questionnaire({ navigation }) {
           placeholder="Other: (Numbers and Letters Only)"
           onChangeText={(freeText) => {
             let temp_answers = user_answers;
-            onInputChange(freeText);
+            // onInputChange(freeText);
+            //freeText.replace(/[^0-9]/, '');
+            //freeText.replace(/^[A-Za-z]+$/, '');
+            freeText = freeText.replace(/[^0-9a-z-A-Z ]/g, "").replace(/ +/, " ");
             temp_answers[i].answer = freeText;
             
             temp_answers[i].choiceIndex = questions[i]["choices"].length;
             setUserAnswers(temp_answers);
 
-            //console.log(user_answers);
+            console.log(freeText);
           }}
         />
       </View>
