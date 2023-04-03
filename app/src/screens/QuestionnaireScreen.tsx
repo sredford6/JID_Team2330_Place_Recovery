@@ -34,6 +34,7 @@ export default function Questionnaire({ navigation }) {
   const [index, setIndex] = useState(-1);
   const [prevIndex, setPrevIndex] = useState(-1);
   const [nextButton, setNextButton] = useState(true);
+  const [backButton, setBackButton] = useState(true);
   const [buttonPressed, setButtonPressed] = useState(
     Array.from({ length: 20 }, (i) => false)
   );
@@ -110,6 +111,13 @@ export default function Questionnaire({ navigation }) {
     } else {
       setNextButton(false);
     }
+
+    console.log(backButton);
+    if (index < 0) {
+      setBackButton(true);
+    } else {
+      setBackButton(false);
+    }
   };
 
   const multipleButtonFunction = (index: number) => {
@@ -136,6 +144,7 @@ export default function Questionnaire({ navigation }) {
     //console.log(nextButton)
     if (index < 0) {
       setNextButton(true);
+      setBackButton(true);
     } else {
       if (count == 19 && index == checkBool) {
         console.log("here");
@@ -189,6 +198,7 @@ export default function Questionnaire({ navigation }) {
   };
 
   const decrease = () => {
+    setBackButton(true);
     if (index > 0) {
       setIndex(index - 1);
     }
@@ -539,7 +549,6 @@ export default function Questionnaire({ navigation }) {
                 <Text style={styles.buttonText}>BACK</Text>
               </TouchableOpacity>
             )}
-            {index == length - 1 ? renderSubmit() : null}
           </View>
 
         </View>
@@ -573,6 +582,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 16,
     alignItems: "center",
+    marginTop: -30,
     marginBottom: 30,
     width: 100,
     height: 45,
@@ -583,6 +593,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 16,
     alignItems: "center",
+    marginTop: -30,
     marginBottom: 30,
     opacity: 0.2,
     width: 100,
