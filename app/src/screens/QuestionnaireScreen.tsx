@@ -317,37 +317,40 @@ export default function Questionnaire({ navigation }) {
           style={styles.input}
           placeholder="From:"
           onChangeText={(freeText) => {
+            freeText = freeText.replace(/[^0-9a-z-A-Z ]/g, "").replace(/ +/, " ");
             temp_interface.From = freeText;
             let temp_answers = user_answers;
             temp_answers[i].answer = temp_interface;
             temp_answers[i].choiceIndex = questions[i]["choices"].length;
             setUserAnswers(temp_answers);
-            console.log(user_answers);
+            console.log(freeText);
           }}
         />
         <TextInput
           style={styles.input}
           placeholder="To:"
           onChangeText={(freeText) => {
+            freeText = freeText.replace(/[^0-9a-z-A-Z ]/g, "").replace(/ +/, " ");
             temp_interface.To = freeText;
             let temp_answers = user_answers;
             temp_answers[i].answer = temp_interface;
             temp_answers[i].choiceIndex = questions[i]["choices"].length;
             setUserAnswers(temp_answers);
-            console.log(user_answers);
+            console.log(freeText);
           }}
         />
         <TextInput
           style={styles.input}
           placeholder="Reason:"
           onChangeText={(freeText) => {
+            freeText = freeText.replace(/[^0-9a-z-A-Z ]/g, "").replace(/ +/, " ");
             temp_interface.Reason = freeText;
             let temp_answers = user_answers;
             temp_answers[i].answer = temp_interface;
             temp_answers[i].choiceIndex = questions[i]["choices"].length;
             setUserAnswers(temp_answers);
             // console.log("user_answers is ");
-            console.log(user_answers);
+            console.log(freeText);
           }}
         />
       </View>
