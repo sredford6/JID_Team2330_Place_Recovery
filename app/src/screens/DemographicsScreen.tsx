@@ -20,7 +20,6 @@ import {CheckBox} from "react-native-elements"
 import { getItemAsync } from 'expo-secure-store';
 
 
-
 export default function Demographics({ navigation }) {
 
     const [education, setEducation] = React.useState('');
@@ -149,7 +148,11 @@ export default function Demographics({ navigation }) {
         
           <Text style = {styles.title}> Demographics </Text>
 
-        <Text style = {styles.label}>Education:</Text>
+        <Text style = {styles.label}>
+          <Text style = {styles.subtitle}>
+          Education:
+          </Text>
+        </Text>
 
         <Picker style ={{width: 375, height: 200, marginTop: -51, alignContent:'center', alignSelf:'center'}}
         selectedValue={education}
@@ -166,7 +169,11 @@ export default function Demographics({ navigation }) {
     <Picker.Item label="Advanced Degree" value="Advanced Degree" />
     </Picker>
         
-        <Text style = {styles.label}>Occupation:</Text>
+        <Text style = {styles.label}>
+          <Text style = {styles.subtitle}>
+            Occupation:
+          </Text>
+        </Text>
         <TextInput
             style={styles.input}
             placeholder="Occupation"
@@ -177,7 +184,11 @@ export default function Demographics({ navigation }) {
             value={occupation}
             
           />
-        <Text style = {styles.label}>Address of place in which you spent longest during childhood :</Text>
+        <Text style = {styles.label}>
+          <Text style = {styles.subtitle}>
+          Address of place in which you spent longest during childhood :
+          </Text>
+        </Text>
         <TextInput
             style={styles.input}
             placeholder="Address Line 1"
@@ -219,7 +230,11 @@ export default function Demographics({ navigation }) {
             value={longZip}
             
           />
-          <Text style = {styles.label}>Number of times you moved from ages 12-18 </Text>
+          <Text style = {styles.label}>
+            <Text style = {styles.subtitle}>
+            Number of times you moved from ages 12-18 
+            </Text>
+          </Text>
           <Picker style ={{width: 375, height: 200, marginTop: -51, alignContent:'center', alignSelf:'center'}}
         selectedValue={numberOfMoves}
         
@@ -238,7 +253,11 @@ export default function Demographics({ navigation }) {
     <Picker.Item label="8" value="8" />
     <Picker.Item label="9+" value="9+" />
     </Picker>
-      <Text style = {styles.label}>Family history of mental illness </Text>
+      <Text style = {styles.label}>
+        <Text style = {styles.subtitle}>
+          Family history of mental illness 
+        </Text>
+      </Text>
 
      <CheckBox 
      title = "Depression"
@@ -280,7 +299,11 @@ export default function Demographics({ navigation }) {
      checked = {Other}
      onPress = {() => setOther(!Other)}/>
 
-     <Text style = {styles.label}>If other:</Text>
+     <Text style = {styles.label}>
+      <Text style = {styles.subtitle}>
+        If other:
+      </Text>
+    </Text>
     <TextInput
             style={styles.input}
             placeholder="Other"
@@ -296,7 +319,11 @@ export default function Demographics({ navigation }) {
 
 
 
-    <Text style = {styles.label}>Personal history of mental illness </Text>
+    <Text style = {styles.label}>
+      <Text style = {styles.subtitle}>
+        Personal history of mental illness 
+      </Text>
+    </Text>
 
     <CheckBox 
     title = "Depression"
@@ -339,7 +366,11 @@ export default function Demographics({ navigation }) {
     checked = {OtherP}
     onPress = {() => setOtherP(!OtherP)}/>
 
-    <Text style = {styles.label}>If other:</Text>
+    <Text style = {styles.label}>
+      <Text style = {styles.subtitle}>
+        If other:
+      </Text>
+    </Text>
     <TextInput
           style={styles.input}
           placeholder="Other"
@@ -395,23 +426,33 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   input: { 
-      height: 45,
-      width: Dimensions.get('window').width,
-      marginBottom: 5,
-      paddingLeft: 10,
-      borderWidth: 1,
-      borderRadius: 10,
-      fontSize: 18,
-      borderColor: '#072B4F'
+    height: 45,
+    width: Dimensions.get('window').width - 40,
+    marginBottom: 5,
+    marginLeft: 15,
+    paddingLeft: 10,
+    borderWidth: 1,
+    borderRadius: 10,
+    fontSize: 18,
+    borderColor: '#072B4F'
   },
   label: {
-   textAlign: 'center',
+    textAlign: 'center',
     margin: 20,
     marginLeft: 40,
     marginRight: 40,
   
     color: '#072B4F', 
     fontSize: 22, 
+  },
+  subtitle: {
+    textAlign: 'center',
+    margin: 20,
+    marginLeft: 40,
+    marginRight: 40,
+    fontWeight: 'bold',
+    color: '#072B4F', 
+    fontSize: 20,
   },
   textName: {
     textAlign: 'center',
