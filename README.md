@@ -43,6 +43,17 @@ The project is a mobile application for mental health and risk stratification ba
 <br>
 </p>
 
+## Version 1.4.0
+### Features
+- Ability to take the questionnaire at anytime added
+- Response validation/data cleaning for questionnaire answers added
+- Option to go back and change questionnaire answers added
+- UI Improvements to profile page added
+### Known Issues
+- questionnaire submission sometimes causes an error
+### Fixed Bugs
+- Progress graphs are now correctly updating with questionnaire submission
+
 ## Version 1.3.0
 ### Features
 - Background location tracking permissions functionality added
