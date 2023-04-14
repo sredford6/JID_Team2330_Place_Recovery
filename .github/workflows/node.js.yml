@@ -47,6 +47,4 @@ jobs:
         BRANCH: build
         FOLDER: dist
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Upload Android Release to Play Store
-      uses: r0adkll/upload-google-play@v1
 
